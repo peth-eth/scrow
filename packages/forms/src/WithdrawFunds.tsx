@@ -56,9 +56,13 @@ export function WithdrawFunds({
       >
         Withdraw Funds
       </Heading>
-      <Text textAlign="center" fontSize="sm" mb="1rem" w="70%">
+      <Text textAlign="center" fontSize="sm" mb="0.5rem" w="70%">
         Follow the instructions in your wallet to withdraw remaining funds from
         the escrow.
+      </Text>
+      <Text textAlign="center" fontSize="xs" color="blackAlpha.600" mb="0.5rem" w="70%">
+        The withdrawal deadline has passed and these funds are available for you
+        to reclaim.
       </Text>
       <Stack my="2rem" px="5rem" py="1rem" bg="black" borderRadius="0.5rem">
         <Text color="primary.300" fontSize="0.875rem" textAlign="center">

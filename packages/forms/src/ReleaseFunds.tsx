@@ -1,5 +1,5 @@
 import { Button, Heading, Stack, Text } from '@chakra-ui/react';
-import { TOASTS } from '@smartinvoicexyz/constants';
+import { PLATFORM_FEE_BPS, TOASTS } from '@smartinvoicexyz/constants';
 import {
   createInvoiceDetailsQueryKey,
   useNotify,
@@ -94,6 +94,9 @@ export function ReleaseFunds({
         Follow the instructions in your wallet to release funds from the escrow
         to the provider account.
       </Text>
+      <Text textAlign="center" fontSize="sm" color="blackAlpha.600">
+        Funds will be sent to the provider.
+      </Text>
       <Stack
         my="2rem"
         px="5rem"
@@ -118,6 +121,12 @@ export function ReleaseFunds({
           tokenBalance?.decimals || 18,
         )} ${tokenBalance?.symbol}`}</Text>
       </Stack>
+      <Text textAlign="center" fontSize="xs" color="blackAlpha.500">
+        {`A ${Number(PLATFORM_FEE_BPS) / 100}% platform fee (${formatUnits(
+          (getReleaseAmount(currentMilestoneNumber, amounts, tokenBalance?.value) * PLATFORM_FEE_BPS) / 10000n,
+          tokenBalance?.decimals || 18,
+        )} ${tokenBalance?.symbol}) will be deducted from this release.`}
+      </Text>
       {/* {transaction && (
         <Text textAlign='center' fontSize='sm'>
           Follow your transaction{' '}

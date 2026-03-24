@@ -4,6 +4,8 @@ import {
   HStack,
   Icon,
   Link,
+  OrderedList,
+  ListItem,
   Stack,
   Text,
   useClipboard,
@@ -135,6 +137,18 @@ export function RegisterSuccess({
           </HStack>
         </Flex>
       </Stack>
+
+      <Stack w="100%" align="stretch" mb="1rem" px="0.5rem">
+        <Text fontWeight="bold" fontSize="sm" color="blackAlpha.700">
+          What happens next?
+        </Text>
+        <OrderedList spacing="0.25rem" fontSize="sm" color="blackAlpha.600" pl="0.5rem">
+          <ListItem>Share the invoice link with your client</ListItem>
+          <ListItem>Client deposits funds into escrow</ListItem>
+          <ListItem>Release funds as milestones are completed</ListItem>
+        </OrderedList>
+      </Stack>
+
       <HStack>
         <ChakraNextLink href="/invoices">
           <Button size="lg" fontWeight="medium" variant="ghost">

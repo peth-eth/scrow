@@ -4,6 +4,8 @@ import {
   Flex,
   Heading,
   Link,
+  ListItem,
+  OrderedList,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -110,6 +112,18 @@ export function LockFunds({
         will review your case, the project agreement and dispute reasoning
         before making a decision on how to fairly distribute remaining funds.
       </Text>
+      <Stack spacing="0.25rem" mb="0.5rem">
+        <Text fontSize="sm" fontWeight="bold" color="blackAlpha.700">
+          What happens when you raise a dispute?
+        </Text>
+        <OrderedList spacing="0.25rem" fontSize="sm" color="blackAlpha.600" pl="0.5rem">
+          <ListItem>All remaining funds are frozen</ListItem>
+          <ListItem>The arbitrator reviews the case</ListItem>
+          <ListItem>Funds are distributed based on the ruling</ListItem>
+          <ListItem>A 5% arbitration fee is deducted</ListItem>
+        </OrderedList>
+      </Stack>
+
       <Textarea
         name="description"
         tooltip="Why do you want to lock these funds?"
