@@ -43,11 +43,35 @@ function App({ Component, pageProps }: AppProps) {
     setMounted(true);
   }, []);
 
-  // Prevent SSR — wagmi/rainbowkit require browser APIs (localStorage, window.ethereum)
-  if (!mounted) return null;
+  if (!mounted) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#101010',
+          color: '#f5f5f5',
+        }}
+      >
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            border: '3px solid #8A63D2',
+            borderTopColor: 'transparent',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+          }}
+        />
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      </div>
+    );
+  }
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <HydrationBoundary state={pageProps.dehydratedState}>

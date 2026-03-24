@@ -1,11 +1,11 @@
 import { BASE_URL } from '@smartinvoicexyz/constants';
-import Document, { Head, Html } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 const m = {
   title: 'sCrow',
   type: 'website',
   description:
-    'sCrow is an easy-to-use tool that provides web3 freelancers with cryptocurrency invoicing, escrow, and arbitration.',
+    'sCrow — secure escrow for web3 freelancers with cryptocurrency invoicing and arbitration.',
   version: 'next',
   url: BASE_URL,
   imageUrl: `${BASE_URL}/si-banner.png`,
@@ -20,15 +20,20 @@ const m = {
     },
   },
 };
+
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
-          <meta name="fc:frame" content={`${JSON.stringify(m)}`} />
-          <meta name="fc:miniapp" content={`${JSON.stringify(m)}`} />
+          <meta name="fc:frame" content={JSON.stringify(m)} />
+          <meta name="fc:miniapp" content={JSON.stringify(m)} />
           <meta name="base:app_id" content="6977498c88e3bac59cf3d980" />
         </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
       </Html>
     );
   }
