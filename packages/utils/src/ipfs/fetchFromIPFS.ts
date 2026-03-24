@@ -47,9 +47,14 @@ export const fetchFromIPFS = async (
 
         if (res.ok) {
           // eslint-disable-next-line no-await-in-loop
-          const data = await res.json();
-          cache.put(cid, data);
-          return data;
+          const text = await res.text();
+          try {
+            const data = JSON.parse(text);
+            cache.put(cid, data);
+            return data;
+          } catch {
+            // Invalid JSON from this endpoint, try next
+          }
         }
       } catch {
         // Continue to next endpoint on error
@@ -74,7 +79,8 @@ export const fetchFromIPFS = async (
           controllers.forEach((ctrl, i) => {
             if (i !== index) ctrl.abort();
           });
-          const data = await res.json();
+          const text = await res.text();
+          const data = JSON.parse(text);
           cache.put(cid, data);
           return data;
         }

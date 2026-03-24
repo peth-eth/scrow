@@ -265,11 +265,16 @@ export const useInvoiceCreate = ({
         toast.loading(TOASTS.useInvoiceCreate.waitingForIndex);
 
         if (txData && publicClient) {
-          await waitForSubgraphSync(publicClient.chain.id, txData.blockNumber);
+          const synced = await waitForSubgraphSync(
+            publicClient.chain.id,
+            txData.blockNumber,
+          );
+          if (!synced) {
+            toast.warning(TOASTS.useInvoiceCreate.waitingForIndex);
+          }
         }
         setWaitingForTx(false);
 
-        // pass back to component for further processing
         onTxSuccess?.(localInvoiceId);
       },
       onError: error => errorToastHandler('useInvoiceCreate', error, toast),

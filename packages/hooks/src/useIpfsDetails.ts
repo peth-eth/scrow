@@ -11,5 +11,7 @@ export const useIpfsDetails = (cid: string | undefined) => {
     enabled: !!cid,
     staleTime: Infinity,
     refetchInterval: false,
+    retry: 3,
+    retryDelay: attempt => Math.min(1000 * 2 ** attempt, 10000),
   });
 };

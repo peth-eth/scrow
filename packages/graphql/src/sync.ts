@@ -95,16 +95,27 @@ const createStorageKey = (chainId: number) =>
 export const getCachedSubgraphStatus = (
   chainId: number,
 ): SubgraphStatus | null => {
-  const value = window.localStorage.getItem(createStorageKey(chainId));
-  if (value) return JSON.parse(value) as SubgraphStatus;
+  if (typeof window === 'undefined') return null;
+  try {
+    const value = window.localStorage.getItem(createStorageKey(chainId));
+    if (value) return JSON.parse(value) as SubgraphStatus;
+  } catch {
+    // localStorage may be unavailable or corrupt
+  }
   return null;
 };
 
 export const setCachedSubgraphStatus = (
   chainId: number,
   health: SubgraphStatus,
-): void =>
-  window.localStorage.setItem(
-    createStorageKey(chainId),
-    JSON.stringify(health),
-  );
+): void => {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(
+      createStorageKey(chainId),
+      JSON.stringify(health),
+    );
+  } catch {
+    // localStorage may be full or unavailable
+  }
+};
