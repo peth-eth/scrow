@@ -1,4 +1,4 @@
-import { Button, Stack } from '@chakra-ui/react';
+import { Badge, Button, Stack } from '@chakra-ui/react';
 import { INVOICE_TYPES } from '@smartinvoicexyz/constants';
 import {
   InstantButtonManager,
@@ -22,6 +22,7 @@ import {
 import _ from 'lodash';
 import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 import { Hex, isAddress } from 'viem';
 import { useAccount, useChainId, useSwitchChain } from 'wagmi';
 
@@ -116,6 +117,17 @@ function ViewInvoice() {
 
   const showNetworkError = isInvalidChainId;
 
+  const roleBadge = useMemo(() => {
+    const lowerAddress = _.toLower(address);
+    if (lowerAddress && lowerAddress === _.toLower(invoiceDetails.client))
+      return { label: 'You are the Client', color: 'blue' };
+    if (lowerAddress && lowerAddress === _.toLower(invoiceDetails.provider))
+      return { label: 'You are the Provider', color: 'green' };
+    if (lowerAddress && lowerAddress === _.toLower(invoiceDetails.resolver))
+      return { label: 'You are the Arbitrator', color: 'purple' };
+    return { label: 'Viewing as Observer', color: 'gray' };
+  }, [address, invoiceDetails.client, invoiceDetails.provider, invoiceDetails.resolver]);
+
   return (
     <Container overlay>
       <Stack
@@ -127,6 +139,18 @@ function ViewInvoice() {
         px="1rem"
         py="8rem"
       >
+        <Badge
+          colorScheme={roleBadge.color}
+          fontSize="sm"
+          px={3}
+          py={1}
+          borderRadius="md"
+          position="absolute"
+          top="5rem"
+        >
+          {roleBadge.label}
+        </Badge>
+
         <InvoiceMetaDetails invoice={invoiceDetails} />
 
         <Stack maxW="60rem" w="100%" spacing={4}>

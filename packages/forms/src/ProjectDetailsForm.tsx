@@ -147,7 +147,7 @@ export function ProjectDetailsForm({
             <DatePicker
               label="Withdrawal Deadline"
               name="safetyValveDate"
-              tooltip="The date the client can withdraw funds. Should be well in the future generally!"
+              tooltip="If the project isn't completed or disputed by this date, the client can withdraw remaining funds. Set this well into the future."
               localForm={localForm}
               onChange={(v: Date) => {
                 setFormValue('safetyValveDate', v);
