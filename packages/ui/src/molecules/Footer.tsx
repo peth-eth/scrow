@@ -1,4 +1,3 @@
-import { Box, Flex, Image, Link as ChakraLink } from '@chakra-ui/react';
 import _ from 'lodash';
 
 const links = [
@@ -13,39 +12,31 @@ const links = [
 
 export function Footer() {
   return (
-    <Box background="#334D6E" width="100%" alignSelf="end" zIndex={5}>
-      <Flex
-        direction={{ base: 'column-reverse', md: 'row' }}
-        justify="space-between"
-        align="center"
-        paddingX={20}
-        paddingY={4}
-        textColor="white"
-        rowGap={4}
-      >
-        <ChakraLink href="/invoices">
-          <Image
+    <div className="bg-[#334D6E] w-full self-end z-[5]">
+      <div className="flex flex-col-reverse md:flex-row justify-between items-center px-20 py-4 text-white gap-y-4">
+        <a href="/invoices">
+          <img
             src="/assets/smart-invoice/white.svg"
             alt="Smart Invoice"
             width={160}
             height={25.34}
           />
-        </ChakraLink>
+        </a>
 
-        <Flex gap={8} justify="center" align="center">
+        <div className="flex gap-8 justify-center items-center">
           {_.map(links, ({ label, href }) => (
-            <ChakraLink
+            <a
               key={href}
-              isExternal
               href={href}
               target="_blank"
-              fontSize={{ base: 'sm', md: 'md' }}
+              rel="noopener noreferrer"
+              className="text-sm md:text-base hover:underline"
             >
               {label}
-            </ChakraLink>
+            </a>
           ))}
-        </Flex>
-      </Flex>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 }

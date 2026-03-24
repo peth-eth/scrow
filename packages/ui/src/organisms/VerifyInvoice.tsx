@@ -1,4 +1,3 @@
-import { Button, Stack, Text } from '@chakra-ui/react';
 import { TOASTS } from '@smartinvoicexyz/constants';
 import {
   createInvoiceDetailsQueryKey,
@@ -68,19 +67,14 @@ export function VerifyInvoice({
     return null;
 
   return (
-    <Stack w="100%" spacing="rem" alignItems="start">
-      <Button
-        size="xs"
-        colorScheme="blue"
-        fontWeight="normal"
-        fontFamily="mono"
-        textTransform="uppercase"
-        isLoading={isLoading}
-        isDisabled={!writeAsync}
+    <div className="flex flex-col gap-1 w-full items-start">
+      <button
+        className="px-2 py-1 text-xs uppercase bg-blue-500 text-white rounded font-normal font-mono hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={isLoading || !writeAsync}
         onClick={handleVerify}
       >
-        <Text>Enable Non-Client Account Deposits</Text>
-      </Button>
-    </Stack>
+        {isLoading ? 'Loading...' : 'Enable Non-Client Account Deposits'}
+      </button>
+    </div>
   );
 }

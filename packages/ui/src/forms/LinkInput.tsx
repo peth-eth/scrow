@@ -1,27 +1,11 @@
-import {
-  ChakraProps,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  HStack,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Select,
-  Stack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
 import { isValidURL, logDebug, PROTOCOL_OPTIONS } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
-import { useCallback, useEffect } from 'react';
+import { CSSProperties, useCallback, useEffect } from 'react';
 import { RegisterOptions, UseFormReturn } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '../icons';
 
-interface LinkInputProps extends ChakraProps {
+interface LinkInputProps {
   name: string;
   label: string;
   linkType?: string;
@@ -31,6 +15,8 @@ interface LinkInputProps extends ChakraProps {
   infoText?: string;
   tooltip?: string;
   placeholder?: string;
+  className?: string;
+  style?: CSSProperties;
 }
 
 const getPath = (url: string | undefined) => {
@@ -75,6 +61,7 @@ export function LinkInput({
 
   const error = errors?.[name];
   const finalValue = watch(name);
+  const isRequired = _.includes(_.keys(registerOptions), 'required');
 
   const updateValidatedUrl = useCallback(
     (str: string) => {
@@ -113,60 +100,63 @@ export function LinkInput({
   }, [name, setValue]);
 
   return (
-    <FormControl
-      isInvalid={!!error}
-      isRequired={_.includes(_.keys(registerOptions), 'required')}
-    >
-      <Stack w="100%" spacing="0.5rem" justify="space-between" {...props}>
-        <Stack align="left" w="100%" spacing={0}>
-          <Flex w="100%">
-            <HStack align="center" spacing={2}>
-              <FormLabel m={0}>{label}</FormLabel>
+    <div>
+      <div className="flex flex-col w-full gap-2 justify-between" {...props}>
+        <div className="flex flex-col items-start w-full">
+          <div className="flex w-full">
+            <div className="flex items-center gap-2">
+              <label className="m-0 text-sm font-medium">
+                {label}
+                {isRequired && <span className="text-red-500 ml-0.5">*</span>}
+              </label>
               {tooltip && (
-                <Tooltip label={tooltip} placement="right" hasArrow>
-                  <Icon
-                    as={InfoOutlineIcon}
+                <span title={tooltip}>
+                  <InfoOutlineIcon
                     boxSize={3}
-                    color="blue.500"
-                    bg="white"
-                    borderRadius="full"
+                    className="text-blue-500 bg-white rounded-full cursor-help"
                   />
-                </Tooltip>
+                </span>
               )}
-            </HStack>
+            </div>
 
-            <Flex>{infoText && <Text fontSize="xs">{infoText}</Text>}</Flex>
-          </Flex>
-        </Stack>
+            <div className="ml-auto">
+              {infoText && <p className="text-xs">{infoText}</p>}
+            </div>
+          </div>
+        </div>
 
-        <Flex direction="column" w="100%">
-          <InputGroup>
-            <InputLeftAddon px={0}>
-              <Select
+        <div className="flex flex-col w-full">
+          <div className="flex">
+            <div className="px-0">
+              <select
                 {...register(`${name}-protocol`, registerOptions)}
                 defaultValue={getProtocol(finalValue)}
-                color="black"
-                border="0"
+                className="h-9 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-black text-sm px-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {_.map(PROTOCOL_OPTIONS, option => (
                   <option key={option} value={option}>
                     {option}
                   </option>
                 ))}
-              </Select>
-            </InputLeftAddon>
+              </select>
+            </div>
 
-            <Input
+            <input
               {...register(`${name}-input`, registerOptions)}
               maxLength={240}
               placeholder={placeholder}
               type="text"
               defaultValue={getPath(finalValue)}
+              className={`flex-1 h-9 rounded-r-md border ${
+                error ? 'border-red-500' : 'border-gray-300'
+              } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
             />
-          </InputGroup>
-          <FormErrorMessage>Invalid URL</FormErrorMessage>
-        </Flex>
-      </Stack>
-    </FormControl>
+          </div>
+          {error && (
+            <p className="text-sm text-red-500 mt-1">Invalid URL</p>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

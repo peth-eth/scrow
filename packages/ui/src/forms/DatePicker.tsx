@@ -1,25 +1,11 @@
 import 'react-datepicker/dist/react-datepicker.css';
 
-import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  HStack,
-  Icon,
-  Stack,
-  Tooltip,
-} from '@chakra-ui/react';
 import { getDateString } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
 import ReactDatePicker from 'react-datepicker';
 import { Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '../icons';
-
-// TODO handle separate controlled component
-// TODO currently only single date is supported, but type shows that it can be a range
 
 export type DatePickerProps = {
   name: string;
@@ -41,7 +27,7 @@ export function DatePicker({
   localForm,
   registerOptions,
   tooltip,
-  placeholder, // match rest of inputs for consistency, takes priority
+  placeholder,
   variant = 'outline',
   spacing,
   onChange,
@@ -53,24 +39,6 @@ export function DatePicker({
     formState: { errors },
   } = _.pick(localForm, ['control', 'watch', 'formState']);
 
-  // these are the values that seemed relevant. we can adjust and even theme this
-  const customDatePickerStyles = {
-    '.react-datepicker__header': {
-      backgroundColor: 'blackAlpha.100',
-      color: 'black',
-    },
-    '.react-datepicker__month-container': {
-      backgroundColor: 'blackAlpha.100',
-      color: 'black',
-    },
-    '.react-datepicker__current-month, .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__month, .react-datepicker__month-text':
-      {
-        color: 'black',
-      },
-    '.react-datepicker__day--selected': {
-      color: 'white',
-    },
-  };
   const dateInput = new Date(watch(name)).getTime();
   const dateSeconds =
     _.size(_.toString(dateInput)) > 9 ? dateInput / 1000 : dateInput;
@@ -82,36 +50,37 @@ export function DatePicker({
       rules={registerOptions}
       shouldUnregister={false}
       render={({ field: { value, ...field } }) => (
-        <FormControl isInvalid={!!errors[name]}>
-          <Stack sx={customDatePickerStyles} spacing={spacing} h="75px">
-            <HStack>
-              {label && <FormLabel m={0}>{label}</FormLabel>}
-              {tooltip && (
-                <Tooltip
-                  label={tooltip}
-                  placement="right"
-                  shouldWrapChildren
-                  hasArrow
-                >
-                  <Icon
-                    as={InfoOutlineIcon}
-                    boxSize={3}
-                    color="blue.500"
-                    bg="white"
-                    borderRadius="full"
-                  />
-                </Tooltip>
+        <div className={errors[name] ? '' : ''}>
+          <div className="flex flex-col h-[75px]" style={{ gap: spacing ? `${spacing}px` : undefined }}>
+            <div className="flex items-center gap-2">
+              {label && (
+                <label className="m-0 text-sm font-medium">{label}</label>
               )}
-            </HStack>
-            <Box>
+              {tooltip && (
+                <span title={tooltip}>
+                  <InfoOutlineIcon
+                    boxSize={3}
+                    className="text-blue-500 bg-white rounded-full cursor-help"
+                  />
+                </span>
+              )}
+            </div>
+            <div>
               <ReactDatePicker
                 {...field}
                 {...props}
                 selected={value}
                 customInput={
-                  <Button variant={variant}>
+                  <button
+                    className={`px-3 py-1.5 text-sm rounded-md ${
+                      variant === 'outline'
+                        ? 'border border-gray-300 bg-transparent hover:bg-gray-50'
+                        : 'bg-gray-100 hover:bg-gray-200'
+                    } transition-colors`}
+                    type="button"
+                  >
                     {getDateString(dateSeconds) || placeholder}
-                  </Button>
+                  </button>
                 }
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ref={(ref: any) => {
@@ -126,12 +95,14 @@ export function DatePicker({
                   field.onChange(date);
                 }}
               />
-              <FormErrorMessage color="red.500">
-                {errors[name]?.message as string}
-              </FormErrorMessage>
-            </Box>
-          </Stack>
-        </FormControl>
+              {errors[name]?.message && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors[name]?.message as string}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     />
   );

@@ -1,19 +1,3 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  Select,
-  Stack,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
 import { InvoiceDisplayData } from '@smartinvoicexyz/graphql';
 import { useInvoices, useIpfsDetails } from '@smartinvoicexyz/hooks';
 import { getAccountString, getChainName } from '@smartinvoicexyz/utils';
@@ -33,22 +17,21 @@ import { useAccount, useChainId } from 'wagmi';
 import { ChakraNextLink, Loader } from '../atoms';
 import { useMediaStyles } from '../hooks';
 import { Styles } from '../molecules/InvoicesStyles';
-import { theme } from '../theme';
 
 const getStatusColor = (status?: string) => {
   switch (status) {
     case 'In Progress':
-      return 'green.400';
+      return 'bg-green-400';
     case 'Completed':
-      return 'blue.400';
+      return 'bg-blue-400';
     case 'Disputed':
-      return 'red.400';
+      return 'bg-red-400';
     case 'Expired':
-      return 'gray.400';
+      return 'bg-gray-400';
     case 'Awaiting Funds':
-      return 'yellow.400';
+      return 'bg-yellow-400';
     default:
-      return 'green.400';
+      return 'bg-green-400';
   }
 };
 
@@ -57,18 +40,13 @@ function StatusCell({
 }: {
   cell: CellContext<InvoiceDisplayData, string | undefined>;
 }) {
-  const color = getStatusColor(cell.getValue());
+  const colorClass = getStatusColor(cell.getValue());
   return (
-    <Box
-      backgroundColor={color}
-      padding="4px 8px"
-      width="fit-content"
-      borderRadius="4px"
-      textAlign="center"
-      color="white"
+    <div
+      className={`${colorClass} px-2 py-1 w-fit rounded text-center text-white`}
     >
       {cell.getValue()}
-    </Box>
+    </div>
   );
 }
 
@@ -163,67 +141,57 @@ export function InvoiceDashboardTable() {
 
   if (isLoading) {
     return (
-      <Box paddingY={16}>
-        <Stack align="center">
+      <div className="py-16">
+        <div className="flex flex-col items-center">
           <Loader size="80" />
-        </Stack>
-      </Box>
+        </div>
+      </div>
     );
   }
 
   if (!data?.length) {
     return (
-      <Box paddingY={16}>
-        <Flex
-          direction="column"
-          align="center"
-          justify="center"
-          gap={4}
-          width="100%"
-        >
+      <div className="py-16">
+        <div className="flex flex-col items-center justify-center gap-4 w-full">
           {isConnected ? (
-            <Heading color="gray" size="lg">
+            <h2 className="text-gray-500 text-xl font-heading">
               No invoices found for {getChainName(chainId)}!
-            </Heading>
+            </h2>
           ) : (
-            <Heading color="gray" size="lg">
+            <h2 className="text-gray-500 text-xl font-heading">
               Wallet not connected.
-            </Heading>
+            </h2>
           )}
 
           <ChakraNextLink href="/create">
-            <Button size={primaryButtonSize} minW="250px" paddingY={6}>
+            <button className="min-w-[250px] py-3 px-6 bg-[#3D88F8] text-white rounded-md font-medium hover:bg-[#2B69C5] transition-colors text-sm sm:text-base md:text-lg">
               Create Invoice
-            </Button>
+            </button>
           </ChakraNextLink>
-        </Flex>
-      </Box>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Box paddingY={16} flex="1 0 100%">
+    <div className="py-16 flex-[1_0_100%]">
       <Styles>
-        <HStack justify="space-between" align="center" mb={4}>
-          <Heading textAlign="left" color="#192A3E">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-left text-[#192A3E] text-2xl font-heading">
             My Invoices
-          </Heading>
+          </h1>
 
-          <Button
-            backgroundColor="blue.1"
-            _hover={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
-            _active={{ backgroundColor: 'rgba(61, 136, 248, 0.7)' }}
-            color="white"
+          <button
+            className="bg-[#3D88F8] hover:bg-[rgba(61,136,248,0.7)] active:bg-[rgba(61,136,248,0.7)] text-white px-4 py-2 rounded-md transition-colors"
             onClick={() => router.push('/create')}
           >
             Create Invoice
-          </Button>
-        </HStack>
+          </button>
+        </div>
 
-        <HStack spacing={3} mb={6}>
-          <Select
-            size="sm"
-            maxW="160px"
+        <div className="flex items-center gap-3 mb-6">
+          <select
+            className="text-sm max-w-[160px] border border-gray-300 rounded px-2 py-1"
             value={roleFilter}
             onChange={e => setRoleFilter(e.target.value)}
           >
@@ -231,10 +199,9 @@ export function InvoiceDashboardTable() {
             <option value="Client">Client</option>
             <option value="Provider">Provider</option>
             <option value="Arbitrator">Arbitrator</option>
-          </Select>
-          <Select
-            size="sm"
-            maxW="180px"
+          </select>
+          <select
+            className="text-sm max-w-[180px] border border-gray-300 rounded px-2 py-1"
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
           >
@@ -244,83 +211,56 @@ export function InvoiceDashboardTable() {
             <option value="Disputed">Disputed</option>
             <option value="Completed">Completed</option>
             <option value="Expired">Expired</option>
-          </Select>
+          </select>
           {(roleFilter !== 'all' || statusFilter !== 'all') && (
-            <Text fontSize="sm" color="gray.500">
+            <p className="text-sm text-gray-500">
               {filteredData.length} of {data?.length ?? 0} invoices
-            </Text>
+            </p>
           )}
-        </HStack>
-        <Table bg="white">
-          <Thead>
+        </div>
+        <table className="bg-white">
+          <thead>
             {table.getHeaderGroups().map(headerGroup => (
-              <Tr key={headerGroup.id}>
+              <tr key={headerGroup.id}>
                 {headerGroup.headers.map(header => (
-                  <Th key={header.id}>
+                  <th key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                  </Th>
+                  </th>
                 ))}
-              </Tr>
+              </tr>
             ))}
-          </Thead>
-          <Tbody>
+          </thead>
+          <tbody>
             {table.getRowModel().rows.map(row => {
               const { address: invoiceAddr, chainId: invoiceChainId } =
                 row.original;
               const url = `/invoice/${invoiceChainId}/${invoiceAddr}`;
 
               return (
-                <Tr
+                <tr
                   key={row.id}
                   onClick={() => router.push(url)}
-                  _hover={{ backgroundColor: theme.gray, cursor: 'pointer' }}
+                  className="hover:bg-gray-100 cursor-pointer"
                 >
                   {row.getVisibleCells().map(cell => (
-                    <Td key={cell.id}>
+                    <td key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
                       )}
-                    </Td>
+                    </td>
                   ))}
-                </Tr>
+                </tr>
               );
             })}
-          </Tbody>
-          {/*
-          <TableCaption w="100%">
-            <HStack w="100%" justify="center">
-              <IconButton
-                aria-label="First Page"
-                icon={<DoubleLeftArrowIcon />}
-              //onClick={() => setPage(0)}
-              />
-              <IconButton
-                aria-label="Previous Page"
-                icon={<LeftArrowIcon />}
-                disabled={!table.getCanPreviousPage()}
-              //onClick={() => table.previousPage()}
-              />
-              <Text>Page {page + 1}</Text>
-              {data?.length >= table.getState().pagination.pageSize ? (
-                <IconButton
-                  aria-label="Next Page"
-                  disabled={data?.length < table.getState().pagination.pageSize}
-                  icon={<RightArrowIcon />}
-                  onClick={() => table.nextPage()}
-                />
-              ) : null}
-
-            </HStack>
-          </TableCaption>
-          */}
-        </Table>
+          </tbody>
+        </table>
       </Styles>
-    </Box>
+    </div>
   );
 }

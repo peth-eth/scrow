@@ -1,26 +1,10 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Link,
-  Stack,
-  Text,
-  Tooltip,
-  useClipboard,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
-import { INVOICE_TYPES } from '@smartinvoicexyz/constants';
-import { InvoiceDetails } from '@smartinvoicexyz/types';
+import { useSubgraphHealth } from '@smartinvoicexyz/hooks';
 import {
   chainByName,
-  documentToHttp,
-  getDateString,
+  getChainName,
 } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
 import { useMemo } from 'react';
-import { Address, isAddress, zeroAddress } from 'viem';
 import { useAccount } from 'wagmi';
 
 import {
@@ -34,7 +18,14 @@ import {
   VerifyInvoice,
 } from '..';
 import { ExternalLinkIcon } from '../icons';
+import { INVOICE_TYPES } from '@smartinvoicexyz/constants';
+import { InvoiceDetails } from '@smartinvoicexyz/types';
+import { documentToHttp, getDateString } from '@smartinvoicexyz/utils';
+import { useState } from 'react';
+import { Address, isAddress, zeroAddress } from 'viem';
 
+// This is the SubgraphStatus variant of InvoiceMetaDetails
+// that uses `chainByName` instead of direct chainId
 export function InvoiceMetaDetails({
   invoice,
 }: {
@@ -84,7 +75,6 @@ export function InvoiceMetaDetails({
       ? resolver
       : undefined;
 
-  // display receivers if they are different from the client and provider
   const validClientReceiver =
     !!clientReceiver &&
     isAddress(clientReceiver) &&
@@ -102,7 +92,12 @@ export function InvoiceMetaDetails({
 
   const isClient = _.toLower(address) === client;
 
-  const { onCopy } = useClipboard(_.toLower(invoiceId));
+  const [copied, setCopied] = useState(false);
+  const onCopy = () => {
+    navigator.clipboard.writeText(_.toLower(invoiceId));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const verifiedStatus = useMemo(
     () =>
@@ -187,118 +182,108 @@ export function InvoiceMetaDetails({
   const lastDocument = _.findLast(documents);
 
   return (
-    <Stack
-      spacing="1rem"
-      w="100%"
-      maxW={{ base: '100%', lg: '25rem' }}
-      justify="center"
-      align="stretch"
-      direction="column"
-    >
-      <Stack align="stretch" justify="center">
+    <div className="flex flex-col gap-4 w-full max-w-full lg:max-w-[25rem] justify-center items-stretch">
+      <div className="flex flex-col gap-2 justify-center items-stretch">
         {title && (
-          <Stack direction="row" align="center" spacing={2}>
-            <Heading color="black" fontSize="2xl">
-              {title}
-            </Heading>
+          <div className="flex items-center gap-2">
+            <h2 className="text-2xl text-black font-heading">{title}</h2>
             <ShareButton invoice={invoice} />
-          </Stack>
+          </div>
         )}
-        <Stack direction="row" align="center" spacing={2}>
+        <div className="flex items-center gap-2">
           <InvoiceBadge invoiceType={invoiceType} />
-          <Box w="0.25rem" h="0.25rem" bg="black" transform="rotate(45deg)" />
+          <div className="w-1 h-1 bg-black rotate-45" />
           <NetworkBadge chainId={invoiceChainId} />
-        </Stack>
+        </div>
 
-        <HStack align="center" spacing={4}>
+        <div className="flex items-center gap-4">
           <AccountLink
             address={invoiceId as Address}
             chainId={invoiceChainId}
           />
-          <Button
+          <button
             onClick={onCopy}
-            variant="ghost"
-            bg="none"
-            colorScheme="blue"
-            h="auto"
-            w="auto"
-            minW="2"
-            p={1}
+            className="p-1 bg-transparent text-blue-500 hover:text-blue-700 transition-colors"
+            title={copied ? 'Copied!' : 'Copy'}
           >
             <CopyIcon boxSize={3.5} />
-          </Button>
-        </HStack>
-        {description && <Text>{description}</Text>}
+          </button>
+        </div>
+        {description && <p>{description}</p>}
 
         {!!lastDocument && (
-          <Link href={documentToHttp(lastDocument)} isExternal _hover={{}}>
-            <Button
-              size="xs"
-              textTransform="uppercase"
-              rightIcon={<ExternalLinkIcon />}
-            >
+          <a
+            href={documentToHttp(lastDocument)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="flex items-center gap-1 px-2 py-1 text-xs uppercase border border-blue-500 text-blue-500 rounded hover:bg-blue-50 transition-colors">
               View Details of Agreement
-            </Button>
-          </Link>
+              <ExternalLinkIcon boxSize={3} />
+            </button>
+          </a>
         )}
-      </Stack>
+      </div>
 
-      <Stack fontSize="sm" align="stretch" justify="center">
+      <div className="flex flex-col gap-2 text-sm justify-center items-stretch">
         {_.map(_.compact(details), ({ label, value, tip }) => (
-          <Wrap key={label}>
-            <WrapItem>
-              <Text>{label}</Text>
-            </WrapItem>
+          <div key={label} className="flex flex-wrap gap-1">
+            <span>
+              <p>{label}</p>
+            </span>
 
-            <WrapItem>
-              <HStack>
+            <span>
+              <div className="flex items-center gap-1">
                 {typeof value === 'string' ? (
-                  <Text fontWeight="bold">{value}</Text>
+                  <p className="font-bold">{value}</p>
                 ) : (
                   value
                 )}
 
                 {tip && (
-                  <Tooltip label={tip} placement="auto-start">
-                    <QuestionIcon boxSize="0.75rem" color="gray" />
-                  </Tooltip>
+                  <span title={tip}>
+                    <QuestionIcon
+                      boxSize={3}
+                      className="text-gray-400 cursor-help"
+                    />
+                  </span>
                 )}
-              </HStack>
-            </WrapItem>
-          </Wrap>
+              </div>
+            </span>
+          </div>
         ))}
 
         {invoiceType === INVOICE_TYPES.Escrow && (
-          <Wrap>
-            <WrapItem>
-              <Text>{'Non-Client Deposits Enabled: '}</Text>
-            </WrapItem>
+          <div className="flex flex-wrap gap-1">
+            <span>
+              <p>{'Non-Client Deposits Enabled: '}</p>
+            </span>
 
-            <WrapItem fontWeight="bold">
+            <span className="font-bold">
               {invoice && verifiedStatus ? (
-                <Text color="green.500">Enabled!</Text>
+                <p className="text-green-500">Enabled!</p>
               ) : (
-                <Text color="red.500">Not enabled</Text>
+                <p className="text-red-500">Not enabled</p>
               )}
-            </WrapItem>
+            </span>
 
-            <WrapItem fontWeight="bold">
+            <span className="font-bold">
               <VerifyInvoice
                 invoice={invoice}
                 isClient={isClient}
                 verifiedStatus={verifiedStatus}
               />
-            </WrapItem>
-          </Wrap>
+            </span>
+          </div>
         )}
 
-        <Wrap>
+        <div className="flex flex-wrap">
           <GenerateInvoicePDF
             invoice={invoice}
             buttonText="Preview & Download Invoice PDF"
           />
-        </Wrap>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 }

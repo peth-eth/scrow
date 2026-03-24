@@ -1,4 +1,3 @@
-import { Text } from '@chakra-ui/react';
 import { Resolver } from '@smartinvoicexyz/constants';
 import { getAccountString, getAddressLink } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
@@ -45,18 +44,7 @@ export function AccountLink({
     <ChakraNextLink
       href={href}
       isExternal={!link}
-      display="inline-flex"
-      textAlign="right"
-      bgColor="white"
-      px={1}
-      py={0.25}
-      _hover={{
-        textDecor: 'none',
-        transform: 'scale(1.05)',
-      }}
-      borderRadius="5px"
-      alignItems="center"
-      fontWeight="bold"
+      className="inline-flex items-center rounded-[5px] bg-white px-1 py-0.5 text-right font-bold hover:scale-105 hover:no-underline transition-transform"
     >
       <AccountAvatar
         address={address}
@@ -64,9 +52,7 @@ export function AccountLink({
         ensImage={ensAvatar}
         size={18}
       />
-      <Text as="span" pl="0.25rem" fontSize="sm">
-        {text}
-      </Text>
+      <span className="pl-1 text-sm">{text}</span>
     </ChakraNextLink>
   );
 }

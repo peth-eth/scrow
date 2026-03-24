@@ -1,17 +1,5 @@
-import {
-  Checkbox as ChakraCheckbox,
-  CheckboxProps as ChakraCheckboxProps,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  HStack,
-  Icon,
-  Stack,
-  Tooltip,
-} from '@chakra-ui/react';
 import _ from 'lodash';
-import { ReactElement, ReactNode } from 'react';
+import { InputHTMLAttributes, ReactElement, ReactNode } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '../icons';
@@ -27,7 +15,8 @@ export interface CustomCheckboxProps {
   tooltip?: string;
 }
 
-export type RadioProps = CustomCheckboxProps & ChakraCheckboxProps;
+export type RadioProps = CustomCheckboxProps &
+  InputHTMLAttributes<HTMLInputElement> & { size?: string };
 
 export function Checkbox({
   name,
@@ -55,69 +44,64 @@ export function Checkbox({
         key={name}
         defaultValue={false}
         render={({ field: { onChange, value, ref } }) => (
-          <FormControl m={0}>
-            <Stack spacing={4}>
-              <HStack align="center">
-                {label && <FormLabel m="0">{label}</FormLabel>}
-                {tooltip && (
-                  <Tooltip
-                    label={tooltip}
-                    shouldWrapChildren
-                    hasArrow
-                    placement="end"
-                  >
-                    <Icon
-                      as={InfoOutlineIcon}
-                      boxSize={3}
-                      color="blue.500"
-                      bg="white"
-                      borderRadius="full"
-                    />
-                  </Tooltip>
+          <div className="m-0">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                {label && (
+                  <label className="m-0 text-sm font-medium">{label}</label>
                 )}
-              </HStack>
-              <ChakraCheckbox
-                onChange={onChange}
-                textTransform="capitalize"
-                ref={ref}
-                isChecked={value}
-                size={size}
-                {...props}
-              >
+                {tooltip && (
+                  <span title={tooltip}>
+                    <InfoOutlineIcon
+                      boxSize={3}
+                      className="text-blue-500 bg-white rounded-full cursor-help"
+                    />
+                  </span>
+                )}
+              </div>
+              <label className="inline-flex items-center gap-2 capitalize cursor-pointer">
+                <input
+                  type="checkbox"
+                  onChange={e => onChange(e.target.checked)}
+                  ref={ref}
+                  checked={value}
+                  className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                  {...props}
+                />
                 {options[0]}
-              </ChakraCheckbox>
-              {helperText && <FormHelperText>{helperText}</FormHelperText>}
-              <FormErrorMessage>{error as string}</FormErrorMessage>
-            </Stack>
-          </FormControl>
+              </label>
+              {helperText && (
+                <p className="text-sm text-gray-500">{helperText}</p>
+              )}
+              {typeof error === 'string' && (
+                <p className="text-sm text-red-500">{error}</p>
+              )}
+            </div>
+          </div>
         )}
       />
     );
   }
 
   return (
-    <FormControl>
-      <Stack spacing={4}>
-        <HStack align="center">
-          {label && <FormLabel m="0">{label}</FormLabel>}
-          {tooltip && (
-            <Tooltip
-              label={tooltip}
-              shouldWrapChildren
-              hasArrow
-              placement="end"
-            >
-              <Icon
-                as={InfoOutlineIcon}
-                boxSize={3}
-                color="red.500"
-                bg="white"
-                borderRadius="full"
-              />
-            </Tooltip>
+    <div>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2">
+          {label && (
+            <label className="m-0 text-sm font-medium">{label}</label>
           )}
-        </HStack>
-        <Stack spacing={3} direction={direction || 'row'}>
+          {tooltip && (
+            <span title={tooltip}>
+              <InfoOutlineIcon
+                boxSize={3}
+                className="text-red-500 bg-white rounded-full cursor-help"
+              />
+            </span>
+          )}
+        </div>
+        <div
+          className={`flex gap-3 ${direction === 'column' ? 'flex-col' : 'flex-row'}`}
+        >
           {options.map(
             (option): ReactElement => (
               <Controller
@@ -126,26 +110,29 @@ export function Checkbox({
                 key={name}
                 defaultValue={false}
                 render={({ field: { onChange, value, ref } }) => (
-                  <ChakraCheckbox
-                    onChange={onChange}
-                    textTransform="capitalize"
-                    ref={ref}
-                    isChecked={value}
-                    size={size}
-                    {...props}
-                  >
+                  <label className="inline-flex items-center gap-2 capitalize cursor-pointer">
+                    <input
+                      type="checkbox"
+                      onChange={e => onChange(e.target.checked)}
+                      ref={ref}
+                      checked={value}
+                      className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                      {...props}
+                    />
                     {option}
-                  </ChakraCheckbox>
+                  </label>
                 )}
               />
             ),
           )}
-        </Stack>
-        {helperText && <FormHelperText>{helperText}</FormHelperText>}
-        {typeof error === 'string' && (
-          <FormErrorMessage>{error}</FormErrorMessage>
+        </div>
+        {helperText && (
+          <p className="text-sm text-gray-500">{helperText}</p>
         )}
-      </Stack>
-    </FormControl>
+        {typeof error === 'string' && (
+          <p className="text-sm text-red-500">{error}</p>
+        )}
+      </div>
+    </div>
   );
 }

@@ -1,102 +1,46 @@
-import {
-  AlertStatus as ChakraAlertStatus,
-  CreateToastFnReturn,
-  ToastId,
-  useToast as useChakraToast,
-} from '@chakra-ui/react';
-import { ToastProps, UseToastReturn } from '@smartinvoicexyz/types';
-import _ from 'lodash';
-import { useRef } from 'react';
-
-import { Toast } from '../atoms';
-
-const ToastBase = ({
-  toast,
-  title,
-  description,
-  iconName,
-  status,
-  id,
-  duration,
-  closeToast,
-  descriptionNoOfLines = 2,
-  ...props // gets the rest of the original Chakra Toast props (such as isClosable)
-}: ToastProps & {
-  status: ChakraAlertStatus;
-  toast: Partial<CreateToastFnReturn>;
-}) => {
-  return toast({
-    title,
-    description,
-    status,
-    id,
-    duration,
-    position: 'top-right',
-    ...props,
-    render: () => (
-      <Toast
-        title={_.toString(title) || ''}
-        description={description}
-        iconName={iconName}
-        status={status}
-        closeToast={closeToast}
-        descriptionNoOfLines={descriptionNoOfLines}
-        {...props}
-      />
-    ),
-  });
-};
+import { UseToastReturn } from '@smartinvoicexyz/types';
+import { toast as sonnerToast } from 'sonner';
 
 export const useToast = (): UseToastReturn => {
-  const toast = useChakraToast();
-  const toastIdRef = useRef<ToastId | null>(null);
-
-  function closeToast() {
-    if (toastIdRef.current) {
-      toast.close(toastIdRef.current);
-    }
-  }
-  const closeProps = { isClosable: true, closeToast, toast };
-
   return {
-    success(props: Omit<ToastProps, 'status'>) {
-      closeToast();
-      toastIdRef.current = ToastBase({
-        ...closeProps,
-        ...props,
-        status: 'success' as ChakraAlertStatus,
+    success(props) {
+      sonnerToast.dismiss();
+      sonnerToast.success(String(props.title ?? ''), {
+        description: props.description ? String(props.description) : undefined,
+        duration: props.duration ?? undefined,
+        dismissible: props.isClosable ?? true,
       });
     },
-    error(props: Omit<ToastProps, 'status'>) {
-      closeToast();
-      toastIdRef.current = ToastBase({
-        ...closeProps,
-        ...props,
-        status: 'error' as ChakraAlertStatus,
+    error(props) {
+      sonnerToast.dismiss();
+      sonnerToast.error(String(props.title ?? ''), {
+        description: props.description ? String(props.description) : undefined,
+        duration: props.duration ?? undefined,
+        dismissible: props.isClosable ?? true,
       });
     },
-    warning(props: Omit<ToastProps, 'status'>) {
-      closeToast();
-      toastIdRef.current = ToastBase({
-        ...closeProps,
-        ...props,
-        status: 'warning' as ChakraAlertStatus,
+    warning(props) {
+      sonnerToast.dismiss();
+      sonnerToast.warning(String(props.title ?? ''), {
+        description: props.description ? String(props.description) : undefined,
+        duration: props.duration ?? undefined,
+        dismissible: props.isClosable ?? true,
       });
     },
-    loading(props: Omit<ToastProps, 'status'>) {
-      closeToast();
-      toastIdRef.current = ToastBase({
-        ...closeProps,
-        ...props,
-        status: 'loading' as ChakraAlertStatus,
+    loading(props) {
+      sonnerToast.dismiss();
+      sonnerToast.loading(String(props.title ?? ''), {
+        description: props.description ? String(props.description) : undefined,
+        duration: props.duration ?? undefined,
+        dismissible: props.isClosable ?? true,
       });
     },
-    info(props: Omit<ToastProps, 'status'>) {
-      closeToast();
-      toastIdRef.current = ToastBase({
-        ...closeProps,
-        ...props,
-        status: 'info' as ChakraAlertStatus,
+    info(props) {
+      sonnerToast.dismiss();
+      sonnerToast.info(String(props.title ?? ''), {
+        description: props.description ? String(props.description) : undefined,
+        duration: props.duration ?? undefined,
+        dismissible: props.isClosable ?? true,
       });
     },
   };

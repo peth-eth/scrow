@@ -11,5 +11,6 @@ export * from './InfoOutlineIcon';
 export * from './QuestionIcon';
 export * from './SearchIcon';
 export * from './ShareIcon';
+export * from './types';
 export * from './VerticalDots';
 export * from './WalletFilledIcon';

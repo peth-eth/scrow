@@ -1,19 +1,5 @@
-import {
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  HStack,
-  Icon,
-  InputGroup,
-  InputProps as ChakraInputProps,
-  NumberInput as ChakraNumberInput,
-  NumberInputField,
-  Stack,
-  Tooltip,
-} from '@chakra-ui/react';
 import _ from 'lodash';
-import React, { ReactNode } from 'react';
+import React, { InputHTMLAttributes, ReactNode } from 'react';
 import { Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '../icons';
@@ -35,7 +21,7 @@ export interface CustomNumberInputProps {
   rightElement?: ReactNode;
 }
 
-type NumberInputProps = ChakraInputProps & CustomNumberInputProps;
+type NumberInputProps = InputHTMLAttributes<HTMLInputElement> & CustomNumberInputProps;
 
 /**
  * Primary UI component for Heading
@@ -65,7 +51,6 @@ export function NumberInput({
   } = localForm;
 
   const error = name && errors[name] && errors[name]?.message;
-  // some Input props not compatible with NumberInput/Controller field props
   const localProps = _.omit(props, ['onInvalid', 'filter', 'defaultValue']);
 
   return (
@@ -74,51 +59,57 @@ export function NumberInput({
       name={name}
       rules={registerOptions}
       render={({ field: { ref, ...restField } }) => (
-        <FormControl
-          isRequired={!!registerOptions?.required || required}
-          isInvalid={!!errors[name]}
-          m={0}
-        >
-          <Stack spacing={spacing}>
+        <div className="m-0">
+          <div className="flex flex-col" style={{ gap: spacing ? `${spacing}px` : undefined }}>
             {label && (
-              <HStack>
-                {label && <FormLabel m={0}>{label}</FormLabel>}
-                {tooltip && (
-                  <Tooltip label={tooltip} placement="right" hasArrow>
-                    <Icon
-                      as={InfoOutlineIcon}
-                      boxSize={3}
-                      color="blue.500"
-                      bg="white"
-                      borderRadius="full"
-                    />
-                  </Tooltip>
+              <div className="flex items-center gap-2">
+                {label && (
+                  <label className="m-0 text-sm font-medium">
+                    {label}
+                    {(!!registerOptions?.required || required) && (
+                      <span className="text-red-500 ml-0.5">*</span>
+                    )}
+                  </label>
                 )}
-              </HStack>
+                {tooltip && (
+                  <span title={tooltip}>
+                    <InfoOutlineIcon
+                      boxSize={3}
+                      className="text-blue-500 bg-white rounded-full cursor-help"
+                    />
+                  </span>
+                )}
+              </div>
             )}
 
-            <InputGroup>
-              <ChakraNumberInput
-                variant={variant}
+            <div className="flex items-center">
+              <input
+                type="number"
+                ref={ref}
                 step={step}
                 min={min}
                 max={max}
+                placeholder={placeholder}
+                className={`flex h-9 w-full rounded-md border ${
+                  errors[name] ? 'border-red-500' : 'border-gray-300'
+                } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 {...localProps}
                 {...restField}
-              >
-                <NumberInputField
-                  ref={ref}
-                  name={restField.name}
-                  placeholder={placeholder}
-                />
-              </ChakraNumberInput>
-              <HStack>{rightElement || null}</HStack>
-            </InputGroup>
-            {helperText && <FormHelperText>{helperText}</FormHelperText>}
+                onChange={e => restField.onChange(e.target.value)}
+              />
+              {rightElement && (
+                <div className="flex items-center">{rightElement}</div>
+              )}
+            </div>
+            {helperText && (
+              <p className="text-sm text-gray-500">{helperText}</p>
+            )}
 
-            <FormErrorMessage>{error as string}</FormErrorMessage>
-          </Stack>
-        </FormControl>
+            {typeof error === 'string' && (
+              <p className="text-sm text-red-500">{error}</p>
+            )}
+          </div>
+        </div>
       )}
     />
   );

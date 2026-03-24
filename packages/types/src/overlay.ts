@@ -1,7 +1,3 @@
-import {
-  CreateToastFnReturn,
-  ToastProps as ChakraToastProps,
-} from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
 export type ModalType =
@@ -33,17 +29,19 @@ export type OverlayContextType = {
   closeModals: () => void;
 };
 
-type CustomToastProps = {
+export type ToastProps = {
   title: string | ReactNode;
   description?: string | ReactNode;
   iconName?: string;
   iconColor?: string;
-  toast?: CreateToastFnReturn;
   closeToast?: () => void;
   descriptionNoOfLines?: number;
+  status?: string;
+  id?: string;
+  duration?: number | null;
+  isClosable?: boolean;
+  position?: string;
 };
-
-export type ToastProps = CustomToastProps & ChakraToastProps;
 
 export interface UseToastReturn {
   success: (_props: Omit<ToastProps, 'status'>) => void;

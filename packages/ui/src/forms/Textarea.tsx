@@ -1,17 +1,5 @@
-import {
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  HStack,
-  Icon,
-  Stack,
-  Textarea as ChakraTextarea,
-  TextareaProps as ChakraTextareaProps,
-  Tooltip,
-} from '@chakra-ui/react';
 import _ from 'lodash';
-import React from 'react';
+import React, { TextareaHTMLAttributes } from 'react';
 import { RegisterOptions, UseFormReturn } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '../icons';
@@ -26,7 +14,8 @@ export type CustomTextareaProps = {
   registerOptions?: RegisterOptions;
 };
 
-export type TextareaProps = ChakraTextareaProps & CustomTextareaProps;
+export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
+  CustomTextareaProps;
 
 /**
  * Primary UI component for Textarea Input
@@ -46,39 +35,42 @@ export function Textarea({
   } = localForm;
 
   const error = errors[name] && errors[name]?.message;
+  const isRequired = _.includes(_.keys(registerOptions), 'required');
 
   return (
-    <FormControl
-      isRequired={_.includes(_.keys(registerOptions), 'required')}
-      isInvalid={!!error}
-    >
-      <Stack spacing={4}>
-        <HStack align="center">
-          {label && <FormLabel m="0">{label}</FormLabel>}
-          {tooltip && (
-            <Tooltip
-              label={tooltip}
-              shouldWrapChildren
-              hasArrow
-              placement="end"
-            >
-              <Icon
-                as={InfoOutlineIcon}
-                boxSize={3}
-                color="blue.500"
-                bg="white"
-                borderRadius="full"
-              />
-            </Tooltip>
+    <div>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2">
+          {label && (
+            <label className="m-0 text-sm font-medium">
+              {label}
+              {isRequired && <span className="text-red-500 ml-0.5">*</span>}
+            </label>
           )}
-        </HStack>
+          {tooltip && (
+            <span title={tooltip}>
+              <InfoOutlineIcon
+                boxSize={3}
+                className="text-blue-500 bg-white rounded-full cursor-help"
+              />
+            </span>
+          )}
+        </div>
 
-        <ChakraTextarea {...props} {...register(name, registerOptions)} />
-        {helperText && <FormHelperText>{helperText}</FormHelperText>}
-        {typeof error === 'string' && (
-          <FormErrorMessage>{error}</FormErrorMessage>
+        <textarea
+          className={`flex min-h-[80px] w-full rounded-md border ${
+            error ? 'border-red-500' : 'border-gray-300'
+          } bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+          {...props}
+          {...register(name, registerOptions)}
+        />
+        {helperText && (
+          <p className="text-sm text-gray-500">{helperText}</p>
         )}
-      </Stack>
-    </FormControl>
+        {typeof error === 'string' && (
+          <p className="text-sm text-red-500">{error}</p>
+        )}
+      </div>
+    </div>
   );
 }

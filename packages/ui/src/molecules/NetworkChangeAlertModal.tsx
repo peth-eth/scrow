@@ -1,14 +1,6 @@
-import {
-  Divider,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-} from '@chakra-ui/react';
 import { OverlayContextType } from '@smartinvoicexyz/types';
 import { getChainName } from '@smartinvoicexyz/utils';
+import { useEffect } from 'react';
 import { useChainId } from 'wagmi';
 
 type NetworkChangeAlertModalProps = OverlayContextType;
@@ -19,27 +11,37 @@ export function NetworkChangeAlertModal({
 }: NetworkChangeAlertModalProps) {
   const chainId = useChainId();
 
+  useEffect(() => {
+    if (modals.networkChange) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [modals.networkChange]);
+
+  if (!modals.networkChange) return null;
+
   return (
-    <Modal isOpen={modals.networkChange} onClose={closeModals}>
-      <ModalOverlay />
-
-      <ModalContent>
-        <ModalHeader style={{ textAlign: 'center', color: 'red' }}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={closeModals}
+    >
+      <div
+        className="relative bg-white rounded-lg max-w-md w-full mx-4"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="text-center text-red-500 font-semibold p-4 text-lg">
           Attention
-        </ModalHeader>
+        </div>
 
-        <ModalBody
-          style={{
-            backgroundColor: '#ffebee',
-            borderRadius: '5px',
-            color: 'red',
-            margin: '5px',
-          }}
-        >
+        <div className="bg-red-50 rounded-[5px] text-red-500 m-1.5 p-4">
           <div>
             You are changing the network to <b>{getChainName(chainId)}</b>.
           </div>
-          <Divider style={{ borderTop: '1px solid red', margin: '10px 0' }} />
+          <hr className="border-t border-red-500 my-2.5" />
           <div>
             You must complete all invoice creation steps on the same chain.
             <br />
@@ -48,10 +50,23 @@ export function NetworkChangeAlertModal({
             Otherwise, please return to Step 1 and complete all steps on the
             same network.
           </div>
-        </ModalBody>
+        </div>
 
-        <ModalCloseButton color="gray.400" />
-      </ModalContent>
-    </Modal>
+        <button
+          onClick={closeModals}
+          className="absolute top-2 right-2 p-1 text-gray-400 hover:bg-black/5 rounded transition-colors"
+          aria-label="Close"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z" />
+          </svg>
+        </button>
+      </div>
+    </div>
   );
 }

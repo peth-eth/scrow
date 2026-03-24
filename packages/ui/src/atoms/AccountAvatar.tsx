@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { create } from 'blockies-ts';
 import { useEffect, useState } from 'react';
 import { getAddress, isAddress } from 'viem';
@@ -30,18 +29,17 @@ export const AccountAvatar: React.FC<
   }, [address, customImage, ensImage]);
 
   if (!image) {
-    return null; // or a fallback UI like a skeleton
+    return null;
   }
 
   return (
-    <Box
-      borderRadius="999"
-      bgImage={image}
-      bgColor="black"
-      bgSize="cover"
-      bgRepeat="no-repeat"
-      w={`${size}px`}
-      h={`${size}px`}
+    <div
+      className="rounded-full bg-black bg-cover bg-no-repeat"
+      style={{
+        backgroundImage: `url(${image})`,
+        width: `${size}px`,
+        height: `${size}px`,
+      }}
     />
   );
 };

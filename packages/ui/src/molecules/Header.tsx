@@ -1,33 +1,10 @@
-import { Button, Flex, Image, useDisclosure } from '@chakra-ui/react';
-import styled from '@emotion/styled';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import _ from 'lodash';
+import { useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import { ChakraNextLink } from '../atoms';
 import { HamburgerIcon } from '../icons/HamburgerIcon';
-import { theme } from '../theme';
-
-export const StyledButton = styled(Button)`
-  &::after {
-    box-sizing: inherit;
-    transition: all ease-in-out 0.2s;
-    background: none repeat scroll 0 0 ${theme.colors.blue[1]};
-    content: '';
-    display: block;
-    height: 2px;
-    width: 0;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-  }
-  &:hover {
-    text-decoration: none;
-    ::after {
-      width: 100%;
-    }
-  }
-`;
 
 type Link = {
   label: string;
@@ -46,108 +23,63 @@ const LINKS: Link[] = [
 ];
 
 export function Header() {
-  const { isOpen, onToggle } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
+  const onToggle = () => setIsOpen(prev => !prev);
   const { address } = useAccount();
   const isConnected = !!address;
 
   const links = isConnected ? LINKS : LINKS.slice(1);
 
   return (
-    <Flex
-      w="100%"
-      h={75}
-      paddingX={8}
-      paddingY={4}
-      color="#707683"
-      fontFamily="mono"
-      top={0}
-      left={0}
-      justify="space-between"
-      align="center"
-      background="white"
-      zIndex={5}
-      position="relative"
-    >
+    <div className="flex w-full h-[75px] px-8 py-4 text-[#707683] font-mono justify-between items-center bg-white z-[5] relative">
       <ChakraNextLink href={isConnected ? '/invoices' : '/'}>
-        <Flex cursor="pointer">
-          <Image
+        <div className="cursor-pointer">
+          <img
             src="/assets/smart-invoice/normal.svg"
             alt="Smart Invoice"
-            height={34.84}
+            style={{ height: 34.84 }}
           />
-        </Flex>
+        </div>
       </ChakraNextLink>
 
-      <Flex
-        gap={8}
-        justify="center"
-        align="center"
-        display={{ base: 'none', lg: 'flex' }}
-        position="absolute"
-        left="50%"
-        transform="translateX(-50%)"
-      >
+      <div className="hidden lg:flex gap-8 justify-center items-center absolute left-1/2 -translate-x-1/2">
         {_.map(links, ({ label, href }) => (
           <ChakraNextLink
             key={href}
             href={href}
             isExternal={!href?.startsWith('/')}
+            className="hover:text-[#3D88F8] transition-colors"
           >
             {label}
           </ChakraNextLink>
         ))}
-      </Flex>
+      </div>
 
-      <Flex
-        align="center"
-        height="8rem"
-        transition="width 1s ease-out"
-        justify="end"
-      >
-        <Flex justifyContent="flex-end" display={{ base: 'none', lg: 'flex' }}>
+      <div className="flex items-center h-32 transition-[width] duration-1000 ease-out justify-end">
+        <div className="hidden lg:flex justify-end">
           <ConnectButton
             accountStatus="full"
             chainStatus="full"
             showBalance={false}
           />
-        </Flex>
-        <Button
+        </div>
+        <button
           onClick={onToggle}
-          variant="link"
-          ml={{ base: '0.5rem', sm: '1rem' }}
-          zIndex={7}
-          display={{ base: 'flex', lg: 'none' }}
+          className="flex lg:hidden ml-2 sm:ml-4 z-[7] bg-transparent border-none cursor-pointer"
         >
           <HamburgerIcon
-            boxSize={{ base: '2rem', sm: '2.75rem' }}
-            transition="all 0.5s ease-out"
-            _hover={{
-              transition: 'all 0.5s ease-out',
-              transform: 'rotateZ(90deg)',
-            }}
-            color="blue.1"
+            className="w-8 h-8 sm:w-11 sm:h-11 text-[#3D88F8] transition-all duration-500 ease-out hover:rotate-90"
           />
-        </Button>
-      </Flex>
+        </button>
+      </div>
 
-      <Flex
-        zIndex={6}
-        position="fixed"
-        left="0"
-        top="0"
-        bg="white"
-        h="100%"
-        w="100%"
-        direction="column"
-        justify="center"
-        align="center"
-        gap={6}
-        transition="all 2s ease-out"
-        pointerEvents={isOpen ? 'all' : 'none'}
-        css={{
+      <div
+        className="fixed inset-0 z-[6] bg-white flex flex-col items-center justify-center gap-6 transition-all duration-[2s] ease-out"
+        style={{
           clipPath: isOpen
             ? 'circle(calc(100vw + 100vh) at 90% -10%)'
             : 'circle(100px at 90% -20%)',
+          pointerEvents: isOpen ? 'all' : 'none',
         }}
       >
         <ConnectButton
@@ -163,18 +95,12 @@ export function Header() {
             isExternal={!href?.startsWith('/')}
             onClick={isInternal ? onToggle : undefined}
           >
-            <StyledButton
-              transition="all 0.5s ease 0.4s"
-              variant="link"
-              color="gray"
-              fontWeight="normal"
-              fontSize="lg"
-            >
+            <button className="relative bg-transparent border-none text-gray-500 font-normal text-lg cursor-pointer transition-all duration-500 ease-[0.4s] after:content-[''] after:block after:h-0.5 after:w-0 after:bg-[#3D88F8] after:absolute after:bottom-0 after:left-0 after:transition-all after:duration-200 after:ease-in-out hover:after:w-full hover:no-underline">
               {label}
-            </StyledButton>
+            </button>
           </ChakraNextLink>
         ))}
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 }

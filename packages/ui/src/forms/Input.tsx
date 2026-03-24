@@ -1,21 +1,8 @@
-import {
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  HStack,
-  Icon,
-  Input as ChakraInput,
-  InputProps as ChakraInputProps,
-  Stack,
-  Tooltip,
-} from '@chakra-ui/react';
 import _ from 'lodash';
-import { ReactNode } from 'react';
+import { InputHTMLAttributes, ReactNode } from 'react';
 import { FieldValues, RegisterOptions, UseFormReturn } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '../icons';
-// import { Tooltip } from '../../atoms';
 
 type CustomInputProps = {
   label?: string | ReactNode;
@@ -28,7 +15,7 @@ type CustomInputProps = {
   registerOptions?: RegisterOptions<FieldValues, string> | undefined;
 };
 
-export type InputProps = ChakraInputProps & CustomInputProps;
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & CustomInputProps;
 
 /**
  * Primary Input component for React Hook Form
@@ -58,43 +45,43 @@ export function Input({
   } = localForm;
 
   const error = errors[name] && errors[name]?.message;
+  const isRequired = _.includes(_.keys(registerOptions), 'required');
 
   return (
-    <FormControl
-      isRequired={_.includes(_.keys(registerOptions), 'required')}
-      isInvalid={!!error}
-    >
-      <Stack spacing={spacing}>
+    <div>
+      <div className="flex flex-col" style={{ gap: spacing ? `${spacing}px` : undefined }}>
         {label && (
-          <HStack align="center">
-            <FormLabel m="0">{label}</FormLabel>
+          <div className="flex items-center gap-2">
+            <label className="m-0 text-sm font-medium">
+              {label}
+              {isRequired && <span className="text-red-500 ml-0.5">*</span>}
+            </label>
             {tooltip && (
-              <Tooltip
-                label={tooltip}
-                shouldWrapChildren
-                hasArrow
-                placement="end"
-              >
-                <Icon
-                  as={InfoOutlineIcon}
+              <span title={tooltip}>
+                <InfoOutlineIcon
                   boxSize={3}
-                  color="blue.500"
-                  bg="white"
-                  borderRadius="full"
+                  className="text-blue-500 bg-white rounded-full cursor-help"
                 />
-              </Tooltip>
+              </span>
             )}
-          </HStack>
+          </div>
         )}
 
-        <ChakraInput
+        <input
           type={type}
+          className={`flex h-9 w-full rounded-md border ${
+            error ? 'border-red-500' : 'border-gray-300'
+          } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
           {...props}
           {...register(name, registerOptions)}
         />
-        {helperText && <FormHelperText>{helperText}</FormHelperText>}
-        <FormErrorMessage>{error as string}</FormErrorMessage>
-      </Stack>
-    </FormControl>
+        {helperText && (
+          <p className="text-sm text-gray-500">{helperText}</p>
+        )}
+        {typeof error === 'string' && (
+          <p className="text-sm text-red-500">{error}</p>
+        )}
+      </div>
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-import { Badge } from '@chakra-ui/react';
 import { INVOICE_TYPES } from '@smartinvoicexyz/constants';
 import { ValueOf } from '@smartinvoicexyz/types';
 
@@ -41,13 +40,14 @@ export const invoiceLabels: { [key in InvoiceType]: string } = {
 
 export function InvoiceBadge({ invoiceType = 'unknown' }: InvoiceBadgeProps) {
   return (
-    <Badge
-      backgroundColor={schemes[invoiceType].bg}
-      color={schemes[invoiceType].color}
-      maxW="fit-content"
-      height="fit-content"
+    <span
+      className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium max-w-fit h-fit"
+      style={{
+        backgroundColor: schemes[invoiceType].bg,
+        color: schemes[invoiceType].color,
+      }}
     >
       {invoiceLabels[invoiceType]}
-    </Badge>
+    </span>
   );
 }

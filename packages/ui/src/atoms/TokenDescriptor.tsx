@@ -1,6 +1,4 @@
-import { InputRightElement } from '@chakra-ui/react';
 import { TokenBalance } from '@smartinvoicexyz/graphql';
-import React from 'react';
 
 export function TokenDescriptor({
   tokenBalance,
@@ -10,8 +8,8 @@ export function TokenDescriptor({
   if (!tokenBalance) return null;
 
   return (
-    <InputRightElement w="3.5rem" color="yellow">
+    <div className="absolute right-0 top-0 flex items-center justify-center h-full w-14 text-yellow-400 pointer-events-none">
       {tokenBalance?.symbol}
-    </InputRightElement>
+    </div>
   );
 }

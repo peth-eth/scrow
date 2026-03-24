@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Flex, Text } from '@chakra-ui/react';
 import { logError } from '@smartinvoicexyz/utils';
 import React from 'react';
 
@@ -31,19 +30,10 @@ export class ErrorBoundary extends React.Component {
     const { children } = this.props;
     if (hasError) {
       return (
-        <Flex
-          justify="center"
-          align="center"
-          direction="column"
-          w="100%"
-          minH="100vh"
-          background="#F5F6F8"
-          color="blue.1"
-        >
-          <Text fontSize="lg"> Something went wrong </Text>
-
-          <Text> Please check console for errors </Text>
-        </Flex>
+        <div className="flex flex-col items-center justify-center w-full min-h-screen bg-[#F5F6F8] text-[#3D88F8]">
+          <p className="text-lg">Something went wrong</p>
+          <p>Please check console for errors</p>
+        </div>
       );
     }
 

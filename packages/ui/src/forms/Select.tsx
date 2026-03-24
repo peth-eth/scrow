@@ -1,20 +1,11 @@
-import {
-  ChakraProps,
-  FormLabel,
-  HStack,
-  Icon,
-  Select as ChakraSelect,
-  Stack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
+import { CSSProperties } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
 
 import { InfoOutlineIcon } from '../icons';
 
 type Required = 'required' | 'optional';
 
-interface SelectProps extends ChakraProps {
+interface SelectProps {
   name: string;
   label?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,6 +14,8 @@ interface SelectProps extends ChakraProps {
   tooltip?: string | React.ReactElement;
   required?: Required;
   isDisabled?: boolean;
+  className?: string;
+  style?: CSSProperties;
 }
 
 export function Select({
@@ -39,54 +32,45 @@ export function Select({
   const { control } = localForm;
 
   return (
-    <Stack w="100%" spacing="0.5rem" justify="space-between">
+    <div className="flex flex-col w-full gap-2 justify-between">
       <Controller
         name={name}
         control={control}
         render={({ field: { onChange, value } }) => (
           <>
             {label && (
-              <Stack w="100%" align="left" spacing={0}>
-                <HStack align="center" spacing={4}>
-                  <FormLabel m={0}>{label}</FormLabel>
+              <div className="flex flex-col items-start w-full">
+                <div className="flex items-center gap-4">
+                  <label className="m-0 text-sm font-medium">{label}</label>
 
-                  <HStack>
-                    {infoText && <Text fontSize="xs">{infoText}</Text>}
+                  <div className="flex items-center gap-1">
+                    {infoText && <p className="text-xs">{infoText}</p>}
                     {tooltip && (
-                      <Tooltip label={tooltip} placement="right" hasArrow>
-                        <Icon
-                          as={InfoOutlineIcon}
+                      <span title={typeof tooltip === 'string' ? tooltip : ''}>
+                        <InfoOutlineIcon
                           boxSize={3}
-                          color="blue.500"
-                          bg="white"
-                          borderRadius="full"
+                          className="text-blue-500 bg-white rounded-full cursor-help"
                         />
-                      </Tooltip>
+                      </span>
                     )}
-                  </HStack>
-                </HStack>
-                <Text fontStyle="italic" fontSize="xs" marginLeft="5px">
-                  {required}
-                </Text>
-              </Stack>
+                  </div>
+                </div>
+                <p className="italic text-xs ml-[5px]">{required}</p>
+              </div>
             )}
 
-            <ChakraSelect
+            <select
               value={value}
               onChange={onChange}
-              bg="white"
-              color="black"
-              border="1px"
-              borderColor="lightgrey"
-              _hover={{ borderColor: 'lightgrey' }}
-              isDisabled={isDisabled}
+              disabled={isDisabled}
+              className="h-9 w-full rounded-md border border-gray-300 bg-white text-black px-3 py-1 text-sm shadow-sm transition-colors hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
               {...props}
             >
               {children}
-            </ChakraSelect>
+            </select>
           </>
         )}
       />
-    </Stack>
+    </div>
   );
 }

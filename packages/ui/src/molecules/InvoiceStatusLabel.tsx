@@ -1,4 +1,3 @@
-import { Flex, Text } from '@chakra-ui/react';
 import { useInvoiceStatus } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
 import _ from 'lodash';
@@ -30,20 +29,17 @@ export function InvoiceStatusLabel({
   if (funded) bgColor = '#2ED47A';
 
   return (
-    <Flex
-      bgColor={bgColor}
-      padding="6px"
-      borderRadius="10"
-      minWidth="165px"
-      justify="center"
-      onClick={onClick}
-      _hover={{
+    <div
+      className="flex justify-center rounded-[10px] p-1.5 min-w-[165px]"
+      style={{
+        backgroundColor: bgColor,
         cursor: onClick ? 'pointer' : 'default',
       }}
+      onClick={onClick}
     >
-      <Text color="white" fontWeight="bold" textAlign="center" fontSize="15px">
+      <p className="text-white font-bold text-center text-[15px]">
         {isLoading ? <Loader size="20" /> : label}
-      </Text>
-    </Flex>
+      </p>
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/react';
 import { BASE_URL } from '@smartinvoicexyz/constants';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
 import { chainLabelFromId, getChainName } from '@smartinvoicexyz/utils';
@@ -26,17 +25,9 @@ export function ShareButton({ invoice }: { invoice: Partial<InvoiceDetails> }) {
         url,
       }}
     >
-      <Button
-        variant="ghost"
-        bg="none"
-        colorScheme="blue"
-        h="auto"
-        w="auto"
-        minW="2"
-        p={1}
-      >
+      <button className="p-1 bg-transparent text-blue-500 hover:text-blue-700 transition-colors">
         <ShareIcon boxSize={5} />
-      </Button>
+      </button>
     </RWebShare>
   );
 }

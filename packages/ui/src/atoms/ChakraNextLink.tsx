@@ -1,11 +1,38 @@
-import {
-  Link as ChakraLink,
-  LinkProps as ChakraLinkProps,
-} from '@chakra-ui/next-js';
+import Link from 'next/link';
+import { AnchorHTMLAttributes, ReactNode } from 'react';
+
+export type ChakraNextLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+  href?: string;
+  isExternal?: boolean;
+  children?: ReactNode;
+};
 
 export function ChakraNextLink({
   href = '',
+  isExternal,
+  children,
+  className,
+  onClick,
   ...props
-}: Omit<ChakraLinkProps, 'href'> & { href?: string | undefined }) {
-  return <ChakraLink href={href} {...props} />;
+}: ChakraNextLinkProps) {
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        onClick={onClick}
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className} onClick={onClick} {...props}>
+      {children}
+    </Link>
+  );
 }

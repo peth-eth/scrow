@@ -3,11 +3,6 @@
   "description": "Unified source for UI components used across the Smart Invoice protocol.",
   "version": "0.1.28",
   "dependencies": {
-    "@chakra-ui/icon": "^2.0.5",
-    "@chakra-ui/next-js": "^2.4.2",
-    "@chakra-ui/react": "^2.10.9",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
     "@rainbow-me/rainbowkit": "^2.2.5",
     "@react-pdf/renderer": "^4.3.0",
     "@smartinvoicexyz/constants": "workspace:*",
@@ -21,7 +16,6 @@
     "@testing-library/react": "^16.3.0",
     "@vercel/analytics": "^1.1.1",
     "blockies-ts": "^1.0.0",
-    "framer-motion": "^12.15.0",
     "lodash": "^4.17.21",
     "next": "15.3.8",
     "qrcode": "^1.5.4",
@@ -30,6 +24,7 @@
     "react-hook-form": "^7.56.4",
     "react-select": "^5.10.1",
     "react-web-share": "^2.0.2",
+    "sonner": "^2.0.3",
     "styled-components": "^6.1.18",
     "viem": "^2.30.2",
     "wagmi": "^2.15.4"

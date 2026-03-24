@@ -1,91 +1,58 @@
-import {
-  AlertStatus,
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Icon,
-  Text,
-} from '@chakra-ui/react';
 import { ToastProps } from '@smartinvoicexyz/types';
 
 import { CloseIcon } from '../icons';
 
-// const icons: {
-//   [name: string]: { icon: IconType; color: ColorProps['color'] };
-// } = {
-//   crown: { icon: AiTwotoneCrown, color: 'red.500' },
-//   warning: { icon: AiFillWarning, color: 'whiteAlpha.700' },
-//   alert: { icon: AiFillAlert, color: 'whiteAlpha.800' },
-//   bell: { icon: BsBellFill, color: 'blackAlpha.700' },
-//   rocket: { icon: RiRocket2Fill, color: 'whiteAlpha.800' },
-// };
+type AlertStatus = 'success' | 'error' | 'info' | 'warning' | 'loading';
 
 const bgValues: {
-  [key in AlertStatus]: { bg: string };
+  [key in AlertStatus]: string;
 } = {
-  success: { bg: 'green.500' },
-  error: { bg: 'red.500' },
-  info: { bg: 'blue.500' },
-  warning: { bg: 'blue.500' },
-  loading: { bg: 'blue.500' },
+  success: 'bg-green-500',
+  error: 'bg-red-500',
+  info: 'bg-blue-500',
+  warning: 'bg-blue-500',
+  loading: 'bg-blue-500',
 };
 
 export function Toast({
   title,
   description,
   status = 'success',
-  // icon,
-  // iconName,
-  // iconColor,
   closeToast,
   descriptionNoOfLines,
   ...props
 }: ToastProps) {
+  const lineClampClass =
+    descriptionNoOfLines === 1
+      ? 'line-clamp-1'
+      : descriptionNoOfLines === 3
+        ? 'line-clamp-3'
+        : 'line-clamp-2';
+
   return (
-    <Flex
-      bg={bgValues[status].bg}
-      position="relative"
-      borderRadius="15px"
-      padding={4}
-      color="white"
-      minW="350px"
+    <div
+      className={`relative flex rounded-[15px] p-4 text-white min-w-[350px] ${bgValues[status as AlertStatus] ?? 'bg-blue-500'}`}
     >
-      <HStack spacing={3}>
-        {/* {iconName ? (
-          <Icon
-            as={icons[iconName].icon}
-            color={iconColor || icons[iconName].color || 'whiteAlpha.800'}
-            width="35px"
-            height="35px"
-          />
-        ) : (
-          icon && <Icon as={icon} width="35px" height="35px" />
-        )} */}
-        <Box>
-          <Heading size="md">{title}</Heading>
+      <div className="flex items-center gap-3">
+        <div>
+          <h3 className="text-lg font-semibold">{title}</h3>
           {description && (
-            <Text size="sm" noOfLines={descriptionNoOfLines}>
-              {description}
-            </Text>
+            <p className={`text-sm ${lineClampClass}`}>{description}</p>
           )}
-        </Box>
-      </HStack>
+        </div>
+      </div>
       {props.isClosable === true && (
-        <Flex
-          marginLeft={8}
+        <div
+          className="ml-8 flex items-start cursor-pointer"
           onClick={closeToast}
-          justifyContent="baseline"
-          _hover={{ cursor: 'pointer' }}
         >
-          <Icon
-            as={CloseIcon}
+          <CloseIcon
             onClick={closeToast}
-            boxSize="20px"
-            _hover={{ cursor: 'pointer' }}
+            boxSize={5}
+            className="cursor-pointer"
           />
-        </Flex>
+        </div>
       )}
-    </Flex>
+    </div>
   );
 }

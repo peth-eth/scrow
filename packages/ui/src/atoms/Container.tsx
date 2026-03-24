@@ -1,9 +1,10 @@
-import { Flex, FlexProps } from '@chakra-ui/react';
 import { isBackdropFilterSupported } from '@smartinvoicexyz/utils';
-import { useEffect, useState } from 'react';
+import { CSSProperties, PropsWithChildren, useEffect, useState } from 'react';
 
-interface ContainerProps extends FlexProps {
+interface ContainerProps extends PropsWithChildren {
   overlay?: boolean;
+  className?: string;
+  style?: CSSProperties;
 }
 
 type OverlayStyles = {
@@ -11,37 +12,30 @@ type OverlayStyles = {
   backdropFilter?: string;
 };
 
-export function Container({ children, overlay, ...props }: ContainerProps) {
+export function Container({ children, overlay, className, style }: ContainerProps) {
   const [overlayStyles, setOverlayStyles] = useState<OverlayStyles>({
-    backgroundColor: 'blackAlpha.800',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   });
 
   useEffect(() => {
     if (isBackdropFilterSupported()) {
       setOverlayStyles({
-        backgroundColor: 'blackAlpha.300',
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
         backdropFilter: 'blur(8px)',
       });
     } else {
       setOverlayStyles({
-        backgroundColor: 'blackAlpha.800',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
       });
     }
   }, []);
 
   return (
-    <Flex
-      justify="center"
-      align="center"
-      direction="column"
-      w="calc(100% - 2rem)"
-      h="100%"
-      flex={1}
-      m="1rem"
-      css={overlay ? overlayStyles : {}}
-      {...props}
+    <div
+      className={`flex flex-col items-center justify-center w-[calc(100%-2rem)] h-full flex-1 m-4 ${className ?? ''}`}
+      style={overlay ? { ...overlayStyles, ...style } : style}
     >
       {children}
-    </Flex>
+    </div>
   );
 }

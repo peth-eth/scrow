@@ -1,14 +1,3 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  Spacer,
-  Stack,
-  Text,
-  useBreakpointValue,
-} from '@chakra-ui/react';
 import { ESCROW_STEPS } from '@smartinvoicexyz/constants';
 import { hashCode } from '@smartinvoicexyz/utils';
 
@@ -27,68 +16,46 @@ function StepCircle({
   isCompleted: boolean;
   isCurrent: boolean;
 }) {
-  const showLabel = useBreakpointValue({ base: false, md: true });
-  const circleSize = useBreakpointValue({ base: '28px', md: '36px' }) ?? '32px';
-  const fontSize = useBreakpointValue({ base: 'xs', md: 'sm' }) ?? 'sm';
-
-  let bg = 'gray.200';
-  let color = 'gray.500';
-  let borderColor = 'gray.200';
+  let bgClass = 'bg-gray-200';
+  let textClass = 'text-gray-500';
+  let borderClass = 'border-gray-200';
 
   if (isCompleted) {
-    bg = 'blue.400';
-    color = 'white';
-    borderColor = 'blue.400';
+    bgClass = 'bg-blue-400';
+    textClass = 'text-white';
+    borderClass = 'border-blue-400';
   } else if (isCurrent) {
-    bg = 'white';
-    color = 'blue.400';
-    borderColor = 'blue.400';
+    bgClass = 'bg-white';
+    textClass = 'text-blue-400';
+    borderClass = 'border-blue-400';
   }
 
+  const labelColorClass = isCurrent
+    ? 'text-blue-500 font-semibold'
+    : isCompleted
+      ? 'text-blue-400'
+      : 'text-gray-400';
+
   return (
-    <Flex direction="column" align="center" minW="0">
-      <Flex
-        align="center"
-        justify="center"
-        w={circleSize}
-        h={circleSize}
-        borderRadius="full"
-        bg={bg}
-        color={color}
-        border="2px solid"
-        borderColor={borderColor}
-        fontWeight="bold"
-        fontSize={fontSize}
-        flexShrink={0}
+    <div className="flex flex-col items-center min-w-0">
+      <div
+        className={`flex items-center justify-center w-7 h-7 md:w-9 md:h-9 rounded-full ${bgClass} ${textClass} border-2 ${borderClass} font-bold text-xs md:text-sm shrink-0`}
       >
-        {isCompleted ? '✓' : step}
-      </Flex>
-      {showLabel && (
-        <Text
-          fontSize="xs"
-          color={isCurrent ? 'blue.500' : isCompleted ? 'blue.400' : 'gray.400'}
-          fontWeight={isCurrent ? '600' : '400'}
-          mt={1}
-          textAlign="center"
-          lineHeight="short"
-          maxW="80px"
-        >
-          {label}
-        </Text>
-      )}
-    </Flex>
+        {isCompleted ? '\u2713' : step}
+      </div>
+      <p
+        className={`hidden md:block text-xs ${labelColorClass} mt-1 text-center leading-tight max-w-[80px]`}
+      >
+        {label}
+      </p>
+    </div>
   );
 }
 
 function ConnectorLine({ isCompleted }: { isCompleted: boolean }) {
   return (
-    <Box
-      flex="1"
-      h="2px"
-      bg={isCompleted ? 'blue.400' : 'gray.200'}
-      alignSelf="flex-start"
-      mt={{ base: '13px', md: '17px' }}
-      mx={1}
+    <div
+      className={`flex-1 h-0.5 ${isCompleted ? 'bg-blue-400' : 'bg-gray-200'} self-start mt-[13px] md:mt-[17px] mx-1`}
     />
   );
 }
@@ -102,15 +69,6 @@ export function StepInfo({
   stepsDetails: typeof ESCROW_STEPS;
   goBack: (() => void) | undefined;
 }) {
-  const maxW = useBreakpointValue({ base: '100%' });
-
-  const headingSize = useBreakpointValue({
-    base: 'md',
-    sm: 'lg',
-    md: 'xl',
-    lg: 'xl',
-  });
-
   const stepTitle = stepsDetails[stepNum].step_title;
   const stepDetails = stepsDetails[stepNum].step_details;
 
@@ -120,11 +78,14 @@ export function StepInfo({
   }));
 
   return (
-    <Stack spacing="1rem" maxW={maxW} align="stretch">
+    <div className="flex flex-col gap-4 w-full">
       {/* Progress bar */}
-      <Flex align="flex-start" w="100%" px={{ base: 0, md: 4 }} pt={2}>
+      <div className="flex items-start w-full px-0 md:px-4 pt-2">
         {steps.map((s, i) => (
-          <Flex key={s.num} align="flex-start" flex={i < TOTAL_STEPS - 1 ? 1 : undefined}>
+          <div
+            key={s.num}
+            className={`flex items-start ${i < TOTAL_STEPS - 1 ? 'flex-1' : ''}`}
+          >
             <StepCircle
               step={s.num}
               label={s.label}
@@ -134,46 +95,39 @@ export function StepInfo({
             {i < TOTAL_STEPS - 1 && (
               <ConnectorLine isCompleted={s.num < stepNum} />
             )}
-          </Flex>
+          </div>
         ))}
-      </Flex>
+      </div>
 
       {/* Header with back button and title */}
-      <Flex justify="space-between" my={2} align="center">
+      <div className="flex justify-between items-center my-2">
         {stepNum !== 1 && stepNum !== 5 && !!goBack ? (
-          <IconButton
-            icon={
-              <Icon
-                as={BackArrowIcon}
-                color="white"
-                width="2rem"
-                height="1.5rem"
-              />
-            }
-            variant="ghost"
-            bg="gray.200"
-            p={2}
+          <button
             onClick={() => goBack()}
-            cursor="pointer"
+            className="p-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
             aria-label="back"
-          />
+          >
+            <BackArrowIcon
+              style={{ width: '2rem', height: '1.5rem', color: 'white' }}
+            />
+          </button>
         ) : (
-          <Spacer maxW="50px" />
+          <div className="max-w-[50px]" />
         )}
 
-        <Heading color="#323C47" size={headingSize}>
+        <h2 className="text-[#323C47] text-base sm:text-lg md:text-xl font-heading">
           Step {stepNum}: {stepTitle}
-        </Heading>
+        </h2>
 
-        <Spacer maxW="50px" />
-      </Flex>
+        <div className="max-w-[50px]" />
+      </div>
 
       {/* Step details */}
       {stepDetails.map((detail: string) => (
-        <Text color="grey" fontSize="sm" key={hashCode(detail)}>
+        <p className="text-gray-500 text-sm" key={hashCode(detail)}>
           {detail}
-        </Text>
+        </p>
       ))}
-    </Stack>
+    </div>
   );
 }

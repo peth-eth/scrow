@@ -1,10 +1,4 @@
-import {
-  Modal as ChakraModal,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
-} from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -13,25 +7,45 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, onClose, children }: ModalProps) {
-  return (
-    <ChakraModal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay>
-        <ModalContent
-          p="2rem"
-          maxW="40rem"
-          background="white"
-          borderRadius="0.5rem"
-        >
-          <ModalCloseButton
-            _hover={{ bgColor: 'blackAlpha.200' }}
-            top="0.5rem"
-            right="0.5rem"
-            color="gray"
-          />
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
-          {children}
-        </ModalContent>
-      </ModalOverlay>
-    </ChakraModal>
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={onClose}
+    >
+      <div
+        className="relative p-8 max-w-[40rem] w-full bg-white rounded-lg mx-4"
+        onClick={e => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 p-1 text-gray-400 hover:bg-black/5 rounded transition-colors"
+          aria-label="Close"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z" />
+          </svg>
+        </button>
+
+        {children}
+      </div>
+    </div>
   );
 }

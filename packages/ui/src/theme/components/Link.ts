@@ -1,9 +1,2 @@
-export const Link = {
-  baseStyle: {},
-  variants: {
-    inline: {
-      color: 'red.500',
-      textDecoration: 'underline',
-    },
-  },
-};
+// Chakra theme component — no longer used with Tailwind.
+export const Link = {};

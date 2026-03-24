@@ -1,4 +1,3 @@
-import { Button, Flex, Text } from '@chakra-ui/react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { SUPPORTED_CHAINS } from '@smartinvoicexyz/constants';
 import { useIsClient } from '@smartinvoicexyz/hooks';
@@ -25,58 +24,37 @@ export function ConnectWeb3() {
 
   return (
     <Container>
-      <Flex
-        background="white"
-        borderRadius="1rem"
-        direction="column"
-        align="center"
-        w="calc(100% - 2rem)"
-        p="2rem"
-        maxW="27.5rem"
-        mx={4}
-      >
-        <Flex
-          bg="blue.1"
-          borderRadius="50%"
-          p="1rem"
-          justify="center"
-          align="center"
-          color="white"
-          mb={4}
-        >
-          <WalletFilledIcon boxSize="1.75rem" />
-        </Flex>
+      <div className="flex flex-col items-center rounded-2xl bg-white w-[calc(100%-2rem)] p-8 max-w-[27.5rem] mx-4">
+        <div className="flex items-center justify-center rounded-full bg-[#3D88F8] p-4 text-white mb-4">
+          <WalletFilledIcon style={{ width: '1.75rem', height: '1.75rem' }} />
+        </div>
 
         {isClient && isConnected ? (
           <>
-            <Text fontSize="2xl" fontFamily="heading" mb={4}>
-              Connect Wallet
-            </Text>
-            <Text color="greyText" mb={4} textAlign="center">
+            <h2 className="text-2xl font-heading mb-4">Connect Wallet</h2>
+            <p className="text-[#ABABAB] mb-4 text-center">
               {`Please switch to ${_.map(
                 SUPPORTED_CHAINS,
                 chain => chain.name,
               ).join(' or ')}`}
-            </Text>
+            </p>
           </>
         ) : (
-          <Text
-            fontSize="xl"
-            fontFamily="heading"
-            mb={4}
-            maxW={200}
-            textAlign="center"
-          >
+          <h2 className="text-xl font-heading mb-4 max-w-[200px] text-center">
             To get started, connect your wallet
-          </Text>
+          </h2>
         )}
 
         {isClient && !isConnected && (
-          <Button onClick={openConnectModal} px={12} isLoading={isConnecting}>
-            Connect Wallet
-          </Button>
+          <button
+            onClick={openConnectModal}
+            className="px-12 py-2 bg-[#3D88F8] text-white rounded-md font-medium hover:bg-[#2B69C5] transition-colors disabled:opacity-50"
+            disabled={isConnecting}
+          >
+            {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+          </button>
         )}
-      </Flex>
+      </div>
     </Container>
   );
 }
