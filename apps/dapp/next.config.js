@@ -25,6 +25,8 @@ const baseUrl = `${protocol}://${url}`;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // All pages use SSR (wagmi/rainbowkit access localStorage)
+  output: undefined,
   transpilePackages: [
     '@rainbow-me/rainbowkit',
     '@smartinvoicexyz/constants',
@@ -41,7 +43,6 @@ const nextConfig = {
     optimizePackageImports: [
       '@rainbow-me/rainbowkit',
       '@smartinvoicexyz/ui',
-      '@chakra-ui/react',
     ],
   },
   async rewrites() {

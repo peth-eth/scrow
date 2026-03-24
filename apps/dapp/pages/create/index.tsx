@@ -203,3 +203,5 @@ export function CreateInvoiceEscrow() {
 }
 
 export default CreateInvoiceEscrow;
+
+export const getServerSideProps = async () => ({ props: {} });

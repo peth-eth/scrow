@@ -110,3 +110,5 @@ function Contracts() {
 }
 
 export default Contracts;
+
+export const getServerSideProps = async () => ({ props: {} });

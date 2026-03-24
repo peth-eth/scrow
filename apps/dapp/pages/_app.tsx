@@ -14,6 +14,7 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { hashFn } from '@wagmi/core/query';
 import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import { ThemeProvider } from 'next-themes';
 import React, { useState } from 'react';
 import { Toaster } from 'sonner';
@@ -22,7 +23,7 @@ import { WagmiProvider } from 'wagmi';
 import { FrameProvider } from '../contexts/FrameContext';
 import { OverlayContextProvider } from '../contexts/OverlayContext';
 
-function App({ Component, pageProps }: AppProps) {
+function AppInner({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -62,5 +63,8 @@ function App({ Component, pageProps }: AppProps) {
     </ThemeProvider>
   );
 }
+
+// Prevent SSR for the entire app shell — wagmi/rainbowkit require browser APIs
+const App = dynamic(() => Promise.resolve(AppInner), { ssr: false });
 
 export default App;

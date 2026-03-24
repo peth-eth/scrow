@@ -99,4 +99,6 @@ function Home() {
   );
 }
 
+export const getServerSideProps = async () => ({ props: {} });
+
 export default Home;
