@@ -2,6 +2,7 @@ import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import { TOASTS } from '@smartinvoicexyz/constants';
 import {
   createInvoiceDetailsQueryKey,
+  useNotify,
   useRelease,
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
@@ -40,6 +41,7 @@ export function ReleaseFunds({
   onClose: () => void;
 }) {
   const toast = useToast();
+  const { notify } = useNotify();
 
   const queryClient = useQueryClient();
   const { currentMilestoneNumber, amounts, tokenBalance } = _.pick(invoice, [
@@ -50,11 +52,18 @@ export function ReleaseFunds({
 
   const onTxSuccess = () => {
     toast.success(TOASTS.useRelease.success);
-    // invalidate cache
     queryClient.invalidateQueries({
       queryKey: createInvoiceDetailsQueryKey(invoice.chainId, invoice.address),
     });
-    // close modal
+    notify({
+      invoiceId: invoice.address as string,
+      event: 'release',
+      amount: formatUnits(
+        getReleaseAmount(currentMilestoneNumber, amounts, tokenBalance?.value),
+        tokenBalance?.decimals || 18,
+      ),
+      token: tokenBalance?.symbol,
+    });
     onClose();
   };
 

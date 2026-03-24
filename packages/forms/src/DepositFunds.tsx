@@ -19,6 +19,7 @@ import { PAYMENT_TYPES, TOASTS } from '@smartinvoicexyz/constants';
 import {
   createInvoiceDetailsQueryKey,
   useDeposit,
+  useNotify,
   useTokenBalance,
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
@@ -114,14 +115,20 @@ export function DepositFunds({
       : formatUnits(tokenBalance ?? BigInt(0), tokenMetadata?.decimals ?? 18);
   const hasAmount = !!balance && balance > amount; // (+ gasForChain)
 
+  const { notify } = useNotify();
+
   const onTxSuccess = () => {
     toast.success(TOASTS.useDeposit.success);
-    // close modal
-    onClose();
-    // invalidate cache
     queryClient.invalidateQueries({
       queryKey: createInvoiceDetailsQueryKey(chainId, address),
     });
+    notify({
+      invoiceId: invoice.address as string,
+      event: 'deposit',
+      amount: formatUnits(amount, tokenMetadata?.decimals ?? 18),
+      token: tokenMetadata?.symbol,
+    });
+    onClose();
   };
 
   const { handleDeposit, isLoading, prepareError } = useDeposit({

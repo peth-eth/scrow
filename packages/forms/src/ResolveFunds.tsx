@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
   createInvoiceDetailsQueryKey,
   FormResolve,
+  useNotify,
   useResolve,
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
@@ -33,6 +34,7 @@ export function ResolveFunds({
   );
 
   const toast = useToast();
+  const { notify } = useNotify();
   const localForm = useForm<FormResolve>({
     resolver: yupResolver(resolveFundsSchema),
   });
@@ -71,6 +73,11 @@ export function ResolveFunds({
   const onTxSuccess = () => {
     queryClient.invalidateQueries({
       queryKey: createInvoiceDetailsQueryKey(invoice.chainId, invoice.address),
+    });
+    notify({
+      invoiceId: invoice.address as string,
+      event: 'resolution',
+      message: `Client: ${watch('clientAward')}, Provider: ${watch('providerAward')}`,
     });
     onClose();
   };

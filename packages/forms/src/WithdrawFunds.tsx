@@ -1,6 +1,7 @@
 import { Button, Heading, Spinner, Stack, Text } from '@chakra-ui/react';
 import {
   createInvoiceDetailsQueryKey,
+  useNotify,
   useWithdraw,
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
@@ -17,16 +18,24 @@ export function WithdrawFunds({
   onClose: () => void;
 }) {
   const toast = useToast();
+  const { notify } = useNotify();
 
   const { tokenBalance } = _.pick(invoice, ['tokenBalance']);
   const queryClient = useQueryClient();
 
   const onTxSuccess = () => {
-    // invalidate cache
     queryClient.invalidateQueries({
       queryKey: createInvoiceDetailsQueryKey(invoice.chainId, invoice.address),
     });
-    // close modal
+    notify({
+      invoiceId: invoice.address as string,
+      event: 'withdraw',
+      amount: formatUnits(
+        tokenBalance?.value ?? BigInt(0),
+        tokenBalance?.decimals ?? 18,
+      ),
+      token: tokenBalance?.symbol,
+    });
     onClose();
   };
 

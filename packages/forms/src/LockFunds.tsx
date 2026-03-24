@@ -13,6 +13,7 @@ import {
   createInvoiceDetailsQueryKey,
   FormLock,
   useLock,
+  useNotify,
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
 import {
@@ -37,6 +38,7 @@ export function LockFunds({
 }) {
   const chainId = useChainId();
   const toast = useToast();
+  const { notify } = useNotify();
   const queryClient = useQueryClient();
 
   const {
@@ -66,7 +68,10 @@ export function LockFunds({
     queryClient.invalidateQueries({
       queryKey: createInvoiceDetailsQueryKey(invoiceChainId, address),
     });
-
+    notify({
+      invoiceId: address as string,
+      event: 'dispute',
+    });
     onClose();
   };
 
