@@ -3,7 +3,7 @@ import 'focus-visible/dist/focus-visible';
 import '@rainbow-me/rainbowkit/styles.css';
 import '../styles/globals.css';
 
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { AccountAvatar, ErrorBoundary, Layout } from '@smartinvoicexyz/ui';
 import { wagmiConfig } from '@smartinvoicexyz/utils';
 import {
@@ -76,7 +76,14 @@ function App({ Component, pageProps }: AppProps) {
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <HydrationBoundary state={pageProps.dehydratedState}>
-            <RainbowKitProvider avatar={AccountAvatar}>
+            <RainbowKitProvider
+              avatar={AccountAvatar}
+              theme={darkTheme({
+                accentColor: '#8A63D2',
+                accentColorForeground: 'white',
+                borderRadius: 'medium',
+              })}
+            >
               <ErrorBoundary>
                 <FrameProvider>
                   <OverlayContextProvider>
