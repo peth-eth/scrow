@@ -19,6 +19,7 @@ import React, { useEffect, useState } from 'react';
 import { Toaster } from 'sonner';
 import { WagmiProvider } from 'wagmi';
 
+import { ChatBubble } from '../components/ChatBubble';
 import { FrameProvider } from '../contexts/FrameContext';
 import { OverlayContextProvider } from '../contexts/OverlayContext';
 
@@ -86,6 +87,7 @@ function App({ Component, pageProps }: AppProps) {
                 </FrameProvider>
               </ErrorBoundary>
               <Toaster position="bottom-right" richColors />
+              <ChatBubble />
               <ReactQueryDevtools initialIsOpen={false} />
             </RainbowKitProvider>
           </HydrationBoundary>

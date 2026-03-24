@@ -14,10 +14,6 @@ type Link = {
 
 const LINKS: Link[] = [
   { label: 'Dashboard', href: '/invoices', isInternal: true },
-  {
-    label: 'Docs',
-    href: 'https://docs.smartinvoice.xyz',
-  },
 ];
 
 export function Header() {
