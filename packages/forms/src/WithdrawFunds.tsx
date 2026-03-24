@@ -1,4 +1,3 @@
-import { Button, Heading, Spinner, Stack, Text } from '@chakra-ui/react';
 import {
   createInvoiceDetailsQueryKey,
   useNotify,
@@ -46,59 +45,38 @@ export function WithdrawFunds({
   });
 
   return (
-    <Stack w="100%" spacing="1rem">
-      <Heading
-        mb="1rem"
-        as="h3"
-        fontSize="2xl"
-        transition="all ease-in-out .25s"
-        _hover={{ cursor: 'pointer', color: 'raid' }}
-      >
+    <div className="flex flex-col gap-4 w-full">
+      <h3 className="mb-4 text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
         Withdraw Funds
-      </Heading>
-      <Text textAlign="center" fontSize="sm" mb="0.5rem" w="70%">
+      </h3>
+      <p className="text-center text-sm mb-2 w-[70%]">
         Follow the instructions in your wallet to withdraw remaining funds from
         the escrow.
-      </Text>
-      <Text textAlign="center" fontSize="xs" color="blackAlpha.600" mb="0.5rem" w="70%">
+      </p>
+      <p className="text-center text-xs text-muted-foreground mb-2 w-[70%]">
         The withdrawal deadline has passed and these funds are available for you
         to reclaim.
-      </Text>
-      <Stack my="2rem" px="5rem" py="1rem" bg="black" borderRadius="0.5rem">
-        <Text color="primary.300" fontSize="0.875rem" textAlign="center">
+      </p>
+      <div className="my-8 px-20 py-4 bg-black rounded-lg">
+        <p className="text-primary-300 text-sm text-center">
           Amount To Be Withdrawn
-        </Text>
-        <Text
-          color="yellow"
-          fontSize="1rem"
-          fontWeight="bold"
-          textAlign="center"
-        >
+        </p>
+        <p className="text-yellow-400 text-base font-bold text-center">
           {`${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
-        </Text>
-      </Stack>
-      {/* {transaction && (
-        <Text textAlign='center' fontSize='sm'>
-          Follow your transaction{' '}
-          <Link
-            href={getTxLink(chainId, transaction.hash)}
-            isExternal
-            color='primary.300'
-            textDecoration='underline'
-          >
-            here
-          </Link>
-        </Text>
-      )} */}
-      {isLoading && <Spinner size="xl" />}
-      <Button
+        </p>
+      </div>
+      {isLoading && (
+        <div className="flex justify-center">
+          <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full" />
+        </div>
+      )}
+      <button
         onClick={withdrawFunds}
-        isDisabled={!withdrawFunds}
-        variant="solid"
-        textTransform="uppercase"
+        disabled={!withdrawFunds}
+        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
       >
         Withdraw
-      </Button>
-    </Stack>
+      </button>
+    </div>
   );
 }

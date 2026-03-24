@@ -1,15 +1,3 @@
-import {
-  Button,
-  Card,
-  Divider,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  Stack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
 import { Dispute, Resolution } from '@smartinvoicexyz/graphql';
 import {
   InvoiceDetails,
@@ -166,25 +154,24 @@ export function InvoicePaymentDetails({
 
   return (
     <>
-      <Stack w="100%" spacing={6}>
+      <div className="flex flex-col gap-6 w-full">
         {canAddMilestones && (
-          <Flex justify="flex-end">
-            <Button
-              textTransform="uppercase"
-              variant="outline"
+          <div className="flex justify-end">
+            <button
+              className="border border-input px-4 py-2 rounded-md hover:bg-accent uppercase"
               onClick={() => openModal(ModalTypes.ADD_MILESTONES)}
             >
               Add Milestone
-            </Button>
-          </Flex>
+            </button>
+          </div>
         )}
-        <Card py={6} direction="column" w="100%">
-          <Stack width="100%">
-            <Stack w="100%" px={6} spacing={4}>
-              <HStack width="100%" justifyContent="space-between">
-                <Heading size="md">Total Project Amount</Heading>
+        <div className="rounded-lg border bg-card py-6 flex flex-col w-full">
+          <div className="flex flex-col w-full">
+            <div className="flex flex-col gap-4 w-full px-6">
+              <div className="flex items-center w-full justify-between">
+                <h3 className="text-base font-semibold">Total Project Amount</h3>
                 {!!total && (
-                  <Heading size="md">
+                  <h3 className="text-base font-semibold">
                     {commify(
                       formatUnits(
                         total,
@@ -192,10 +179,10 @@ export function InvoicePaymentDetails({
                       ),
                     )}{' '}
                     {tokenBalance?.symbol || tokenMetadata?.symbol}
-                  </Heading>
+                  </h3>
                 )}
-              </HStack>
-              <Stack align="stretch" spacing="0.25rem">
+              </div>
+              <div className="flex flex-col items-stretch gap-1">
                 {_.map(amounts, (amt, index) => {
                   const depositedText = depositedMilestonesDisplay?.[index];
                   const release = releasedTxs?.[index];
@@ -205,57 +192,50 @@ export function InvoicePaymentDetails({
                     milestoneMetadata?.title ?? `Milestone ${index + 1}`;
 
                   return (
-                    <Flex
+                    <div
                       key={title + index}
-                      justify="space-between"
-                      align="stretch"
-                      direction="row"
+                      className="flex justify-between items-stretch"
                     >
-                      <HStack align="center" justify="flex-start">
-                        <Text>{title}</Text>
+                      <div className="flex items-center justify-start gap-2">
+                        <p>{title}</p>
                         {milestoneMetadata?.description && (
-                          <Tooltip
-                            label={milestoneMetadata?.description}
-                            placement="auto-start"
-                          >
-                            <QuestionIcon boxSize="0.75rem" color="gray" />
-                          </Tooltip>
+                          <span title={milestoneMetadata?.description}>
+                            <QuestionIcon className="w-3 h-3 text-gray-400" />
+                          </span>
                         )}
-                      </HStack>
+                      </div>
 
-                      <HStack align="center" justify="flex-end">
+                      <div className="flex items-center justify-end gap-2">
                         {release && (
-                          <Link
-                            fontSize="xs"
-                            isExternal
-                            color="grey"
-                            fontStyle="italic"
+                          <a
+                            className="text-xs text-gray-500 italic"
                             href={getTxLink(invoice?.chainId, release.txHash)}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
                             Released{' '}
                             {getDateString(
                               Number(release.timestamp) * 1000,
                               'short',
                             )}
-                          </Link>
+                          </a>
                         )}
                         {deposit && !release && (
-                          <Link
-                            fontSize="xs"
-                            isExternal
-                            color="grey"
-                            fontStyle="italic"
+                          <a
+                            className="text-xs text-gray-500 italic"
                             href={getTxLink(invoice?.chainId, deposit?.txHash)}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
                             {`${_.capitalize(depositedText)} `}
                             {getDateString(
                               Number(deposit?.timestamp) * 1000,
                               'short',
                             )}
-                          </Link>
+                          </a>
                         )}
 
-                        <Text textAlign="right" fontWeight="500">
+                        <p className="text-right font-medium">
                           {`${commify(
                             formatUnits(
                               BigInt(amt),
@@ -264,24 +244,24 @@ export function InvoicePaymentDetails({
                                 18,
                             ),
                           )} ${tokenBalance?.symbol || tokenMetadata?.symbol}`}
-                        </Text>
-                      </HStack>
-                    </Flex>
+                        </p>
+                      </div>
+                    </div>
                   );
                 })}
-              </Stack>
-            </Stack>
-            <Divider my="1rem" />
+              </div>
+            </div>
+            <hr className="border-border my-4" />
             {details && _.size(details) > 0 && (
               <>
-                <Stack px={6}>
+                <div className="flex flex-col px-6">
                   {_.map(_.compact(details), (detail, index) => (
-                    <HStack
-                      justifyContent="space-between"
+                    <div
+                      className="flex items-center justify-between"
                       key={detail.label + index}
                     >
-                      <Text>{detail.label}</Text>
-                      <Text>
+                      <p>{detail.label}</p>
+                      <p>
                         {commify(
                           formatUnits(
                             detail.value,
@@ -289,64 +269,59 @@ export function InvoicePaymentDetails({
                           ),
                         )}{' '}
                         {tokenBalance?.symbol}
-                      </Text>
-                    </HStack>
+                      </p>
+                    </div>
                   ))}
-                </Stack>
+                </div>
 
-                <Divider my="1rem" />
+                <hr className="border-border my-4" />
               </>
             )}
 
             {_.size(disputes) === _.size(resolutions) && (
               <>
-                <Flex justify="space-between" align="center" px={6}>
+                <div className="flex justify-between items-center px-6">
                   {isExpired || (due === BigInt(0) && !isReleasable) ? (
                     <>
-                      <Heading size="md">Remaining Balance</Heading>
-                      <Heading size="md">
+                      <h3 className="text-base font-semibold">Remaining Balance</h3>
+                      <h3 className="text-base font-semibold">
                         {`${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
-                      </Heading>
+                      </h3>
                     </>
                   ) : (
                     <>
-                      <Heading size="md">
+                      <h3 className="text-base font-semibold">
                         {isReleasable
                           ? 'Next Amount to Release'
                           : 'Total Due Today'}
-                      </Heading>
-                      <Heading size="md">
+                      </h3>
+                      <h3 className="text-base font-semibold">
                         {`${commify(
                           formatUnits(nextAmount, tokenBalance?.decimals ?? 18),
                         )} ${tokenBalance?.symbol}`}
-                      </Heading>
+                      </h3>
                     </>
                   )}
-                </Flex>
-                {_.size(disputes) > 0 && <Divider my="1rem" />}
+                </div>
+                {_.size(disputes) > 0 && <hr className="border-border my-4" />}
               </>
             )}
 
             {_.map(
               disputesWithResolution,
               ({ dispute, resolution, resolutionDetails }, i) => (
-                <Stack w="100%" px={0} spacing={4} key={dispute.id + i}>
+                <div className="flex flex-col gap-4 w-full" key={dispute.id + i}>
                   {dispute && !resolution && (
-                    <Stack px={6}>
-                      <Flex
-                        justify="space-between"
-                        align="center"
-                        fontWeight="bold"
-                        fontSize="lg"
-                      >
-                        <Text>
+                    <div className="flex flex-col px-6">
+                      <div className="flex justify-between items-center font-bold text-lg">
+                        <p>
                           Dispute Raised on {getDateString(dispute.timestamp)}
-                        </Text>
-                        <Text textAlign="right">
+                        </p>
+                        <p className="text-right">
                           {`${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
-                        </Text>
-                      </Flex>
-                      <Text color="black">
+                        </p>
+                      </div>
+                      <p className="text-black">
                         {`A dispute is in progress with `}
                         <AccountLink
                           address={resolver as Hex}
@@ -355,57 +330,46 @@ export function InvoicePaymentDetails({
                         <br />
                         {!isEmptyIpfsHash(dispute.ipfsHash) && (
                           <>
-                            <Link
+                            <a
                               href={getIpfsLink(dispute.ipfsHash)}
-                              color="blue.1"
-                              isExternal
+                              className="text-blue-500"
+                              target="_blank"
+                              rel="noopener noreferrer"
                             >
                               <u>View dispute details</u>
-                            </Link>
+                            </a>
                             <br />
                           </>
                         )}
-                        <Link
+                        <a
                           href={getTxLink(invoice?.chainId, dispute.txHash)}
-                          color="blue.1"
-                          isExternal
+                          className="text-blue-500"
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           <u>View transaction</u>
-                        </Link>
-                      </Text>
-                    </Stack>
+                        </a>
+                      </p>
+                    </div>
                   )}
 
                   {resolution && (
-                    <Stack
-                      align="stretch"
-                      spacing="1rem"
-                      color="primary.300"
-                      px={6}
-                    >
-                      <Flex
-                        justify="space-between"
-                        align="center"
-                        fontWeight="bold"
-                        fontSize="lg"
-                      >
-                        <Text>
+                    <div className="flex flex-col items-stretch gap-4 text-primary-300 px-6">
+                      <div className="flex justify-between items-center font-bold text-lg">
+                        <p>
                           Dispute Resolved on{' '}
                           {getDateString(resolution.timestamp)}
-                        </Text>
-                        <Text textAlign="right">{`${formatUnits(
+                        </p>
+                        <p className="text-right">{`${formatUnits(
                           resolution.clientAward +
                             resolution.providerAward +
                             (resolution.resolutionFee ?? 0n),
                           18,
-                        )} ${tokenBalance?.symbol}`}</Text>
-                      </Flex>
-                      <Flex
-                        justify="space-between"
-                        direction={{ base: 'column', sm: 'row' }}
-                      >
-                        <Flex flex={1}>
-                          <Text maxW="300px" color="purple">
+                        )} ${tokenBalance?.symbol}`}</p>
+                      </div>
+                      <div className="flex justify-between flex-col sm:flex-row">
+                        <div className="flex flex-1">
+                          <p className="max-w-[300px] text-purple-600">
                             <AccountLink
                               address={resolver as Hex}
                               chainId={invoice?.chainId}
@@ -417,45 +381,47 @@ export function InvoicePaymentDetails({
                             <br />
                             {!isEmptyIpfsHash(dispute.ipfsHash) && (
                               <>
-                                <Link
+                                <a
                                   href={getIpfsLink(dispute.ipfsHash)}
-                                  color="blue.1"
-                                  isExternal
+                                  className="text-blue-500"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                 >
                                   <u>View dispute details</u>
-                                </Link>
+                                </a>
                                 <br />
                               </>
                             )}
                             {!isEmptyIpfsHash(resolution.ipfsHash) && (
                               <>
-                                <Link
+                                <a
                                   href={getIpfsLink(resolution.ipfsHash)}
-                                  isExternal
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                 >
                                   <u>View resolution details</u>
-                                </Link>
+                                </a>
                                 <br />
                               </>
                             )}
-                            <Link
+                            <a
                               href={getTxLink(
                                 invoice?.chainId,
                                 resolution.txHash,
                               )}
-                              isExternal
+                              target="_blank"
+                              rel="noopener noreferrer"
                             >
                               <u>View transaction</u>
-                            </Link>
-                          </Text>
-                        </Flex>
-                        <Stack spacing="0.5rem" mt={{ base: '1rem', sm: '0' }}>
+                            </a>
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-2 mt-4 sm:mt-0">
                           {_.map(
                             _.compact(resolutionDetails),
                             (detail, index) => (
-                              <Text
-                                textAlign="right"
-                                color="purpleLight"
+                              <p
+                                className="text-right text-purple-400"
                                 key={
                                   (detail.distributee ?? 'distributee') + index
                                 }
@@ -468,22 +434,22 @@ export function InvoicePaymentDetails({
                                   address={detail.distributee as Hex}
                                   chainId={invoice?.chainId}
                                 />
-                              </Text>
+                              </p>
                             ),
                           )}
-                        </Stack>
-                      </Flex>
-                    </Stack>
+                        </div>
+                      </div>
+                    </div>
                   )}
                   {i !== disputesWithResolution.length - 1 && (
-                    <Divider my="1rem" />
+                    <hr className="border-border my-4" />
                   )}
-                </Stack>
+                </div>
               ),
             )}
-          </Stack>
-        </Card>
-      </Stack>
+          </div>
+        </div>
+      </div>
       <Modal isOpen={modals?.addMilestones} onClose={closeModals}>
         <AddMilestones invoice={invoice} onClose={closeModals} />
       </Modal>

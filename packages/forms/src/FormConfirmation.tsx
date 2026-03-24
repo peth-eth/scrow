@@ -1,15 +1,4 @@
 import {
-  Button,
-  Divider,
-  Flex,
-  Grid,
-  Heading,
-  Link,
-  Stack,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import {
   ARBITRATION_FEE_PERCENT,
   ESCROW_STEPS,
   INVOICE_TYPES,
@@ -22,7 +11,6 @@ import { ValueOf } from '@smartinvoicexyz/types';
 import {
   AccountLink,
   ChakraNextLink,
-  useMediaStyles,
 } from '@smartinvoicexyz/ui';
 import { getDateString, getResolverInfo } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
@@ -80,8 +68,6 @@ export function FormConfirmation({
       Number(t.chainId) === chainId,
   )[0]?.symbol;
 
-  const { headingSize, primaryButtonSize, columnWidth } = useMediaStyles();
-
   const details = useMemo(() => {
     return _.compact([
       {
@@ -95,49 +81,49 @@ export function FormConfirmation({
       {
         label: 'Platform Fee:',
         value: (
-          <Text textAlign="right">
+          <p className="text-right">
             {`${Number(PLATFORM_FEE_BPS) / 100}%`}
-          </Text>
+          </p>
         ),
       },
       {
         label: 'Arbitration Fee:',
         value: (
-          <Text textAlign="right">{ARBITRATION_FEE_PERCENT}% (only on disputes)</Text>
+          <p className="text-right">{ARBITRATION_FEE_PERCENT}% (only on disputes)</p>
         ),
       },
       startDate && {
         label: 'Project Start Date:',
-        value: <Text textAlign="right">{getDateString(startDate / 1000)}</Text>,
+        value: <p className="text-right">{getDateString(startDate / 1000)}</p>,
       },
       endDate && {
         label: 'Expected End Date:',
-        value: <Text textAlign="right">{getDateString(endDate / 1000)}</Text>,
+        value: <p className="text-right">{getDateString(endDate / 1000)}</p>,
       },
       paymentDue && {
         label: 'Payment Due:',
-        value: <Text textAlign="right">{`${paymentDue} ${symbol}`}</Text>,
+        value: <p className="text-right">{`${paymentDue} ${symbol}`}</p>,
       },
       type === INVOICE_TYPES.Escrow
         ? {
             label: 'Withdrawal Deadline:',
             value: (
-              <Text textAlign="right">
+              <p className="text-right">
                 {getDateString(safetyValveDate / 1000)}
-              </Text>
+              </p>
             ),
           }
         : {
             label: 'Deadline:',
             value: (
-              <Text textAlign="right">{getDateString(deadline / 1000)}</Text>
+              <p className="text-right">{getDateString(deadline / 1000)}</p>
             ),
           },
       lateFee &&
         lateFeeTimeInterval && {
           label: 'Late Fee:',
           value: (
-            <Text textAlign="right">{`${lateFee} ${symbol} per ${lateFeeIntervalLabel}`}</Text>
+            <p className="text-right">{`${lateFee} ${symbol} per ${lateFeeIntervalLabel}`}</p>
           ),
         },
       // calculate payment due
@@ -183,70 +169,65 @@ export function FormConfirmation({
   ]);
 
   return (
-    <Stack w="100%" spacing="1rem" color="#323C47" align="center">
-      <VStack align="stretch" spacing="1rem" w={columnWidth}>
-        <Heading id="project-title" size={headingSize}>
+    <div className="flex flex-col gap-4 w-full text-[#323C47] items-center">
+      <div className="flex flex-col items-stretch gap-4 w-full max-w-lg">
+        <h2 id="project-title" className="text-lg md:text-xl font-semibold">
           {title}
-        </Heading>
+        </h2>
 
-        {description && <Text>{description}</Text>}
+        {description && <p>{description}</p>}
 
         {document && (
-          <Link
+          <a
             href={document || '#'}
-            isExternal
-            mb="1rem"
-            textDecor="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline mb-4"
           >
             {document}
-          </Link>
+          </a>
         )}
-      </VStack>
+      </div>
 
-      <Divider />
+      <hr className="border-border w-full" />
 
       {_.map(details, ({ label, value }) => (
-        <Flex justify="space-between" width={columnWidth} key={label}>
-          <Text>{label}</Text>
+        <div className="flex justify-between w-full max-w-lg" key={label}>
+          <p>{label}</p>
           {value}
-        </Flex>
+        </div>
       ))}
 
       {milestones && (
         <>
-          <Divider
-            color="black"
-            w="calc(100% + 2rem)"
-            transform="translateX(-1rem)"
-          />
+          <hr className="border-black w-[calc(100%+2rem)] -translate-x-4" />
 
-          <Flex justify="flex-end">
-            <Text>
+          <div className="flex justify-end">
+            <p>
               {`${_.size(milestones)} ${_.size(milestones) > 1 ? 'Payments' : 'Payment'} Total`}
-            </Text>
+            </p>
 
             {initialPaymentDue && (
-              <Text color="blue.1" ml="2.5rem" fontWeight="bold">
+              <p className="text-blue-500 ml-10 font-bold">
                 {`${initialPaymentDue} ${symbol} Due Today`}
-              </Text>
+              </p>
             )}
-          </Flex>
+          </div>
         </>
       )}
 
-      <Grid templateColumns="1fr" gap="1rem" w="100%" marginTop="20px">
-        <Button
+      <div className="grid grid-cols-1 gap-4 w-full mt-5">
+        <button
           onClick={handleSubmit}
-          isDisabled={!canSubmit}
-          isLoading={isLoading}
-          textTransform="uppercase"
-          size={primaryButtonSize}
-          fontFamily="mono"
-          fontWeight="bold"
+          disabled={!canSubmit || isLoading}
+          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-mono font-bold text-sm md:text-base"
         >
+          {isLoading && (
+            <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
+          )}
           Next: {ESCROW_STEPS[4].next}
-        </Button>
-      </Grid>
-    </Stack>
+        </button>
+      </div>
+    </div>
   );
 }

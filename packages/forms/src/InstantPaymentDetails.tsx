@@ -1,4 +1,3 @@
-import { Card, Divider, Flex, Stack, Text } from '@chakra-ui/react';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
 import _ from 'lodash';
 import { formatUnits } from 'viem';
@@ -38,83 +37,56 @@ export const InstantPaymentDetails: React.FC<{
   }
 
   return (
-    <Card direction="column" py={6} w="100%">
-      <Stack w="100%">
-        <Stack px={6} spacing={4}>
+    <div className="rounded-lg border bg-card py-6 flex flex-col w-full">
+      <div className="flex flex-col w-full">
+        <div className="flex flex-col gap-4 px-6">
           {total ? (
-            <Flex
-              justify="space-between"
-              align="center"
-              fontWeight="bold"
-              fontSize="lg"
-            >
-              <Text>Amount</Text>
+            <div className="flex justify-between items-center font-bold text-lg">
+              <p>Amount</p>
 
-              <Text>{`${formatUnits(total, tokenBalance?.decimals || 18)} ${tokenBalance?.symbol}`}</Text>
-            </Flex>
+              <p>{`${formatUnits(total, tokenBalance?.decimals || 18)} ${tokenBalance?.symbol}`}</p>
+            </div>
           ) : null}
 
           {!!lateFee && (
-            <Flex
-              justify="space-between"
-              align="center"
-              fontWeight="bold"
-              fontSize="lg"
-            >
-              <Flex direction="column">
-                <Text>Late Fee</Text>
+            <div className="flex justify-between items-center font-bold text-lg">
+              <div className="flex flex-col">
+                <p>Late Fee</p>
 
-                <Text
-                  fontSize="x-small"
-                  fontWeight="normal"
-                  fontStyle="italic"
-                  color="grey"
-                >
+                <p className="text-xs font-normal italic text-gray-500">
                   {deadline ? deadlineLabel : `Not applicable`}
-                </Text>
-              </Flex>
+                </p>
+              </div>
 
-              <Text>{`${formatUnits(lateFee, tokenBalance?.decimals || 18)} ${tokenBalance?.symbol}`}</Text>
-            </Flex>
+              <p>{`${formatUnits(lateFee, tokenBalance?.decimals || 18)} ${tokenBalance?.symbol}`}</p>
+            </div>
           )}
 
-          <Flex
-            justify="space-between"
-            align="center"
-            fontWeight="bold"
-            fontSize="lg"
-          >
-            <Text>Deposited</Text>
+          <div className="flex justify-between items-center font-bold text-lg">
+            <p>Deposited</p>
 
-            <Text>{`${formatUnits(
+            <p>{`${formatUnits(
               amountFulfilled || BigInt(0),
               tokenBalance?.decimals || 18,
-            )} ${tokenBalance?.symbol}`}</Text>
-          </Flex>
-        </Stack>
+            )} ${tokenBalance?.symbol}`}</p>
+          </div>
+        </div>
 
-        <Divider my="1rem" />
+        <hr className="border-border my-4" />
 
-        <Flex
-          justify="space-between"
-          align="center"
-          color="black"
-          fontWeight="bold"
-          fontSize="lg"
-          px={6}
-        >
-          <Text>
+        <div className="flex justify-between items-center text-black font-bold text-lg px-6">
+          <p>
             {amountFulfilled && amountFulfilled > BigInt(0)
               ? 'Remaining'
               : 'Total'}{' '}
             Due
-          </Text>
-          <Text textAlign="right">{`${formatUnits(
+          </p>
+          <p className="text-right">{`${formatUnits(
             due,
             tokenBalance?.decimals || 18,
-          )} ${tokenBalance?.symbol}`}</Text>
-        </Flex>
-      </Stack>
-    </Card>
+          )} ${tokenBalance?.symbol}`}</p>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Button, SimpleGrid, Stack } from '@chakra-ui/react';
 import {
   InvoiceDetails,
   ModalTypes,
@@ -42,41 +41,43 @@ export const InstantButtonManager: React.FC<
 
   return (
     <>
-      <Stack w="100%">
+      <div className="flex flex-col gap-4 w-full">
         {isClient && (
-          <SimpleGrid columns={isTippable ? 2 : 1} spacing="1rem" w="100%">
-            <Button
-              textTransform="uppercase"
+          <div
+            className="grid gap-4 w-full"
+            style={{ gridTemplateColumns: isTippable ? '1fr 1fr' : '1fr' }}
+          >
+            <button
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
               onClick={() => openModal(ModalTypes.DEPOSIT)}
-              isDisabled={fulfilled}
+              disabled={fulfilled}
             >
               {fulfilled ? 'Paid' : 'Make Payment'}
-            </Button>
+            </button>
             {isTippable && (
-              <Button
-                variant="outline"
-                textTransform="uppercase"
+              <button
+                className="border border-input px-4 py-2 rounded-md hover:bg-accent uppercase"
                 onClick={() => openModal(ModalTypes.DEPOSIT)}
               >
                 Add Tip
-              </Button>
+              </button>
             )}
-          </SimpleGrid>
+          </div>
         )}
         {isProvider && (
-          <SimpleGrid columns={1} spacing="1rem" w="100%">
-            <Button
-              textTransform="uppercase"
+          <div className="grid grid-cols-1 gap-4 w-full">
+            <button
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
               onClick={() => openModal(ModalTypes.WITHDRAW)}
-              isDisabled={!isWithdrawable}
+              disabled={!isWithdrawable}
             >
               {tokenBalance?.value === BigInt(0) && fulfilled
                 ? 'Received'
                 : 'Receive'}
-            </Button>
-          </SimpleGrid>
+            </button>
+          </div>
         )}
-      </Stack>
+      </div>
 
       <Modal isOpen={modals?.deposit} onClose={closeModals}>
         <DepositFunds invoice={invoice} onClose={closeModals} />

@@ -1,4 +1,3 @@
-import { Button, SimpleGrid } from '@chakra-ui/react';
 import {
   InvoiceDetails,
   ModalTypes,
@@ -98,65 +97,60 @@ export function InvoiceButtonManager({
 
   return (
     <>
-      <SimpleGrid columns={numColumns} spacing="1rem" w="100%">
+      <div
+        className="grid gap-4 w-full"
+        style={{ gridTemplateColumns: `repeat(${numColumns}, minmax(0, 1fr))` }}
+      >
         {buttonEnabled.resolve && (
-          <Button
-            variant="solid"
-            textTransform="uppercase"
+          <button
+            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
             onClick={() => openModal(ModalTypes.RESOLVE)}
           >
             Resolve
-          </Button>
+          </button>
         )}
         {buttonEnabled.lock && (
-          <Button
-            variant="solid"
-            backgroundColor="red.500"
-            _hover={{ backgroundColor: 'red.400' }}
-            textTransform="uppercase"
+          <button
+            className="bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded-md uppercase"
             onClick={() => openModal(ModalTypes.LOCK)}
           >
             Raise Dispute
-          </Button>
+          </button>
         )}
         {buttonEnabled.deposit && (
-          <Button
-            variant="solid"
-            textTransform="uppercase"
+          <button
+            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
             onClick={() => openModal(ModalTypes.DEPOSIT)}
           >
             Deposit
-          </Button>
+          </button>
         )}
         {buttonEnabled.tip && (
-          <Button
-            variant="solid"
-            textTransform="uppercase"
+          <button
+            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
             onClick={() => openModal(ModalTypes.TIP)}
           >
             Tip
-          </Button>
+          </button>
         )}
         {buttonEnabled.release && (
-          <Button
-            variant="solid"
-            textTransform="uppercase"
+          <button
+            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
             onClick={() => openModal(ModalTypes.RELEASE)}
           >
             Release
-          </Button>
+          </button>
         )}
 
         {buttonEnabled.withdraw && (
-          <Button
-            variant="solid"
-            textTransform="uppercase"
+          <button
+            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
             onClick={() => openModal(ModalTypes.WITHDRAW)}
           >
             Withdraw
-          </Button>
+          </button>
         )}
-      </SimpleGrid>
+      </div>
 
       <Modal isOpen={modals?.lock} onClose={closeModals}>
         <LockFunds invoice={invoice} onClose={closeModals} />

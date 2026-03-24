@@ -1,19 +1,8 @@
-import {
-  Button,
-  Flex,
-  HStack,
-  Icon,
-  Link,
-  OrderedList,
-  ListItem,
-  Stack,
-  Text,
-  useClipboard,
-} from '@chakra-ui/react';
 import { BASE_URL } from '@smartinvoicexyz/constants';
 import { ChakraNextLink, CheckCircleIcon, CopyIcon } from '@smartinvoicexyz/ui';
 import { chainLabelFromId, getTxLink } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
+import { useState } from 'react';
 import { Address } from 'viem';
 import { useChainId } from 'wagmi';
 
@@ -31,136 +20,105 @@ export function RegisterSuccess({
   const url = `/invoice/${chainLabel}/${invoiceId}`;
   const fullUrl = `${BASE_URL}${url}`;
 
-  const { onCopy: copyId } = useClipboard(_.toLower(invoiceId));
-  const { onCopy: copyLink } = useClipboard(fullUrl);
+  const [idCopied, setIdCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const copyId = () => {
+    navigator.clipboard.writeText(_.toLower(invoiceId));
+    setIdCopied(true);
+    setTimeout(() => setIdCopied(false), 2000);
+  };
+  const copyLink = () => {
+    navigator.clipboard.writeText(fullUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
 
   return (
-    <Stack w="100%" gap="1rem" align="center" justify="center" px="1rem">
-      <Icon as={CheckCircleIcon} w={28} h={28} color="blue.500" />
+    <div className="flex flex-col gap-4 w-full items-center justify-center px-4">
+      <CheckCircleIcon className="w-28 h-28 text-blue-500" />
 
-      <Text color="black" textAlign="center" fontSize="lg">
+      <p className="text-black text-center text-lg">
         You can view your transaction
-        <Link
+        <a
           href={getTxLink(chainId, txHash)}
-          isExternal
-          color="blue.500"
-          ml={1}
-          textDecoration="underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 ml-1 underline"
         >
           here
-        </Link>
-      </Text>
+        </a>
+      </p>
 
-      <Stack w="100%" align="stretch">
-        <Text fontWeight="bold">Your Invoice ID</Text>
+      <div className="flex flex-col w-full items-stretch">
+        <p className="font-bold">Your Invoice ID</p>
 
-        <Flex
-          p="0.5rem"
-          justify="space-between"
-          align="center"
-          bg="white"
-          borderRadius="0.25rem"
-          w="100%"
-        >
-          <HStack
-            bgColor="gray.50"
-            p={3}
-            borderRadius={4}
-            overflow="clip"
-            w="full"
-          >
-            <Link
-              ml="0.5rem"
+        <div className="flex p-2 justify-between items-center bg-white rounded w-full">
+          <div className="flex items-center gap-2 bg-gray-50 p-3 rounded overflow-clip w-full">
+            <a
               href={url}
-              color="charcoal"
-              overflow="clip"
-              w="full"
+              className="ml-2 text-gray-800 overflow-clip w-full"
             >
               {invoiceId}
-            </Link>
-            <Button
+            </a>
+            <button
               onClick={copyId}
-              variant="ghost"
-              colorScheme="blue"
-              h="auto"
-              w="auto"
-              minW="2"
-              p={2}
+              className="hover:bg-accent p-2 rounded-md text-blue-500"
+              title={idCopied ? 'Copied!' : 'Copy'}
             >
-              <CopyIcon boxSize={4} />
-            </Button>
-          </HStack>
-        </Flex>
-      </Stack>
+              <CopyIcon className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <Stack w="100%" align="stretch" mb="1.5rem">
-        <Text fontWeight="bold">Link to Invoice</Text>
-        <Flex
-          p="0.5rem"
-          justify="space-between"
-          align="center"
-          bg="white"
-          borderRadius="0.25rem"
-          w="100%"
-        >
-          <HStack
-            bgColor="gray.50"
-            p={3}
-            borderRadius={4}
-            overflow="clip"
-            w="100%"
-          >
-            <Link
-              ml="0.5rem"
+      <div className="flex flex-col w-full items-stretch mb-6">
+        <p className="font-bold">Link to Invoice</p>
+        <div className="flex p-2 justify-between items-center bg-white rounded w-full">
+          <div className="flex items-center gap-2 bg-gray-50 p-3 rounded overflow-clip w-full">
+            <a
               href={url}
-              color="charcoal"
-              overflow="clip"
-              w="100%"
+              className="ml-2 text-gray-800 overflow-clip w-full"
             >
               {_.truncate(fullUrl, {
                 length: 60,
                 omission: '...',
               })}
-            </Link>
-            <Button
-              ml={4}
+            </a>
+            <button
               onClick={copyLink}
-              variant="ghost"
-              colorScheme="blue"
-              h="auto"
-              w="auto"
-              minW="2"
-              p={2}
+              className="hover:bg-accent p-2 rounded-md ml-4 text-blue-500"
+              title={linkCopied ? 'Copied!' : 'Copy'}
             >
-              <CopyIcon boxSize={4} />
-            </Button>
-          </HStack>
-        </Flex>
-      </Stack>
+              <CopyIcon className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <Stack w="100%" align="stretch" mb="1rem" px="0.5rem">
-        <Text fontWeight="bold" fontSize="sm" color="blackAlpha.700">
+      <div className="flex flex-col w-full items-stretch mb-4 px-2">
+        <p className="font-bold text-sm text-black/70">
           What happens next?
-        </Text>
-        <OrderedList spacing="0.25rem" fontSize="sm" color="blackAlpha.600" pl="0.5rem">
-          <ListItem>Share the invoice link with your client</ListItem>
-          <ListItem>Client deposits funds into escrow</ListItem>
-          <ListItem>Release funds as milestones are completed</ListItem>
-        </OrderedList>
-      </Stack>
+        </p>
+        <ol className="list-decimal pl-6 space-y-1 text-sm text-muted-foreground">
+          <li>Share the invoice link with your client</li>
+          <li>Client deposits funds into escrow</li>
+          <li>Release funds as milestones are completed</li>
+        </ol>
+      </div>
 
-      <HStack>
+      <div className="flex items-center gap-2">
         <ChakraNextLink href="/invoices">
-          <Button size="lg" fontWeight="medium" variant="ghost">
+          <button className="hover:bg-accent px-4 py-2 rounded-md text-lg font-medium">
             Return Home
-          </Button>
+          </button>
         </ChakraNextLink>
         <ChakraNextLink href={url}>
-          <Button size="lg" fontWeight="medium">
+          <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 text-lg font-medium">
             View Invoice
-          </Button>
+          </button>
         </ChakraNextLink>
-      </HStack>
-    </Stack>
+      </div>
+    </div>
   );
 }

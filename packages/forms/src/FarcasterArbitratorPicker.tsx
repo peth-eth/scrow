@@ -1,17 +1,6 @@
-import {
-  Alert,
-  AlertIcon,
-  Avatar,
-  Box,
-  Flex,
-  Input as ChakraInput,
-  Spinner,
-  Stack,
-  Text,
-  useOutsideClick,
-} from '@chakra-ui/react';
 import { useFarcasterSearch } from '@smartinvoicexyz/hooks';
 import type { FarcasterUser } from '@smartinvoicexyz/hooks';
+import { AlertCircle } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type Props = {
@@ -65,11 +54,17 @@ export function FarcasterArbitratorPicker({
     };
   }, []);
 
-  useOutsideClick({
-    ref: containerRef,
-    handler: () => setIsOpen(false),
-    enabled: isOpen,
-  });
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
   const handleSelect = useCallback(
     (user: FarcasterUser) => {
@@ -91,67 +86,58 @@ export function FarcasterArbitratorPicker({
 
   if (defaultLoading) {
     return (
-      <Flex justify="center" p={3}>
-        <Spinner size="sm" />
-        <Text ml={2} fontSize="sm" color="gray.500">
+      <div className="flex justify-center p-3">
+        <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+        <p className="ml-2 text-sm text-gray-500">
           Loading default arbitrator...
-        </Text>
-      </Flex>
+        </p>
+      </div>
     );
   }
 
   return (
-    <Stack spacing={3}>
+    <div className="flex flex-col gap-3">
       {selectedUser && (
-        <Flex
-          align="center"
-          gap={3}
-          p={3}
-          bg="gray.50"
-          borderRadius="md"
-          border="1px solid"
-          borderColor="gray.200"
-        >
-          <Avatar
-            size="sm"
+        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-md border border-gray-200">
+          <img
             src={selectedUser.pfp_url}
-            name={selectedUser.display_name}
+            alt={selectedUser.display_name}
+            className="w-8 h-8 rounded-full object-cover"
           />
-          <Box flex={1}>
-            <Text fontWeight="bold" fontSize="sm">
+          <div className="flex-1">
+            <p className="font-bold text-sm">
               {selectedUser.display_name}
-            </Text>
-            <Text fontSize="xs" color="gray.500">
+            </p>
+            <p className="text-xs text-gray-500">
               @{selectedUser.username}
-            </Text>
-          </Box>
-          <Text
-            fontSize="xs"
-            color="blue.500"
-            cursor="pointer"
+            </p>
+          </div>
+          <span
+            className="text-xs text-blue-500 cursor-pointer"
             onClick={() => {
               setSelectedUser(null);
               setQuery('');
             }}
           >
             Change
-          </Text>
-        </Flex>
+          </span>
+        </div>
       )}
 
       {noWallet && (
-        <Alert status="warning" borderRadius="md">
-          <AlertIcon />
-          <Text fontSize="sm">
+        <div className="flex items-start gap-3 rounded-md border border-yellow-300 bg-yellow-50 p-4" role="alert">
+          <AlertCircle className="h-5 w-5 mt-0.5 text-yellow-600 shrink-0" />
+          <p className="text-sm">
             This user has no connected Ethereum wallet and cannot act as
             arbitrator.
-          </Text>
-        </Alert>
+          </p>
+        </div>
       )}
 
       {!selectedUser && (
-        <Box ref={containerRef} position="relative">
-          <ChakraInput
+        <div ref={containerRef} className="relative">
+          <input
+            type="text"
             placeholder="Search Farcaster user..."
             value={query}
             onChange={e => {
@@ -161,35 +147,21 @@ export function FarcasterArbitratorPicker({
             onFocus={() => {
               if (users.length > 0) setIsOpen(true);
             }}
-            size="sm"
+            className="w-full px-3 py-1.5 text-sm border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
           />
 
           {isOpen && query.length > 0 && (
-            <Box
-              position="absolute"
-              top="100%"
-              left={0}
-              right={0}
-              bg="white"
-              border="1px solid"
-              borderColor="gray.200"
-              borderRadius="md"
-              boxShadow="md"
-              zIndex={10}
-              maxH="240px"
-              overflowY="auto"
-              mt={1}
-            >
+            <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-md z-10 max-h-60 overflow-y-auto mt-1">
               {isLoading && (
-                <Flex justify="center" p={3}>
-                  <Spinner size="sm" />
-                </Flex>
+                <div className="flex justify-center p-3">
+                  <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+                </div>
               )}
 
               {!isLoading && users.length === 0 && (
-                <Text p={3} fontSize="sm" color="gray.500">
+                <p className="p-3 text-sm text-gray-500">
                   No users found
-                </Text>
+                </p>
               )}
 
               {!isLoading &&
@@ -198,42 +170,40 @@ export function FarcasterArbitratorPicker({
                     user.primary_eth_address ||
                     user.eth_addresses.length > 0;
                   return (
-                    <Flex
+                    <div
                       key={user.fid}
-                      align="center"
-                      gap={3}
-                      p={2}
-                      px={3}
-                      cursor={hasWallet ? 'pointer' : 'not-allowed'}
-                      opacity={hasWallet ? 1 : 0.5}
-                      _hover={hasWallet ? { bg: 'gray.50' } : {}}
+                      className={`flex items-center gap-3 p-2 px-3 ${
+                        hasWallet
+                          ? 'cursor-pointer hover:bg-gray-50'
+                          : 'cursor-not-allowed opacity-50'
+                      }`}
                       onClick={() => hasWallet && handleSelect(user)}
                     >
-                      <Avatar
-                        size="xs"
+                      <img
                         src={user.pfp_url}
-                        name={user.display_name}
+                        alt={user.display_name}
+                        className="w-6 h-6 rounded-full object-cover"
                       />
-                      <Box>
-                        <Text fontSize="sm" fontWeight="medium">
+                      <div>
+                        <p className="text-sm font-medium">
                           {user.display_name}
-                        </Text>
-                        <Text fontSize="xs" color="gray.500">
+                        </p>
+                        <p className="text-xs text-gray-500">
                           @{user.username}
                           {!hasWallet && ' (no wallet)'}
-                        </Text>
-                      </Box>
-                    </Flex>
+                        </p>
+                      </div>
+                    </div>
                   );
                 })}
-            </Box>
+            </div>
           )}
-        </Box>
+        </div>
       )}
 
-      <Text fontSize="xs" color="gray.500">
+      <p className="text-xs text-gray-500">
         Search for a Farcaster user to serve as arbitrator in case of disputes.
-      </Text>
-    </Stack>
+      </p>
+    </div>
   );
 }

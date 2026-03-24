@@ -1,4 +1,3 @@
-import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   createInvoiceDetailsQueryKey,
@@ -103,48 +102,32 @@ export function ResolveFunds({
 
   if (!isLocked) {
     return (
-      <Stack
-        w="100%"
-        spacing="1rem"
-        as="form"
+      <form
         onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 w-full"
       >
-        <Heading
-          mb="1rem"
-          as="h3"
-          fontSize="2xl"
-          transition="all ease-in-out .25s"
-          _hover={{ cursor: 'pointer', color: 'raid' }}
-        >
+        <h3 className="mb-4 text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
           Resolve Dispute
-        </Heading>
-        <Text textAlign="center" fontSize="sm" mb="1rem">
+        </h3>
+        <p className="text-center text-sm mb-4">
           Invoice is not disputed
-        </Text>
-        <Button
+        </p>
+        <button
           onClick={onClose}
-          variant="solid"
-          textTransform="uppercase"
-          w="100%"
+          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase w-full"
         >
           Close
-        </Button>
-      </Stack>
+        </button>
+      </form>
     );
   }
 
   return (
-    <Stack as="form" w="100%" spacing="1rem" onSubmit={handleSubmit(onSubmit)}>
-      <Heading
-        mb="1rem"
-        as="h3"
-        fontSize="2xl"
-        transition="all ease-in-out .25s"
-        _hover={{ cursor: 'pointer', color: 'raid' }}
-      >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+      <h3 className="mb-4 text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
         Resolve Dispute
-      </Heading>
-      <Text textAlign="center" fontSize="sm" mb="1rem">
+      </h3>
+      <p className="text-center text-sm mb-4">
         {`You'll need to distribute the total balance of ${formatUnits(
           tokenBalance?.value ?? BigInt(0),
           tokenBalance?.decimals ?? 18,
@@ -153,7 +136,7 @@ export function ResolveFunds({
             ? '0'
             : BigInt(100) / resolutionRate
         }% arbitration fee which you shall receive.`}
-      </Text>
+      </p>
 
       <Textarea
         name="description"
@@ -213,20 +196,21 @@ export function ResolveFunds({
         rightElement={<TokenDescriptor tokenBalance={tokenBalance} />}
       />
 
-      <Button
+      <button
         type="submit"
-        isDisabled={
+        disabled={
           !resolverAward ||
           resolverAward <= BigInt(0) ||
           !description ||
           !resolve
         }
-        textTransform="uppercase"
-        variant="solid"
-        isLoading={isLoading}
+        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
       >
+        {isLoading && (
+          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
+        )}
         Resolve
-      </Button>
-    </Stack>
+      </button>
+    </form>
   );
 }

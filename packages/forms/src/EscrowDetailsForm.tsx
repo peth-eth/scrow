@@ -1,17 +1,3 @@
-import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Link,
-  Stack,
-  Text,
-  useBreakpointValue,
-} from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   ARBITRATION_FEE_PERCENT,
@@ -27,6 +13,7 @@ import {
   getResolverInfo,
   getResolverString,
 } from '@smartinvoicexyz/utils';
+import { AlertCircle, Info } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { useChainId } from 'wagmi';
@@ -79,8 +66,6 @@ export function EscrowDetailsForm({
     updateStep();
   };
 
-  const buttonSize = useBreakpointValue({ base: 'sm', sm: 'md', md: 'lg' });
-
   // Arbitrator mode: 'farcaster' (default), 'kleros', or 'custom'
   const [arbitratorMode, setArbitratorMode] = useState<string>(
     resolverType === 'kleros' ? 'kleros' : 'farcaster',
@@ -104,9 +89,9 @@ export function EscrowDetailsForm({
   );
 
   return (
-    <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={4} w="100%">
-        <Stack spacing={4}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-4">
           <Input
             label="Client Address"
             tooltip="This is the wallet address your client uses to access the invoice, pay with, & release escrow funds. Ensure your client has full control of this address."
@@ -115,9 +100,9 @@ export function EscrowDetailsForm({
             localForm={localForm}
             registerOptions={{ required: true }}
           />
-        </Stack>
+        </div>
 
-        <Stack spacing={4}>
+        <div className="flex flex-col gap-4">
           <Input
             label="Service Provider Address"
             tooltip="This is your controlling address. You use it to access this invoice, manage transactions, and receive funds released from escrow. Ensure you have full control over this address."
@@ -126,36 +111,48 @@ export function EscrowDetailsForm({
             localForm={localForm}
             registerOptions={{ required: true }}
           />
-        </Stack>
+        </div>
 
-        <Stack gap={4}>
-          <Text fontWeight="bold" fontSize="sm">
+        <div className="flex flex-col gap-4">
+          <p className="font-bold text-sm">
             Arbitration Provider
-          </Text>
+          </p>
 
-          <Flex gap={2}>
-            <Button
-              size="sm"
-              variant={arbitratorMode === 'farcaster' ? 'solid' : 'outline'}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              className={
+                arbitratorMode === 'farcaster'
+                  ? 'bg-primary text-white px-3 py-1 rounded-md text-sm hover:bg-primary/90'
+                  : 'border border-input px-3 py-1 rounded-md text-sm hover:bg-accent'
+              }
               onClick={() => handleArbitratorModeChange('farcaster')}
             >
               Community
-            </Button>
-            <Button
-              size="sm"
-              variant={arbitratorMode === 'kleros' ? 'solid' : 'outline'}
+            </button>
+            <button
+              type="button"
+              className={
+                arbitratorMode === 'kleros'
+                  ? 'bg-primary text-white px-3 py-1 rounded-md text-sm hover:bg-primary/90'
+                  : 'border border-input px-3 py-1 rounded-md text-sm hover:bg-accent'
+              }
               onClick={() => handleArbitratorModeChange('kleros')}
             >
               Kleros
-            </Button>
-            <Button
-              size="sm"
-              variant={arbitratorMode === 'custom' ? 'solid' : 'outline'}
+            </button>
+            <button
+              type="button"
+              className={
+                arbitratorMode === 'custom'
+                  ? 'bg-primary text-white px-3 py-1 rounded-md text-sm hover:bg-primary/90'
+                  : 'border border-input px-3 py-1 rounded-md text-sm hover:bg-accent'
+              }
               onClick={() => handleArbitratorModeChange('custom')}
             >
               Custom Address
-            </Button>
-          </Flex>
+            </button>
+          </div>
 
           {arbitratorMode === 'farcaster' && (
             <FarcasterArbitratorPicker
@@ -166,20 +163,20 @@ export function EscrowDetailsForm({
 
           {arbitratorMode === 'kleros' && (
             <>
-              <Alert bg="yellow.500" borderRadius="md" color="white">
-                <AlertIcon color="whiteAlpha.800" />
-                <Box>
-                  <AlertTitle fontSize="sm">
+              <div className="flex items-start gap-3 rounded-md bg-yellow-500 p-4 text-white" role="alert">
+                <AlertCircle className="h-5 w-5 mt-0.5 text-white/80 shrink-0" />
+                <div>
+                  <h5 className="font-medium text-sm">
                     Only choose Kleros if total invoice value is greater than
                     1000 USD
-                  </AlertTitle>
-                  <AlertDescription fontSize="sm">
+                  </h5>
+                  <p className="text-sm">
                     Smart Invoice will only escalate claims to Kleros that are
                     linked to smart escrows holding tokens with a minimum value
                     of 1000 USD at the time of locking the funds.
-                  </AlertDescription>
-                </Box>
-              </Alert>
+                  </p>
+                </div>
+              </div>
 
               <Select
                 name="klerosCourt"
@@ -200,29 +197,30 @@ export function EscrowDetailsForm({
                 name="isResolverTermsChecked"
                 localForm={localForm}
                 options={[
-                  <Text>
+                  <span>
                     {`I agree to ${getResolverString('kleros', chainId)}`}
                     &apos;s{' '}
-                    <Link
+                    <a
                       href={getResolverInfo('kleros', chainId)?.termsUrl}
-                      isExternal
-                      textDecor="underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
                     >
                       terms of service
-                    </Link>
-                  </Text>,
+                    </a>
+                  </span>,
                 ]}
               />
             </>
           )}
 
-          <Alert status="info" borderRadius="md" fontSize="sm">
-            <AlertIcon />
-            <AlertDescription>
+          <div className="flex items-start gap-3 rounded-md border p-4 text-sm" role="alert">
+            <Info className="h-5 w-5 mt-0.5 text-blue-500 shrink-0" />
+            <p>
               If a dispute occurs, the arbitrator receives a {ARBITRATION_FEE_PERCENT}% resolution fee
               from the disputed funds.
-            </AlertDescription>
-          </Alert>
+            </p>
+          </div>
 
           {arbitratorMode === 'custom' && (
             <Input
@@ -233,20 +231,18 @@ export function EscrowDetailsForm({
               localForm={localForm}
             />
           )}
-        </Stack>
+        </div>
 
-        <Grid templateColumns="1fr" gap="1rem" w="100%" marginTop="20px">
-          <Button
+        <div className="grid grid-cols-1 gap-4 w-full mt-5">
+          <button
             type="submit"
-            isDisabled={!isValid}
-            textTransform="uppercase"
-            size={buttonSize}
-            fontWeight="bold"
+            disabled={!isValid}
+            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-bold text-sm md:text-base"
           >
             Next: {ESCROW_STEPS[2].next}
-          </Button>
-        </Grid>
-      </Stack>
-    </Box>
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }

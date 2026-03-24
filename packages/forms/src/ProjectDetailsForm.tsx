@@ -1,4 +1,3 @@
-import { Box, Button, Grid, SimpleGrid, Stack } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ESCROW_STEPS, INVOICE_TYPES } from '@smartinvoicexyz/constants';
 import { ValueOf } from '@smartinvoicexyz/types';
@@ -7,7 +6,6 @@ import {
   Input,
   LinkInput,
   Textarea,
-  useMediaStyles,
 } from '@smartinvoicexyz/ui';
 import {
   oneMonthFromNow,
@@ -70,8 +68,6 @@ export function ProjectDetailsForm({
     trigger,
   } = localForm;
 
-  const { primaryButtonSize } = useMediaStyles();
-
   const onSubmit = async (values: Partial<FormValues>) => {
     setValue('title', values.title);
     setValue('description', values.description);
@@ -86,8 +82,8 @@ export function ProjectDetailsForm({
   };
 
   return (
-    <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={6} w="100%">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-6 w-full">
         <Input
           label="Title"
           name="title"
@@ -113,7 +109,7 @@ export function ProjectDetailsForm({
           localForm={localForm}
         />
 
-        <SimpleGrid columns={3} paddingBottom={4}>
+        <div className="grid grid-cols-3 pb-4">
           <DatePicker
             label="Start Date"
             name="startDate"
@@ -155,21 +151,18 @@ export function ProjectDetailsForm({
               }}
             />
           )}
-        </SimpleGrid>
+        </div>
 
-        <Grid templateColumns="1fr" gap="1rem" w="100%" marginTop="20px">
-          <Button
+        <div className="grid grid-cols-1 gap-4 w-full mt-5">
+          <button
             type="submit"
-            isDisabled={!isValid}
-            textTransform="uppercase"
-            size={primaryButtonSize}
-            fontFamily="mono"
-            fontWeight="bold"
+            disabled={!isValid}
+            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-mono font-bold text-sm md:text-base"
           >
             Next: {ESCROW_STEPS[1].next}
-          </Button>
-        </Grid>
-      </Stack>
-    </Box>
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }

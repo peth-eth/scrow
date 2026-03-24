@@ -1,24 +1,3 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Button,
-  Divider,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Grid,
-  HStack,
-  Icon,
-  IconButton,
-  SimpleGrid,
-  Stack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   ARBITRATION_FEE_PERCENT,
@@ -35,7 +14,6 @@ import {
   QuestionIcon,
   ReactSelect,
   Textarea,
-  useMediaStyles,
 } from '@smartinvoicexyz/ui';
 import {
   commify,
@@ -98,8 +76,6 @@ export function PaymentsForm({
     t => t.address.toLowerCase() === localToken?.toLowerCase(),
   )[0];
 
-  const { primaryButtonSize } = useMediaStyles();
-
   const onSubmit = (values: Partial<FormInvoice>) => {
     setValue('milestones', values?.milestones);
     setValue('token', values?.token);
@@ -129,19 +105,19 @@ export function PaymentsForm({
     : [0, 0];
 
   return (
-    <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
-      <Flex w="100%">
-        <FormControl isRequired>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <div className="flex w-full">
+        <div className="w-full">
           <ReactSelect
             name="token"
             label="Payment Token"
             defaultValue={nativeWrappedToken.toLowerCase()}
             tooltip={
-              <Text>
+              <span>
                 {`This is the cryptocurrency you'll receive payment in. The network your wallet is connected to determines which tokens are displayed here.`}
                 <br />
                 {`If you change your wallet network now, you'll be sent back to Step 1.`}
-              </Text>
+              </span>
             }
             localForm={localForm}
             options={_.map(tokens, t => ({
@@ -149,104 +125,87 @@ export function PaymentsForm({
               label: `${t.name} (${t.symbol})`,
             }))}
           />
-        </FormControl>
-      </Flex>
-      <FormControl isInvalid={!!errors?.milestones} w="100%" isRequired>
-        <Stack w="100%">
-          <HStack spacing={4}>
-            <FormLabel m={0}>Milestones</FormLabel>
-            <Tooltip
-              label="Payment amounts for each milestone. Additional milestones can be added later."
-              placement="right"
-              hasArrow
-              shouldWrapChildren
+        </div>
+      </div>
+      <div className={`w-full ${errors?.milestones ? 'text-red-500' : ''}`}>
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-4">
+            <label className="font-medium m-0">Milestones</label>
+            <span
+              title="Payment amounts for each milestone. Additional milestones can be added later."
             >
-              <Icon as={QuestionIcon} boxSize={3} borderRadius="full" />
-            </Tooltip>
-          </HStack>
-          <Accordion w="100%" alignItems="stretch" allowMultiple>
+              <QuestionIcon className="w-3 h-3 rounded-full" />
+            </span>
+          </div>
+          <div className="w-full flex flex-col">
             {_.map(milestonesFields, (field, index) => (
-              <HStack
+              <div
                 key={field.id}
-                spacing={4}
-                w="100%"
-                justify="space-between"
+                className="flex items-center gap-4 w-full justify-between"
               >
-                <AccordionItem w="100%">
-                  {({ isExpanded }) => (
-                    <>
-                      <AccordionButton
+                <details className="w-full group" open={false}>
+                  <summary className="w-full px-2 flex justify-between items-center cursor-pointer list-none">
+                    <span>{localMilestones?.[index].title ?? ''}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-lg group-open:hidden">
+                        {localMilestones?.[index].value}
+                        {` `}
+                        {invoiceTokenData?.symbol}
+                      </span>
+                    </div>
+                  </summary>
+                  <div className="px-2 mt-2">
+                    <div className="grid grid-cols-2 gap-4 w-full mb-2">
+                      <Input
+                        label="Title"
+                        name={`milestones.${index}.title`}
+                        localForm={localForm}
+                      />
+                      <NumberInput
+                        label="Amount"
+                        required
+                        name={`milestones.${index}.value`}
+                        step={50}
+                        min={0}
+                        max={1_000_000}
+                        placeholder="500"
+                        variant="outline"
+                        localForm={localForm}
                         w="100%"
-                        px={2}
-                        justifyContent="space-between"
-                      >
-                        <Text>{localMilestones?.[index].title ?? ''}</Text>
-                        <HStack>
-                          {!isExpanded && (
-                            <Text fontWeight="bold" fontSize="lg">
-                              {localMilestones?.[index].value}
-                              {` `}
-                              {invoiceTokenData?.symbol}
-                            </Text>
-                          )}
-                          <AccordionIcon
-                            color="blue.1"
-                            w="2rem"
-                            h="2rem"
-                            m={0}
-                          />
-                        </HStack>
-                      </AccordionButton>
-                      <AccordionPanel px={2}>
-                        <SimpleGrid columns={2} spacing={4} w="100%" mb={2}>
-                          <Input
-                            label="Title"
-                            name={`milestones.${index}.title`}
-                            localForm={localForm}
-                          />
-                          <NumberInput
-                            label="Amount"
-                            required
-                            name={`milestones.${index}.value`}
-                            step={50}
-                            min={0}
-                            max={1_000_000}
-                            placeholder="500"
-                            variant="outline"
-                            localForm={localForm}
-                            w="100%"
-                            rightElement={
-                              <Text p={2}>{invoiceTokenData?.symbol}</Text>
-                            }
-                          />
-                        </SimpleGrid>
-                        <Textarea
-                          label="Description"
-                          name={`milestones.${index}.description`}
-                          localForm={localForm}
-                        />
-                      </AccordionPanel>
-                    </>
-                  )}
-                </AccordionItem>
-                <IconButton
-                  icon={<Icon as={DeleteIcon} />}
+                        rightElement={
+                          <span className="p-2">{invoiceTokenData?.symbol}</span>
+                        }
+                      />
+                    </div>
+                    <Textarea
+                      label="Description"
+                      name={`milestones.${index}.description`}
+                      localForm={localForm}
+                    />
+                  </div>
+                </details>
+                <button
+                  type="button"
+                  className="border border-input p-2 rounded-md hover:bg-accent"
                   aria-label="remove milestone"
-                  variant="outline"
                   onClick={() => removeMilestone(index)}
-                />
-              </HStack>
+                >
+                  <DeleteIcon className="w-4 h-4" />
+                </button>
+              </div>
             ))}
-          </Accordion>
-          <Flex>
-            <FormErrorMessage mb={4}>
-              {errors?.milestones?.message?.toString()}
-            </FormErrorMessage>
-          </Flex>
+          </div>
+          <div className="flex">
+            {errors?.milestones?.message && (
+              <p className="text-red-500 text-sm mb-4">
+                {errors?.milestones?.message?.toString()}
+              </p>
+            )}
+          </div>
 
-          <Button
-            variant="outline"
-            w="100%"
+          <button
+            type="button"
+            className="border border-input px-4 py-2 rounded-md hover:bg-accent w-full flex items-center justify-center gap-2"
             onClick={() => {
               appendMilestone({
                 value: '1',
@@ -254,52 +213,41 @@ export function PaymentsForm({
                 description: '',
               });
             }}
-            rightIcon={<Icon as={AddIcon} boxSize={3} />}
           >
             Add a new milestone
-          </Button>
-        </Stack>
-      </FormControl>
-      <Divider />
+            <AddIcon className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+      <hr className="border-border" />
 
-      <HStack
-        w="100%"
-        justify="space-between"
-        pl={2}
-        pr={6}
-        fontSize="xl"
-        fontWeight="bold"
-        my={4}
-      >
-        <Text>
+      <div className="flex items-center w-full justify-between pl-2 pr-6 text-xl font-bold my-4">
+        <p>
           Total {milestonesFields.length} Milestones:{' '}
           {commify(total.toFixed(decimals), decimals)}
           {` `}
           {invoiceTokenData?.symbol}
-        </Text>
-      </HStack>
+        </p>
+      </div>
 
-      <Stack spacing={1} pl={2} pr={6}>
-        <Text fontSize="xs" color="grey">
+      <div className="flex flex-col gap-1 pl-2 pr-6">
+        <p className="text-xs text-gray-500">
           Platform Fee: {Number(PLATFORM_FEE_BPS) / 100}% on each release
-        </Text>
-        <Text fontSize="xs" color="grey">
+        </p>
+        <p className="text-xs text-gray-500">
           Arbitration Fee: {ARBITRATION_FEE_PERCENT}% of disputed amount (only if a dispute occurs)
-        </Text>
-      </Stack>
+        </p>
+      </div>
 
-      <Grid templateColumns="1fr" gap="1rem" w="100%">
-        <Button
+      <div className="grid grid-cols-1 gap-4 w-full">
+        <button
           type="submit"
-          isDisabled={!isValid}
-          textTransform="uppercase"
-          size={primaryButtonSize}
-          fontFamily="mono"
-          fontWeight="bold"
+          disabled={!isValid}
+          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-mono font-bold text-sm md:text-base"
         >
           Next: {ESCROW_STEPS[3].next}
-        </Button>
-      </Grid>
-    </Stack>
+        </button>
+      </div>
+    </form>
   );
 }

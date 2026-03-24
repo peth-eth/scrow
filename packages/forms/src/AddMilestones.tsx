@@ -1,22 +1,3 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  Heading,
-  HStack,
-  Icon,
-  IconButton,
-  SimpleGrid,
-  Stack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   createInvoiceDetailsQueryKey,
@@ -31,7 +12,6 @@ import {
   NumberInput,
   QuestionIcon,
   Textarea,
-  useMediaStyles,
   useToast,
 } from '@smartinvoicexyz/ui';
 import {
@@ -156,22 +136,13 @@ export function AddMilestones({
         )
     : [0, 0];
 
-  const { primaryButtonSize } = useMediaStyles();
-
   const isDisabled = !!prepareError || milestones?.some(m => !m.value);
 
   return (
-    <Stack w="100%" spacing={4}>
-      <Heading
-        fontWeight="bold"
-        mb="1rem"
-        textTransform="uppercase"
-        textAlign="center"
-        color="black"
-        size="lg"
-      >
+    <div className="flex flex-col gap-4 w-full">
+      <h2 className="font-bold mb-4 uppercase text-center text-black text-lg">
         Add New Payment Milestones
-      </Heading>
+      </h2>
 
       <LinkInput
         name="document"
@@ -180,100 +151,85 @@ export function AddMilestones({
         localForm={localForm}
       />
 
-      <FormControl isInvalid={!!errors?.milestones}>
-        <Stack w="100%">
-          <HStack align="center" spacing={1}>
-            <Heading size="sm">Milestones</Heading>
-            <Tooltip
-              label="Amounts of each milestone for the escrow. Additional milestones can be added later."
-              placement="right"
-              hasArrow
+      <div className={errors?.milestones ? 'text-red-500' : ''}>
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-1">
+            <h4 className="text-sm font-semibold">Milestones</h4>
+            <span
+              title="Amounts of each milestone for the escrow. Additional milestones can be added later."
             >
-              <Icon as={QuestionIcon} boxSize={3} borderRadius="full" />
-            </Tooltip>
-          </HStack>
-          <Accordion w="100%" alignItems="stretch" allowMultiple>
+              <QuestionIcon className="w-3 h-3 rounded-full" />
+            </span>
+          </div>
+          <div className="w-full flex flex-col">
             {_.map(milestonesFields, (field, index) => (
-              <HStack
+              <div
                 key={field.id}
-                spacing={4}
-                w="100%"
-                justify="space-between"
+                className="flex items-center gap-4 w-full justify-between"
               >
-                <AccordionItem w="100%">
-                  {({ isExpanded }) => (
-                    <>
-                      <AccordionButton
+                <details className="w-full group" open={false}>
+                  <summary className="w-full px-2 flex justify-between items-center cursor-pointer list-none">
+                    <span>{milestones?.[index].title ?? ''}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-lg group-open:hidden">
+                        {milestones?.[index].value}
+                        {` `}
+                        {tokenMetadata?.symbol}
+                      </span>
+                    </div>
+                  </summary>
+                  <div className="px-2 mt-2">
+                    <div className="grid grid-cols-2 gap-4 w-full mb-2">
+                      <Input
+                        label="Title"
+                        name={`milestones.${index}.title`}
+                        localForm={localForm}
+                      />
+                      <NumberInput
+                        label="Amount"
+                        required
+                        name={`milestones.${index}.value`}
+                        step={50}
+                        min={0}
+                        max={1_000_000}
+                        placeholder="500"
+                        variant="outline"
+                        localForm={localForm}
                         w="100%"
-                        px={2}
-                        justifyContent="space-between"
-                      >
-                        <Text>{milestones?.[index].title ?? ''}</Text>
-                        <HStack>
-                          {!isExpanded && (
-                            <Text fontWeight="bold" fontSize="lg">
-                              {milestones?.[index].value}
-                              {` `}
-                              {tokenMetadata?.symbol}
-                            </Text>
-                          )}
-                          <AccordionIcon
-                            color="blue.1"
-                            w="2rem"
-                            h="2rem"
-                            m={0}
-                          />
-                        </HStack>
-                      </AccordionButton>
-                      <AccordionPanel px={2}>
-                        <SimpleGrid columns={2} spacing={4} w="100%" mb={2}>
-                          <Input
-                            label="Title"
-                            name={`milestones.${index}.title`}
-                            localForm={localForm}
-                          />
-                          <NumberInput
-                            label="Amount"
-                            required
-                            name={`milestones.${index}.value`}
-                            step={50}
-                            min={0}
-                            max={1_000_000}
-                            placeholder="500"
-                            variant="outline"
-                            localForm={localForm}
-                            w="100%"
-                            rightElement={
-                              <Text p={2}>{tokenMetadata?.symbol}</Text>
-                            }
-                          />
-                        </SimpleGrid>
-                        <Textarea
-                          label="Description"
-                          name={`milestones.${index}.description`}
-                          localForm={localForm}
-                        />
-                      </AccordionPanel>
-                    </>
-                  )}
-                </AccordionItem>
-                <IconButton
-                  icon={<Icon as={DeleteIcon} />}
+                        rightElement={
+                          <span className="p-2">{tokenMetadata?.symbol}</span>
+                        }
+                      />
+                    </div>
+                    <Textarea
+                      label="Description"
+                      name={`milestones.${index}.description`}
+                      localForm={localForm}
+                    />
+                  </div>
+                </details>
+                <button
+                  type="button"
+                  className="border border-input p-2 rounded-md hover:bg-accent"
                   aria-label="remove milestone"
-                  variant="outline"
                   onClick={() => removeMilestone(index)}
-                />
-              </HStack>
+                >
+                  <DeleteIcon className="w-4 h-4" />
+                </button>
+              </div>
             ))}
-          </Accordion>
-          <Flex>
-            <FormErrorMessage mb={4}>
-              {errors?.milestones?.message as string}
-            </FormErrorMessage>
-          </Flex>
+          </div>
+          <div className="flex">
+            {errors?.milestones?.message && (
+              <p className="text-red-500 text-sm mb-4">
+                {errors?.milestones?.message as string}
+              </p>
+            )}
+          </div>
 
-          <Button
-            variant="outline"
+          <button
+            type="button"
+            className="border border-input px-4 py-2 rounded-md hover:bg-accent w-full flex items-center justify-center gap-2"
             onClick={() => {
               appendMilestone({
                 value: '1',
@@ -281,31 +237,31 @@ export function AddMilestones({
                 description: '',
               });
             }}
-            rightIcon={<Icon as={AddIcon} boxSize={3} />}
           >
             Add a new milestone
-          </Button>
-        </Stack>
-      </FormControl>
+            <AddIcon className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
 
       {!!newTotalDue && (
-        <Stack>
-          <HStack>
-            <Text fontWeight="bold" color="black">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <p className="font-bold text-black">
               Total {milestones?.length} milestones:
-            </Text>
+            </p>
 
-            <Text>
+            <p>
               {commify(totalNew.toFixed(decimals), decimals)}{' '}
               {tokenMetadata?.symbol}
-            </Text>
-          </HStack>
+            </p>
+          </div>
 
-          <HStack>
-            <Text fontWeight="bold" color="black">
+          <div className="flex items-center gap-2">
+            <p className="font-bold text-black">
               Potential dispute fee:
-            </Text>
-            <Text>
+            </p>
+            <p>
               {commify(
                 newDisputeFee.toFixed(
                   newDisputeFee < 1 ? decimals + 3 : decimals,
@@ -313,28 +269,28 @@ export function AddMilestones({
                 newDisputeFee < 1 ? decimals + 3 : decimals,
               )}{' '}
               {tokenMetadata?.symbol}
-            </Text>
+            </p>
             decimal : {getDecimals(newDisputeFee.toString())}
-          </HStack>
-        </Stack>
+          </div>
+        </div>
       )}
 
-      <Text>
+      <p>
         Note: new milestones may take a few minutes to appear in the list
-      </Text>
+      </p>
 
-      <Button
+      <button
         onClick={() => {
           writeAsync?.();
         }}
-        isLoading={isLoading}
-        isDisabled={isDisabled}
-        textTransform="uppercase"
-        size={primaryButtonSize}
-        w="100%"
+        disabled={isDisabled}
+        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-bold w-full text-sm md:text-base"
       >
+        {isLoading && (
+          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
+        )}
         Add
-      </Button>
-    </Stack>
+      </button>
+    </div>
   );
 }

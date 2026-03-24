@@ -1,4 +1,3 @@
-import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import { PLATFORM_FEE_BPS, TOASTS } from '@smartinvoicexyz/constants';
 import {
   createInvoiceDetailsQueryKey,
@@ -74,81 +73,46 @@ export function ReleaseFunds({
   });
 
   return (
-    <Stack w="100%" spacing="1rem" align="center">
-      <Heading
-        mb="1rem"
-        as="h3"
-        fontSize="2xl"
-        transition="all ease-in-out .25s"
-        _hover={{ cursor: 'pointer', color: 'raid' }}
-      >
+    <div className="flex flex-col gap-4 w-full items-center">
+      <h3 className="mb-4 text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
         Release Funds
-      </Heading>
-      <Text
-        textAlign="center"
-        fontSize="sm"
-        mb="1rem"
-        w="60%"
-        color="blackAlpha.800"
-      >
+      </h3>
+      <p className="text-center text-sm mb-4 w-3/5 text-black/80">
         Follow the instructions in your wallet to release funds from the escrow
         to the provider account.
-      </Text>
-      <Text textAlign="center" fontSize="sm" color="blackAlpha.600">
+      </p>
+      <p className="text-center text-sm text-muted-foreground">
         Funds will be sent to the provider.
-      </Text>
-      <Stack
-        my="2rem"
-        px="5rem"
-        py="1rem"
-        bg="blackAlpha.300"
-        borderRadius="0.5rem"
-      >
-        <Text color="blackAlpha.600" fontSize="0.875rem" textAlign="center">
+      </p>
+      <div className="my-8 px-20 py-4 bg-black/30 rounded-lg">
+        <p className="text-muted-foreground text-sm text-center">
           Amount To Be Released
-        </Text>
-        <Text
-          color="blue.500"
-          fontSize="xl"
-          fontWeight="bold"
-          textAlign="center"
-        >{`${formatUnits(
+        </p>
+        <p className="text-blue-500 text-xl font-bold text-center">{`${formatUnits(
           getReleaseAmount(
             currentMilestoneNumber,
             amounts,
             tokenBalance?.value,
           ),
           tokenBalance?.decimals || 18,
-        )} ${tokenBalance?.symbol}`}</Text>
-      </Stack>
-      <Text textAlign="center" fontSize="xs" color="blackAlpha.500">
+        )} ${tokenBalance?.symbol}`}</p>
+      </div>
+      <p className="text-center text-xs text-black/50">
         {`A ${Number(PLATFORM_FEE_BPS) / 100}% platform fee (${formatUnits(
           (getReleaseAmount(currentMilestoneNumber, amounts, tokenBalance?.value) * PLATFORM_FEE_BPS) / 10000n,
           tokenBalance?.decimals || 18,
         )} ${tokenBalance?.symbol}) will be deducted from this release.`}
-      </Text>
-      {/* {transaction && (
-        <Text textAlign='center' fontSize='sm'>
-          Follow your transaction{' '}
-          <Link
-            href={getTxLink(chainId, transaction.hash)}
-            isExternal
-            color='primary.300'
-            textDecoration='underline'
-          >
-            here
-          </Link>
-        </Text>
-      )} */}
-      <Button
+      </p>
+      <button
         onClick={releaseFunds}
-        isDisabled={!releaseFunds || isLoading}
-        isLoading={isLoading}
-        textTransform="uppercase"
-        variant="solid"
+        disabled={!releaseFunds || isLoading}
+        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
       >
+        {isLoading && (
+          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
+        )}
         Release
-      </Button>
-    </Stack>
+      </button>
+    </div>
   );
 }

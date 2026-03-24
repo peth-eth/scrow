@@ -1,4 +1,3 @@
-import { Button, Grid, SimpleGrid, Stack } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   INSTANT_STEPS,
@@ -10,7 +9,6 @@ import {
   Input,
   NumberInput,
   Select,
-  useMediaStyles,
 } from '@smartinvoicexyz/ui';
 import {
   getWrappedNativeToken,
@@ -66,8 +64,6 @@ export function InstantPaymentForm({
     formState: { isValid },
   } = localForm;
 
-  const { primaryButtonSize } = useMediaStyles();
-
   const onSubmit = (values: unknown) => {
     setValue('client', _.get(values, 'client'));
     setValue('provider', _.get(values, 'provider'));
@@ -81,7 +77,7 @@ export function InstantPaymentForm({
   };
 
   return (
-    <Stack as="form" w="100%" spacing="1rem" onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
       <Input
         label="Client Address"
         name="client"
@@ -100,7 +96,7 @@ export function InstantPaymentForm({
         localForm={localForm}
       />
 
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} alignItems="end">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-end">
         <NumberInput
           name="paymentDue"
           label="Total Payment Due"
@@ -123,9 +119,9 @@ export function InstantPaymentForm({
             </option>
           ))}
         </Select>
-      </SimpleGrid>
+      </div>
 
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} alignItems="end">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-end">
         <NumberInput
           name="lateFee"
           label="Late Fee"
@@ -145,19 +141,17 @@ export function InstantPaymentForm({
             </option>
           ))}
         </Select>
-      </SimpleGrid>
+      </div>
 
-      <Grid templateColumns="1fr" gap="1rem" w="100%" marginTop="20px">
-        <Button
+      <div className="grid grid-cols-1 gap-4 w-full mt-5">
+        <button
           type="submit"
-          isDisabled={!isValid}
-          textTransform="uppercase"
-          size={primaryButtonSize}
-          fontWeight="bold"
+          disabled={!isValid}
+          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-bold text-sm md:text-base"
         >
           Next: {INSTANT_STEPS[2].next}
-        </Button>
-      </Grid>
-    </Stack>
+        </button>
+      </div>
+    </form>
   );
 }

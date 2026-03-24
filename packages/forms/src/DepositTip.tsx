@@ -1,19 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  Box,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  Select,
-  Stack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react';
 import { PAYMENT_TYPES, TOASTS } from '@smartinvoicexyz/constants';
 import {
   createInvoiceDetailsQueryKey,
@@ -29,6 +14,7 @@ import {
   getWrappedNativeToken,
 } from '@smartinvoicexyz/utils';
 import { useQueryClient } from '@tanstack/react-query';
+import { AlertCircle } from 'lucide-react';
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -151,39 +137,32 @@ export function DepositTip({
   }, []);
 
   return (
-    <Stack w="100%" spacing="1rem" color="black" align="center">
-      <Heading
-        as="h3"
-        fontSize="2xl"
-        transition="all ease-in-out .25s"
-        _hover={{ cursor: 'pointer' }}
-      >
+    <div className="flex flex-col gap-4 w-full text-black items-center">
+      <h3 className="text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
         Add a Tip
-      </Heading>
-      <Text textAlign="center" fontSize="sm" mb="1rem" color="blackAlpha.700">
+      </h3>
+      <p className="text-center text-sm mb-4 text-black/70">
         The invoice is fully paid! Add an optional tip to show your appreciation
         for great service.
-      </Text>
+      </p>
 
-      <Stack spacing="0.5rem" align="center">
-        <HStack>
-          <Text fontWeight="500" color="blackAlpha.700">
+      <div className="flex flex-col gap-2 items-center">
+        <div className="flex items-center gap-2">
+          <p className="font-medium text-black/70">
             Enter Tip Amount
-          </Text>
+          </p>
           {paymentType === PAYMENT_TYPES.NATIVE ? (
-            <Tooltip
-              label={`Your ${TOKEN_DATA.nativeSymbol} will be automagically wrapped to ${tokenMetadata?.symbol} tokens`}
-              placement="top"
-              hasArrow
+            <span
+              title={`Your ${TOKEN_DATA.nativeSymbol} will be automagically wrapped to ${tokenMetadata?.symbol} tokens`}
             >
-              <QuestionIcon boxSize="0.75rem" />
-            </Tooltip>
+              <QuestionIcon className="w-3 h-3" />
+            </span>
           ) : (
-            <Box boxSize="0.75rem" />
+            <span className="w-3 h-3" />
           )}
-        </HStack>
+        </div>
 
-        <Flex>
+        <div className="flex">
           <NumberInput
             name="amount"
             type="number"
@@ -195,9 +174,9 @@ export function DepositTip({
             max={amountsSum}
             localForm={localForm}
             rightElement={
-              <Flex minW="130px" ml={4}>
+              <div className="flex min-w-[130px] ml-4">
                 {TOKEN_DATA.isWrapped ? (
-                  <Select
+                  <select
                     value={paymentType?.value}
                     onChange={e => {
                       setValue(
@@ -208,39 +187,39 @@ export function DepositTip({
                         ),
                       );
                     }}
+                    className="border border-input rounded-md px-2 py-1"
                   >
                     {_.map(paymentTypeOptions, option => (
                       <option key={option.value} value={option.value}>
                         {option.label as string}
                       </option>
                     ))}
-                  </Select>
+                  </select>
                 ) : (
                   tokenMetadata?.symbol
                 )}
-              </Flex>
+              </div>
             }
           />
-        </Flex>
+        </div>
         {displayBalance && displayBalance < formatEther(amount) && (
-          <Alert status="error" borderRadius="md">
-            <AlertIcon />
-            <AlertTitle fontSize="sm">
+          <div className="flex items-start gap-3 rounded-md border border-red-300 bg-red-50 p-4" role="alert">
+            <AlertCircle className="h-5 w-5 mt-0.5 text-red-600 shrink-0" />
+            <h5 className="font-medium text-sm">
               Your balance is less than the amount you are trying to deposit!
-            </AlertTitle>
-          </Alert>
+            </h5>
+          </div>
         )}
-      </Stack>
-      <Flex
-        color="blackAlpha.700"
-        justify="space-between"
-        w={currentMilestoneAmount ? '70%' : '50%'}
-        fontSize="sm"
+      </div>
+      <div
+        className={`flex text-black/70 justify-between text-sm ${
+          currentMilestoneAmount ? 'w-[70%]' : 'w-[50%]'
+        }`}
       >
         {!!deposited && (
-          <Stack align="flex-start">
-            <Text fontWeight="bold">Total Deposited</Text>
-            <Text>
+          <div className="flex flex-col items-start">
+            <p className="font-bold">Total Deposited</p>
+            <p>
               {commify(
                 _.toNumber(
                   formatUnits(BigInt(deposited), tokenMetadata?.decimals || 18),
@@ -248,50 +227,51 @@ export function DepositTip({
               )}
               {` `}
               {tokenMetadata?.symbol}
-            </Text>
-          </Stack>
+            </p>
+          </div>
         )}
         {displayBalance && (
-          <Stack align="flex-end">
-            <Text fontWeight="bold">Your Balance</Text>
-            <Text>
+          <div className="flex flex-col items-end">
+            <p className="font-bold">Your Balance</p>
+            <p>
               {`${_.toNumber(displayBalance).toFixed(4)} ${
                 paymentType?.value === PAYMENT_TYPES.TOKEN
                   ? tokenMetadata?.symbol
                   : TOKEN_DATA.nativeSymbol
               }`}
-            </Text>
-          </Stack>
+            </p>
+          </div>
         )}
-      </Flex>
+      </div>
 
-      <Button
+      <button
         onClick={depositHandler}
-        isDisabled={
+        disabled={
           Number.isNaN(Number(amount)) ||
           amount <= 0 ||
           !!prepareError ||
           !hasAmount
         }
-        isLoading={isLoading}
-        textTransform="uppercase"
-        variant="solid"
+        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
       >
+        {isLoading && (
+          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
+        )}
         Deposit Tip
-      </Button>
+      </button>
       {transaction && (
-        <Text textAlign="center" fontSize="sm">
+        <p className="text-center text-sm">
           Follow your transaction{' '}
-          <Link
+          <a
             href={getTxLink(chainId, transaction)}
-            isExternal
-            color="primary.300"
-            textDecoration="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary-300 underline"
           >
             here
-          </Link>
-        </Text>
+          </a>
+        </p>
       )}
-    </Stack>
+    </div>
   );
 }

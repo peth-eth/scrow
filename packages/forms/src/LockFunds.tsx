@@ -1,14 +1,3 @@
-import {
-  Alert,
-  Button,
-  Flex,
-  Heading,
-  Link,
-  ListItem,
-  OrderedList,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   ARBITRATION_FEE_PERCENT,
@@ -92,20 +81,15 @@ export function LockFunds({
   };
 
   return (
-    <Stack w="100%" spacing="1rem" as="form" onSubmit={handleSubmit(onSubmit)}>
-      <Heading
-        as="h3"
-        fontSize="2xl"
-        transition="all ease-in-out .25s"
-        _hover={{ cursor: 'pointer', color: 'raid' }}
-      >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+      <h3 className="text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
         Raise Dispute
-      </Heading>
-      <Text textAlign="center" fontSize="sm" mb="1rem">
+      </h3>
+      <p className="text-center text-sm mb-4">
         Locking freezes all remaining funds in the contract and initiates a
         dispute.
-      </Text>
-      <Text textAlign="center" fontSize="sm" mb="1rem">
+      </p>
+      <p className="text-center text-sm mb-4">
         Once a dispute has been initiated,{' '}
         <AccountLink
           address={resolver as Hex}
@@ -114,18 +98,18 @@ export function LockFunds({
         />{' '}
         will review your case, the project agreement and dispute reasoning
         before making a decision on how to fairly distribute remaining funds.
-      </Text>
-      <Stack spacing="0.25rem" mb="0.5rem">
-        <Text fontSize="sm" fontWeight="bold" color="blackAlpha.700">
+      </p>
+      <div className="flex flex-col gap-1 mb-2">
+        <p className="text-sm font-bold text-black/70">
           What happens when you raise a dispute?
-        </Text>
-        <OrderedList spacing="0.25rem" fontSize="sm" color="blackAlpha.600" pl="0.5rem">
-          <ListItem>All remaining funds are frozen</ListItem>
-          <ListItem>The arbitrator reviews the case</ListItem>
-          <ListItem>Funds are distributed based on the ruling</ListItem>
-          <ListItem>A {ARBITRATION_FEE_PERCENT}% arbitration fee is deducted</ListItem>
-        </OrderedList>
-      </Stack>
+        </p>
+        <ol className="list-decimal pl-6 space-y-1 text-sm text-muted-foreground">
+          <li>All remaining funds are frozen</li>
+          <li>The arbitrator reviews the case</li>
+          <li>Funds are distributed based on the ruling</li>
+          <li>A {ARBITRATION_FEE_PERCENT}% arbitration fee is deducted</li>
+        </ol>
+      </div>
 
       <Textarea
         name="description"
@@ -143,7 +127,7 @@ export function LockFunds({
         localForm={localForm}
       />
 
-      <Text textAlign="center">
+      <p className="text-center">
         {`Upon resolution, a fee of ${resolverFee} will be deducted from the locked fund amount and sent to `}
         <AccountLink
           address={resolver as Hex}
@@ -151,44 +135,44 @@ export function LockFunds({
           resolverInfo={resolverInfo}
         />{' '}
         for helping resolve this dispute.
-      </Text>
-      <Button
+      </p>
+      <button
         type="submit"
-        isDisabled={
+        disabled={
           !description || !lockFunds || tokenBalance?.value === BigInt(0)
         }
-        isLoading={isLoading}
-        textTransform="uppercase"
-        variant="solid"
+        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
       >
+        {isLoading && (
+          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
+        )}
         {`Raise Dispute ${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
-      </Button>
+      </button>
       {resolverInfo?.id === 'kleros' && (
-        <Alert bg="red.300" borderRadius="md" color="red.600" gap={2}>
+        <div className="rounded-lg bg-red-300 text-red-600 p-4 flex gap-2" role="alert">
           Note: For Kleros Arbitration you also need to fill out
-          <Link
+          <a
             href={KLEROS_GOOGLE_FORM}
-            isExternal
-            fontWeight={600}
-            color="red.700"
-            textDecor="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-red-700 underline"
           >
             this google form
-          </Link>
-        </Alert>
+          </a>
+        </div>
       )}
       {!!resolverInfo && (
-        <Flex justify="center">
-          <Link
+        <div className="flex justify-center">
+          <a
             href={resolverInfo.termsUrl}
-            isExternal
-            color="primary.300"
-            textDecor="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary-300 underline"
           >
             Learn about {resolverInfo.name} dispute process & terms
-          </Link>
-        </Flex>
+          </a>
+        </div>
       )}
-    </Stack>
+    </form>
   );
 }
