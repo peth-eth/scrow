@@ -4,10 +4,12 @@ import {
   Flex,
   Heading,
   HStack,
+  Select,
   Stack,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -24,7 +26,7 @@ import {
 } from '@tanstack/react-table';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { formatUnits } from 'viem';
 import { useAccount, useChainId } from 'wagmi';
 
@@ -95,6 +97,9 @@ export function InvoiceDashboardTable() {
 
   const { primaryButtonSize } = useMediaStyles();
 
+  const [roleFilter, setRoleFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+
   // TODO: implement pagination
   const [page] = useState(0);
 
@@ -102,8 +107,24 @@ export function InvoiceDashboardTable() {
     page,
   });
 
+  const getRole = (row: InvoiceDisplayData) => {
+    if (_.toLower(address) === _.toLower(row.client)) return 'Client';
+    if (_.toLower(address) === _.toLower(row.provider)) return 'Provider';
+    if (_.toLower(address) === _.toLower(row.resolver)) return 'Arbitrator';
+    return 'Unknown';
+  };
+
+  const filteredData = useMemo(() => {
+    if (!data) return [];
+    return data.filter(row => {
+      if (roleFilter !== 'all' && getRole(row) !== roleFilter) return false;
+      if (statusFilter !== 'all' && row.status !== statusFilter) return false;
+      return true;
+    });
+  }, [data, roleFilter, statusFilter, address]);
+
   const table = useReactTable({
-    data: data || [],
+    data: filteredData,
     columns: [
       columnHelper.accessor('address', {
         header: 'Title',
@@ -197,7 +218,7 @@ export function InvoiceDashboardTable() {
   return (
     <Box paddingY={16} flex="1 0 100%">
       <Styles>
-        <HStack justify="space-between" align="center" mb={8}>
+        <HStack justify="space-between" align="center" mb={4}>
           <Heading textAlign="left" color="#192A3E">
             My Invoices
           </Heading>
@@ -211,6 +232,38 @@ export function InvoiceDashboardTable() {
           >
             Create Invoice
           </Button>
+        </HStack>
+
+        <HStack spacing={3} mb={6}>
+          <Select
+            size="sm"
+            maxW="160px"
+            value={roleFilter}
+            onChange={e => setRoleFilter(e.target.value)}
+          >
+            <option value="all">All Roles</option>
+            <option value="Client">Client</option>
+            <option value="Provider">Provider</option>
+            <option value="Arbitrator">Arbitrator</option>
+          </Select>
+          <Select
+            size="sm"
+            maxW="180px"
+            value={statusFilter}
+            onChange={e => setStatusFilter(e.target.value)}
+          >
+            <option value="all">All Statuses</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Awaiting Funds">Awaiting Funds</option>
+            <option value="Disputed">Disputed</option>
+            <option value="Completed">Completed</option>
+            <option value="Expired">Expired</option>
+          </Select>
+          {(roleFilter !== 'all' || statusFilter !== 'all') && (
+            <Text fontSize="sm" color="gray.500">
+              {filteredData.length} of {data?.length ?? 0} invoices
+            </Text>
+          )}
         </HStack>
         <Table bg="white">
           <Thead>
