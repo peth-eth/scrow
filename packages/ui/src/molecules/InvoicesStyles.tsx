@@ -9,7 +9,7 @@ export const Styles = styled.div`
     max-width: 100%;
     ${'' /* overflow-x: scroll; */}
     overflow-y: hidden;
-    background-color: white;
+    background-color: hsl(var(--card));
   }
 
   table {
@@ -28,7 +28,7 @@ export const Styles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
-      border-bottom: 5px solid #f5f6f8;
+      border-bottom: 5px solid hsl(var(--border));
       text-align: left;
 
       width: 1%;
@@ -58,11 +58,11 @@ export const Styles = styled.div`
     }
 
     th {
-      color: #334d6e;
+      color: hsl(var(--foreground));
     }
 
     td {
-      color: #707683;
+      color: hsl(var(--muted-foreground));
     }
   }
 

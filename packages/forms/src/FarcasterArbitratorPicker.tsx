@@ -88,7 +88,7 @@ export function FarcasterArbitratorPicker({
     return (
       <div className="flex justify-center p-3">
         <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
-        <p className="ml-2 text-sm text-gray-500">
+        <p className="ml-2 text-sm text-muted-foreground">
           Loading default arbitrator...
         </p>
       </div>
@@ -98,7 +98,7 @@ export function FarcasterArbitratorPicker({
   return (
     <div className="flex flex-col gap-3">
       {selectedUser && (
-        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-md border border-gray-200">
+        <div className="flex items-center gap-3 p-3 bg-muted rounded-md border border-border">
           <img
             src={selectedUser.pfp_url}
             alt={selectedUser.display_name}
@@ -108,13 +108,13 @@ export function FarcasterArbitratorPicker({
             <p className="font-bold text-sm">
               {selectedUser.display_name}
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               @{selectedUser.username}
             </p>
           </div>
           <button
             type="button"
-            className="text-xs text-blue-500 cursor-pointer hover:underline"
+            className="text-xs text-primary cursor-pointer hover:underline"
             onClick={() => {
               setSelectedUser(null);
               setQuery('');
@@ -152,7 +152,7 @@ export function FarcasterArbitratorPicker({
           />
 
           {isOpen && query.length > 0 && (
-            <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-md shadow-md z-10 max-h-60 overflow-y-auto mt-1">
+            <div className="absolute top-full left-0 right-0 bg-card border border-border rounded-md shadow-md z-10 max-h-60 overflow-y-auto mt-1">
               {isLoading && (
                 <div className="flex justify-center p-3">
                   <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
@@ -160,7 +160,7 @@ export function FarcasterArbitratorPicker({
               )}
 
               {!isLoading && users.length === 0 && (
-                <p className="p-3 text-sm text-gray-500">
+                <p className="p-3 text-sm text-muted-foreground">
                   No users found
                 </p>
               )}
@@ -175,7 +175,7 @@ export function FarcasterArbitratorPicker({
                       key={user.fid}
                       className={`flex items-center gap-3 p-2 px-3 ${
                         hasWallet
-                          ? 'cursor-pointer hover:bg-gray-50'
+                          ? 'cursor-pointer hover:bg-primary/10'
                           : 'cursor-not-allowed opacity-50'
                       }`}
                       onClick={() => hasWallet && handleSelect(user)}
@@ -189,7 +189,7 @@ export function FarcasterArbitratorPicker({
                         <p className="text-sm font-medium">
                           {user.display_name}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           @{user.username}
                           {!hasWallet && ' (no wallet)'}
                         </p>
@@ -202,7 +202,7 @@ export function FarcasterArbitratorPicker({
         </div>
       )}
 
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-muted-foreground">
         Search for a Farcaster user to serve as arbitrator in case of disputes.
       </p>
     </div>

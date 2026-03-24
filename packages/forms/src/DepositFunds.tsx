@@ -147,15 +147,15 @@ export function DepositFunds({
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-full text-black items-center">
+    <div className="flex flex-col gap-4 w-full text-foreground items-center">
       <h3 className="text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
         Pay Invoice
       </h3>
-      <p className="text-center text-sm mb-4 text-black/70">
+      <p className="text-center text-sm mb-4 text-muted-foreground">
         At a minimum, you&apos;ll need to deposit enough to cover the{' '}
         {currentMilestoneNumber === 0 ? 'first' : 'next'} project payment.
       </p>
-      <p className="text-center text-blue-400">
+      <p className="text-center text-primary">
         How much will you be depositing today?
       </p>
       <div className="flex flex-col gap-2 items-center">
@@ -202,7 +202,7 @@ export function DepositFunds({
 
       <div className="flex flex-col gap-2 items-center">
         <div className="flex items-center gap-2">
-          <p className="font-medium text-black/70">
+          <p className="font-medium text-muted-foreground">
             Enter a Manual Deposit Amount
           </p>
           {paymentType === PAYMENT_TYPES.NATIVE ? (
@@ -276,7 +276,7 @@ export function DepositFunds({
         </div>
       </div>
       <div
-        className={`flex text-black/70 justify-between text-sm ${
+        className={`flex text-muted-foreground justify-between text-sm ${
           currentMilestoneAmount ? 'w-[70%]' : 'w-[50%]'
         }`}
       >

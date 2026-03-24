@@ -51,7 +51,7 @@ export function ReactSelect({
                       <span title={typeof tooltip === 'string' ? tooltip : ''}>
                         <InfoOutlineIcon
                           boxSize={3}
-                          className="text-blue-500 bg-white rounded-full cursor-help"
+                          className="text-primary bg-background rounded-full cursor-help"
                         />
                       </span>
                     )}
@@ -72,13 +72,13 @@ export function ReactSelect({
               styles={{
                 control: base => ({
                   ...base,
-                  backgroundColor: 'white',
-                  borderColor: 'lightgrey',
-                  '&:hover': { borderColor: 'lightgrey' },
+                  backgroundColor: 'hsl(var(--background))',
+                  borderColor: 'hsl(var(--input))',
+                  '&:hover': { borderColor: 'hsl(var(--input))' },
                 }),
                 singleValue: base => ({
                   ...base,
-                  color: 'black',
+                  color: 'hsl(var(--foreground))',
                 }),
               }}
               {...props}

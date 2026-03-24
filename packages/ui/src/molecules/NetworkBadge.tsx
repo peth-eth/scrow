@@ -7,7 +7,7 @@ export type NetworkBadgeProps = {
 export function NetworkBadge({ chainId }: NetworkBadgeProps) {
   const chainName = getChainName(chainId);
   return (
-    <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-blue-100 max-w-fit h-fit">
+    <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-primary/10 max-w-fit h-fit">
       {chainName}
     </span>
   );

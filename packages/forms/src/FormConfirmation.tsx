@@ -168,7 +168,7 @@ export function FormConfirmation({
   ]);
 
   return (
-    <div className="flex flex-col gap-4 w-full text-[#323C47] items-center">
+    <div className="flex flex-col gap-4 w-full text-foreground items-center">
       <div className="flex flex-col items-stretch gap-4 w-full max-w-lg">
         <h2 id="project-title" className="text-lg md:text-xl font-semibold">
           {title}
@@ -199,7 +199,7 @@ export function FormConfirmation({
 
       {milestones && (
         <>
-          <hr className="border-black w-[calc(100%+2rem)] -translate-x-4" />
+          <hr className="border-border w-[calc(100%+2rem)] -translate-x-4" />
 
           <div className="flex justify-end">
             <p>
@@ -207,7 +207,7 @@ export function FormConfirmation({
             </p>
 
             {initialPaymentDue && (
-              <p className="text-blue-500 ml-10 font-bold">
+              <p className="text-primary ml-10 font-bold">
                 {`${initialPaymentDue} ${symbol} Due Today`}
               </p>
             )}

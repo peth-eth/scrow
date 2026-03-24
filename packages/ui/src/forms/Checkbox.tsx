@@ -54,7 +54,7 @@ export function Checkbox({
                   <span title={tooltip}>
                     <InfoOutlineIcon
                       boxSize={3}
-                      className="text-blue-500 bg-white rounded-full cursor-help"
+                      className="text-primary bg-background rounded-full cursor-help"
                     />
                   </span>
                 )}
@@ -65,13 +65,13 @@ export function Checkbox({
                   onChange={e => onChange(e.target.checked)}
                   ref={ref}
                   checked={value}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                  className="w-4 h-4 rounded border-input text-primary focus:ring-ring"
                   {...props}
                 />
                 {options[0]}
               </label>
               {helperText && (
-                <p className="text-sm text-gray-500">{helperText}</p>
+                <p className="text-sm text-muted-foreground">{helperText}</p>
               )}
               {typeof error === 'string' && (
                 <p className="text-sm text-red-500">{error}</p>
@@ -94,7 +94,7 @@ export function Checkbox({
             <span title={tooltip}>
               <InfoOutlineIcon
                 boxSize={3}
-                className="text-red-500 bg-white rounded-full cursor-help"
+                className="text-red-500 bg-background rounded-full cursor-help"
               />
             </span>
           )}
@@ -116,7 +116,7 @@ export function Checkbox({
                       onChange={e => onChange(e.target.checked)}
                       ref={ref}
                       checked={value}
-                      className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                      className="w-4 h-4 rounded border-input text-primary focus:ring-ring"
                       {...props}
                     />
                     {option}
@@ -127,7 +127,7 @@ export function Checkbox({
           )}
         </div>
         {helperText && (
-          <p className="text-sm text-gray-500">{helperText}</p>
+          <p className="text-sm text-muted-foreground">{helperText}</p>
         )}
         {typeof error === 'string' && (
           <p className="text-sm text-red-500">{error}</p>

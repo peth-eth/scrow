@@ -37,12 +37,12 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
       <div
         role="dialog"
         aria-modal="true"
-        className="relative p-8 max-w-[40rem] w-full bg-white dark:bg-card rounded-lg mx-4"
+        className="relative p-8 max-w-[40rem] w-full bg-card rounded-lg mx-4"
         onClick={e => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 p-1 text-gray-400 hover:bg-black/5 rounded transition-colors"
+          className="absolute top-2 right-2 p-1 text-muted-foreground hover:bg-black/5 rounded transition-colors"
           aria-label="Close"
         >
           <svg

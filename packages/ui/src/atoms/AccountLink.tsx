@@ -44,7 +44,7 @@ export function AccountLink({
     <ChakraNextLink
       href={href}
       isExternal={!link}
-      className="inline-flex items-center rounded-[5px] bg-white px-1 py-0.5 text-right font-bold hover:scale-105 hover:no-underline transition-transform"
+      className="inline-flex items-center rounded-[5px] bg-card px-1 py-0.5 text-right font-bold hover:scale-105 hover:no-underline transition-transform"
     >
       <AccountAvatar
         address={address}

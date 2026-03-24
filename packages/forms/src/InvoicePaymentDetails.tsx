@@ -200,7 +200,7 @@ export function InvoicePaymentDetails({
                         <p>{title}</p>
                         {milestoneMetadata?.description && (
                           <span title={milestoneMetadata?.description}>
-                            <QuestionIcon className="w-3 h-3 text-gray-400" />
+                            <QuestionIcon className="w-3 h-3 text-muted-foreground" />
                           </span>
                         )}
                       </div>
@@ -208,7 +208,7 @@ export function InvoicePaymentDetails({
                       <div className="flex items-center justify-end gap-2">
                         {release && (
                           <a
-                            className="text-xs text-gray-500 italic"
+                            className="text-xs text-muted-foreground italic"
                             href={getTxLink(invoice?.chainId, release.txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -222,7 +222,7 @@ export function InvoicePaymentDetails({
                         )}
                         {deposit && !release && (
                           <a
-                            className="text-xs text-gray-500 italic"
+                            className="text-xs text-muted-foreground italic"
                             href={getTxLink(invoice?.chainId, deposit?.txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -321,7 +321,7 @@ export function InvoicePaymentDetails({
                           {`${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
                         </p>
                       </div>
-                      <p className="text-black">
+                      <p className="text-foreground">
                         {`A dispute is in progress with `}
                         <AccountLink
                           address={resolver as Hex}
@@ -332,7 +332,7 @@ export function InvoicePaymentDetails({
                           <>
                             <a
                               href={getIpfsLink(dispute.ipfsHash)}
-                              className="text-blue-500"
+                              className="text-primary"
                               target="_blank"
                               rel="noopener noreferrer"
                             >
@@ -343,7 +343,7 @@ export function InvoicePaymentDetails({
                         )}
                         <a
                           href={getTxLink(invoice?.chainId, dispute.txHash)}
-                          className="text-blue-500"
+                          className="text-primary"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -383,7 +383,7 @@ export function InvoicePaymentDetails({
                               <>
                                 <a
                                   href={getIpfsLink(dispute.ipfsHash)}
-                                  className="text-blue-500"
+                                  className="text-primary"
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >

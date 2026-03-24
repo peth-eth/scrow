@@ -30,7 +30,7 @@ export class ErrorBoundary extends React.Component {
     const { children } = this.props;
     if (hasError) {
       return (
-        <div className="flex flex-col items-center justify-center w-full min-h-screen bg-[#F5F6F8] text-[#3D88F8]">
+        <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-primary">
           <p className="text-lg">Something went wrong</p>
           <p>Please check console for errors</p>
         </div>

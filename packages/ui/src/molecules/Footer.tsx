@@ -12,7 +12,7 @@ const links = [
 
 export function Footer() {
   return (
-    <div className="bg-[#334D6E] w-full self-end z-[5]">
+    <div className="bg-card w-full self-end z-[5]">
       <div className="flex flex-col-reverse md:flex-row justify-between items-center px-20 py-4 text-white gap-y-4">
         <a href="/invoices">
           <img

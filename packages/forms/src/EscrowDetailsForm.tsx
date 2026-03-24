@@ -215,7 +215,7 @@ export function EscrowDetailsForm({
           )}
 
           <div className="flex items-start gap-3 rounded-md border p-4 text-sm" role="alert">
-            <Info className="h-5 w-5 mt-0.5 text-blue-500 shrink-0" />
+            <Info className="h-5 w-5 mt-0.5 text-primary shrink-0" />
             <p>
               If a dispute occurs, the arbitrator receives a {ARBITRATION_FEE_PERCENT}% resolution fee
               from the disputed funds.

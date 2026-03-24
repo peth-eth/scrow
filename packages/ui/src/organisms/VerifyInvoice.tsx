@@ -69,7 +69,7 @@ export function VerifyInvoice({
   return (
     <div className="flex flex-col gap-1 w-full items-start">
       <button
-        className="px-2 py-1 text-xs uppercase bg-blue-500 text-white rounded font-normal font-mono hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-2 py-1 text-xs uppercase bg-primary text-white rounded font-normal font-mono hover:bg-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         disabled={isLoading || !writeAsync}
         onClick={handleVerify}
       >

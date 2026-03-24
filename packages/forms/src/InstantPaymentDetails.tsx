@@ -53,7 +53,7 @@ export const InstantPaymentDetails: React.FC<{
               <div className="flex flex-col">
                 <p>Late Fee</p>
 
-                <p className="text-xs font-normal italic text-gray-500">
+                <p className="text-xs font-normal italic text-muted-foreground">
                   {deadline ? deadlineLabel : `Not applicable`}
                 </p>
               </div>
@@ -74,7 +74,7 @@ export const InstantPaymentDetails: React.FC<{
 
         <hr className="border-border my-4" />
 
-        <div className="flex justify-between items-center text-black font-bold text-lg px-6">
+        <div className="flex justify-between items-center text-foreground font-bold text-lg px-6">
           <p>
             {amountFulfilled && amountFulfilled > BigInt(0)
               ? 'Remaining'

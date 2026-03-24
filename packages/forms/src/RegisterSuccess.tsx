@@ -36,15 +36,15 @@ export function RegisterSuccess({
 
   return (
     <div className="flex flex-col gap-4 w-full items-center justify-center px-4">
-      <CheckCircleIcon className="w-28 h-28 text-blue-500" />
+      <CheckCircleIcon className="w-28 h-28 text-primary" />
 
-      <p className="text-black text-center text-lg">
+      <p className="text-foreground text-center text-lg">
         You can view your transaction
         <a
           href={getTxLink(chainId, txHash)}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-500 ml-1 underline"
+          className="text-primary ml-1 underline"
         >
           here
         </a>
@@ -53,17 +53,17 @@ export function RegisterSuccess({
       <div className="flex flex-col w-full items-stretch">
         <p className="font-bold">Your Invoice ID</p>
 
-        <div className="flex p-2 justify-between items-center bg-white rounded w-full">
-          <div className="flex items-center gap-2 bg-gray-50 p-3 rounded overflow-clip w-full">
+        <div className="flex p-2 justify-between items-center bg-card rounded w-full">
+          <div className="flex items-center gap-2 bg-muted p-3 rounded overflow-clip w-full">
             <a
               href={url}
-              className="ml-2 text-gray-800 overflow-clip w-full"
+              className="ml-2 text-foreground overflow-clip w-full"
             >
               {invoiceId}
             </a>
             <button
               onClick={copyId}
-              className="hover:bg-accent p-2 rounded-md text-blue-500"
+              className="hover:bg-accent p-2 rounded-md text-primary"
               title={idCopied ? 'Copied!' : 'Copy'}
             >
               <CopyIcon className="w-4 h-4" />
@@ -74,11 +74,11 @@ export function RegisterSuccess({
 
       <div className="flex flex-col w-full items-stretch mb-6">
         <p className="font-bold">Link to Invoice</p>
-        <div className="flex p-2 justify-between items-center bg-white rounded w-full">
-          <div className="flex items-center gap-2 bg-gray-50 p-3 rounded overflow-clip w-full">
+        <div className="flex p-2 justify-between items-center bg-card rounded w-full">
+          <div className="flex items-center gap-2 bg-muted p-3 rounded overflow-clip w-full">
             <a
               href={url}
-              className="ml-2 text-gray-800 overflow-clip w-full"
+              className="ml-2 text-foreground overflow-clip w-full"
             >
               {_.truncate(fullUrl, {
                 length: 60,
@@ -87,7 +87,7 @@ export function RegisterSuccess({
             </a>
             <button
               onClick={copyLink}
-              className="hover:bg-accent p-2 rounded-md ml-4 text-blue-500"
+              className="hover:bg-accent p-2 rounded-md ml-4 text-primary"
               title={linkCopied ? 'Copied!' : 'Copy'}
             >
               <CopyIcon className="w-4 h-4" />
@@ -97,7 +97,7 @@ export function RegisterSuccess({
       </div>
 
       <div className="flex flex-col w-full items-stretch mb-4 px-2">
-        <p className="font-bold text-sm text-black/70">
+        <p className="font-bold text-sm text-muted-foreground">
           What happens next?
         </p>
         <ol className="list-decimal pl-6 space-y-1 text-sm text-muted-foreground">

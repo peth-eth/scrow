@@ -113,7 +113,7 @@ export function LinkInput({
                 <span title={tooltip}>
                   <InfoOutlineIcon
                     boxSize={3}
-                    className="text-blue-500 bg-white rounded-full cursor-help"
+                    className="text-primary bg-background rounded-full cursor-help"
                   />
                 </span>
               )}
@@ -131,7 +131,7 @@ export function LinkInput({
               <select
                 {...register(`${name}-protocol`, registerOptions)}
                 defaultValue={getProtocol(finalValue)}
-                className="h-9 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-black text-sm px-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="h-9 rounded-l-md border border-r-0 border-input bg-muted text-foreground text-sm px-2 focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 {_.map(PROTOCOL_OPTIONS, option => (
                   <option key={option} value={option}>
@@ -148,8 +148,8 @@ export function LinkInput({
               type="text"
               defaultValue={getPath(finalValue)}
               className={`flex-1 h-9 rounded-r-md border ${
-                error ? 'border-red-500' : 'border-gray-300'
-              } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                error ? 'border-red-500' : 'border-input'
+              } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent`}
             />
           </div>
           {error && (

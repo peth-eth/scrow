@@ -49,7 +49,7 @@ export function Select({
                       <span title={typeof tooltip === 'string' ? tooltip : ''}>
                         <InfoOutlineIcon
                           boxSize={3}
-                          className="text-blue-500 bg-white rounded-full cursor-help"
+                          className="text-primary bg-background rounded-full cursor-help"
                         />
                       </span>
                     )}
@@ -63,7 +63,7 @@ export function Select({
               value={value}
               onChange={onChange}
               disabled={isDisabled}
-              className="h-9 w-full rounded-md border border-gray-300 bg-white text-black px-3 py-1 text-sm shadow-sm transition-colors hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-9 w-full rounded-md border border-input bg-background text-foreground px-3 py-1 text-sm shadow-sm transition-colors hover:border-input focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
               {...props}
             >
               {children}

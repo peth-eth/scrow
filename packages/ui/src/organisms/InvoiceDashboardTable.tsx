@@ -152,17 +152,17 @@ export function InvoiceDashboardTable() {
       <div className="py-16">
         <div className="flex flex-col items-center justify-center gap-4 w-full">
           {isConnected ? (
-            <h2 className="text-gray-500 text-xl font-heading">
+            <h2 className="text-muted-foreground text-xl font-heading">
               No invoices found for {getChainName(chainId)}!
             </h2>
           ) : (
-            <h2 className="text-gray-500 text-xl font-heading">
+            <h2 className="text-muted-foreground text-xl font-heading">
               Wallet not connected.
             </h2>
           )}
 
           <ChakraNextLink href="/create">
-            <button className="min-w-[250px] py-3 px-6 bg-[#3D88F8] text-white rounded-md font-medium hover:bg-[#2B69C5] transition-colors text-sm sm:text-base md:text-lg">
+            <button className="min-w-[250px] py-3 px-6 bg-primary text-white rounded-md font-medium hover:bg-primary/80 transition-colors text-sm sm:text-base md:text-lg">
               Create Invoice
             </button>
           </ChakraNextLink>
@@ -175,12 +175,12 @@ export function InvoiceDashboardTable() {
     <div className="py-16 flex-[1_0_100%]">
       <Styles>
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-left text-[#192A3E] text-2xl font-heading">
+          <h1 className="text-left text-foreground text-2xl font-heading">
             My Invoices
           </h1>
 
           <button
-            className="bg-[#3D88F8] hover:bg-[rgba(61,136,248,0.7)] active:bg-[rgba(61,136,248,0.7)] text-white px-4 py-2 rounded-md transition-colors"
+            className="bg-primary hover:bg-primary/70 active:bg-primary/70 text-white px-4 py-2 rounded-md transition-colors"
             onClick={() => router.push('/create')}
           >
             Create Invoice
@@ -189,7 +189,7 @@ export function InvoiceDashboardTable() {
 
         <div className="flex items-center gap-3 mb-6">
           <select
-            className="text-sm max-w-[160px] border border-gray-300 rounded px-2 py-1"
+            className="text-sm max-w-[160px] border border-input rounded px-2 py-1"
             value={roleFilter}
             onChange={e => setRoleFilter(e.target.value)}
           >
@@ -199,7 +199,7 @@ export function InvoiceDashboardTable() {
             <option value="Arbitrator">Arbitrator</option>
           </select>
           <select
-            className="text-sm max-w-[180px] border border-gray-300 rounded px-2 py-1"
+            className="text-sm max-w-[180px] border border-input rounded px-2 py-1"
             value={statusFilter}
             onChange={e => setStatusFilter(e.target.value)}
           >
@@ -211,12 +211,12 @@ export function InvoiceDashboardTable() {
             <option value="Expired">Expired</option>
           </select>
           {(roleFilter !== 'all' || statusFilter !== 'all') && (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               {filteredData.length} of {data?.length ?? 0} invoices
             </p>
           )}
         </div>
-        <table className="bg-white">
+        <table className="bg-card">
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>
@@ -243,7 +243,7 @@ export function InvoiceDashboardTable() {
                 <tr
                   key={row.id}
                   onClick={() => router.push(url)}
-                  className="hover:bg-gray-100 cursor-pointer"
+                  className="hover:bg-muted cursor-pointer"
                 >
                   {row.getVisibleCells().map(cell => (
                     <td key={cell.id}>

@@ -6,7 +6,6 @@ import {
   mainnet,
   optimism,
   polygon,
-  sepolia,
 } from 'viem/chains';
 
 const toLower = (address: string | undefined | null) =>
@@ -151,13 +150,12 @@ export const getGraphStudioSubgraphUrl = (
   return `https://api.studio.thegraph.com/query/${GRAPH_STUDIO_ID}/${subgraph}/${version}`;
 };
 const chains: readonly [Chain, ...Chain[]] = [
+  base,
   // mainnet,
   // polygon,
   // optimism,
   gnosis,
   arbitrum,
-  sepolia,
-  base,
 ];
 
 export const SUPPORTED_CHAIN_IDS = chains.map(chain => chain.id);
@@ -290,26 +288,6 @@ export const NETWORK_CONFIG: Record<SupportedChainId, NetworkConfig> = {
     ) as Address,
     INVOICE_FACTORY: toLower(
       '0xF9822818143948237A60A1a1CEFC85D6F1b929Df',
-    ) as Address,
-    RESOLVERS: {
-      kleros: {
-        address: SMART_INVOICE_ARBITRATION_SAFE,
-        ...KLEROS_DATA,
-      },
-      'smart-invoice': {
-        address: SMART_INVOICE_ARBITRATION_SAFE,
-        ...SMART_INVOICE_ARBITRATION_DATA,
-      },
-    },
-  },
-  [sepolia.id]: {
-    SUBGRAPH: getGraphStudioSubgraphUrl('smart-invoice-sepolia', 'v0.0.7'),
-    SUBGRAPH_HEALTH_THRESHOLD: 10,
-    WRAPPED_NATIVE_TOKEN: toLower(
-      '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
-    ) as Address,
-    INVOICE_FACTORY: toLower(
-      '0x8227b9868e00B8eE951F17B480D369b84Cd17c20',
     ) as Address,
     RESOLVERS: {
       kleros: {

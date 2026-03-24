@@ -15,11 +15,9 @@ type Link = {
 const LINKS: Link[] = [
   { label: 'Dashboard', href: '/invoices', isInternal: true },
   {
-    label: 'Documentation',
-    href: 'https://smartinvoice.xyz/getting-started/what-is-smart-invoice',
+    label: 'Docs',
+    href: 'https://docs.smartinvoice.xyz',
   },
-  { label: 'About', href: 'https://smartinvoice.xyz/about' },
-  { label: 'Help', href: 'https://smartinvoice.xyz/misc/get-support' },
 ];
 
 export function Header() {
@@ -31,7 +29,7 @@ export function Header() {
   const links = isConnected ? LINKS : LINKS.slice(1);
 
   return (
-    <div className="flex w-full h-[75px] px-8 py-4 text-[#707683] font-mono justify-between items-center bg-white z-[5] relative">
+    <div className="flex w-full h-[75px] px-8 py-4 text-muted-foreground font-mono justify-between items-center bg-background z-[5] relative">
       <ChakraNextLink href={isConnected ? '/invoices' : '/'}>
         <div className="cursor-pointer">
           <img
@@ -48,7 +46,7 @@ export function Header() {
             key={href}
             href={href}
             isExternal={!href?.startsWith('/')}
-            className="hover:text-[#3D88F8] transition-colors"
+            className="hover:text-primary transition-colors"
           >
             {label}
           </ChakraNextLink>
@@ -68,13 +66,13 @@ export function Header() {
           className="flex lg:hidden ml-2 sm:ml-4 z-[7] bg-transparent border-none cursor-pointer"
         >
           <HamburgerIcon
-            className="w-8 h-8 sm:w-11 sm:h-11 text-[#3D88F8] transition-all duration-500 ease-out hover:rotate-90"
+            className="w-8 h-8 sm:w-11 sm:h-11 text-primary transition-all duration-500 ease-out hover:rotate-90"
           />
         </button>
       </div>
 
       <div
-        className="fixed inset-0 z-[6] bg-white flex flex-col items-center justify-center gap-6 transition-all duration-[2s] ease-out"
+        className="fixed inset-0 z-[6] bg-background flex flex-col items-center justify-center gap-6 transition-all duration-[2s] ease-out"
         style={{
           clipPath: isOpen
             ? 'circle(calc(100vw + 100vh) at 90% -10%)'
@@ -95,7 +93,7 @@ export function Header() {
             isExternal={!href?.startsWith('/')}
             onClick={isInternal ? onToggle : undefined}
           >
-            <button className="relative bg-transparent border-none text-gray-500 font-normal text-lg cursor-pointer transition-all duration-500 ease-[0.4s] after:content-[''] after:block after:h-0.5 after:w-0 after:bg-[#3D88F8] after:absolute after:bottom-0 after:left-0 after:transition-all after:duration-200 after:ease-in-out hover:after:w-full hover:no-underline">
+            <button className="relative bg-transparent border-none text-muted-foreground font-normal text-lg cursor-pointer transition-all duration-500 ease-[0.4s] after:content-[''] after:block after:h-0.5 after:w-0 after:bg-primary after:absolute after:bottom-0 after:left-0 after:transition-all after:duration-200 after:ease-in-out hover:after:w-full hover:no-underline">
               {label}
             </button>
           </ChakraNextLink>

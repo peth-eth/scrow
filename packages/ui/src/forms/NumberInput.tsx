@@ -75,7 +75,7 @@ export function NumberInput({
                   <span title={tooltip}>
                     <InfoOutlineIcon
                       boxSize={3}
-                      className="text-blue-500 bg-white rounded-full cursor-help"
+                      className="text-primary bg-background rounded-full cursor-help"
                     />
                   </span>
                 )}
@@ -91,8 +91,8 @@ export function NumberInput({
                 max={max}
                 placeholder={placeholder}
                 className={`flex h-9 w-full rounded-md border ${
-                  errors[name] ? 'border-red-500' : 'border-gray-300'
-                } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                  errors[name] ? 'border-red-500' : 'border-input'
+                } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent`}
                 {...localProps}
                 {...restField}
                 onChange={e => restField.onChange(e.target.value)}
@@ -102,7 +102,7 @@ export function NumberInput({
               )}
             </div>
             {helperText && (
-              <p className="text-sm text-gray-500">{helperText}</p>
+              <p className="text-sm text-muted-foreground">{helperText}</p>
             )}
 
             {typeof error === 'string' && (

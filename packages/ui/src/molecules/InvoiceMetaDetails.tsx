@@ -176,13 +176,13 @@ export function InvoiceMetaDetails({
       <div className="flex flex-col gap-2 justify-center items-stretch">
         {title && (
           <div className="flex items-center gap-2">
-            <h2 className="text-2xl text-black font-heading">{title}</h2>
+            <h2 className="text-2xl text-foreground font-heading">{title}</h2>
             <ShareButton invoice={invoice} />
           </div>
         )}
         <div className="flex items-center gap-2">
           <InvoiceBadge invoiceType={invoiceType} />
-          <div className="w-1 h-1 bg-black rotate-45" />
+          <div className="w-1 h-1 bg-foreground rotate-45" />
           <NetworkBadge chainId={invoiceChainId} />
         </div>
 
@@ -193,7 +193,7 @@ export function InvoiceMetaDetails({
           />
           <button
             onClick={onCopy}
-            className="p-1 bg-transparent text-blue-500 hover:text-blue-700 transition-colors"
+            className="p-1 bg-transparent text-primary hover:text-primary/80 transition-colors"
             title={copied ? 'Copied!' : 'Copy'}
           >
             <CopyIcon boxSize={3.5} />
@@ -207,7 +207,7 @@ export function InvoiceMetaDetails({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button className="flex items-center gap-1 px-2 py-1 text-xs uppercase border border-blue-500 text-blue-500 rounded hover:bg-blue-50 transition-colors">
+            <button className="flex items-center gap-1 px-2 py-1 text-xs uppercase border border-primary text-primary rounded hover:bg-primary/10 transition-colors">
               View Details of Agreement
               <ExternalLinkIcon boxSize={3} />
             </button>
@@ -234,7 +234,7 @@ export function InvoiceMetaDetails({
                   <span title={tip}>
                     <QuestionIcon
                       boxSize={3}
-                      className="text-gray-400 cursor-help"
+                      className="text-muted-foreground cursor-help"
                     />
                   </span>
                 )}
@@ -251,7 +251,7 @@ export function InvoiceMetaDetails({
                 <span title="When enabled, anyone (not just the client) can deposit funds into this escrow">
                   <QuestionIcon
                     boxSize={3}
-                    className="text-gray-400 cursor-help"
+                    className="text-muted-foreground cursor-help"
                   />
                 </span>
               </div>
@@ -264,7 +264,7 @@ export function InvoiceMetaDetails({
                   <span title="The client has confirmed they can interact with this escrow contract">
                     <QuestionIcon
                       boxSize={3}
-                      className="text-gray-400 cursor-help"
+                      className="text-muted-foreground cursor-help"
                     />
                   </span>
                 </div>

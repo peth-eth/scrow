@@ -30,7 +30,7 @@ export function NetworkChangeAlertModal({
       onClick={closeModals}
     >
       <div
-        className="relative bg-white rounded-lg max-w-md w-full mx-4"
+        className="relative bg-card rounded-lg max-w-md w-full mx-4"
         onClick={e => e.stopPropagation()}
       >
         <div className="text-center text-red-500 font-semibold p-4 text-lg">
@@ -54,7 +54,7 @@ export function NetworkChangeAlertModal({
 
         <button
           onClick={closeModals}
-          className="absolute top-2 right-2 p-1 text-gray-400 hover:bg-black/5 rounded transition-colors"
+          className="absolute top-2 right-2 p-1 text-muted-foreground hover:bg-black/5 rounded transition-colors"
           aria-label="Close"
         >
           <svg

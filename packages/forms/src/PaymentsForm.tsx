@@ -230,10 +230,10 @@ export function PaymentsForm({
       </div>
 
       <div className="flex flex-col gap-1 pl-2 pr-6">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           Platform Fee: {Number(PLATFORM_FEE_BPS) / 100}% on each release
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           Arbitration Fee: {ARBITRATION_FEE_PERCENT}% of disputed amount (only if a dispute occurs)
         </p>
       </div>

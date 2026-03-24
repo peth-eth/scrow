@@ -24,15 +24,15 @@ export function ConnectWeb3() {
 
   return (
     <Container>
-      <div className="flex flex-col items-center rounded-2xl bg-white w-[calc(100%-2rem)] p-8 max-w-[27.5rem] mx-4">
-        <div className="flex items-center justify-center rounded-full bg-[#3D88F8] p-4 text-white mb-4">
+      <div className="flex flex-col items-center rounded-2xl bg-card w-[calc(100%-2rem)] p-8 max-w-[27.5rem] mx-4">
+        <div className="flex items-center justify-center rounded-full bg-primary p-4 text-white mb-4">
           <WalletFilledIcon style={{ width: '1.75rem', height: '1.75rem' }} />
         </div>
 
         {isClient && isConnected ? (
           <>
             <h2 className="text-2xl font-heading mb-4">Connect Wallet</h2>
-            <p className="text-[#ABABAB] mb-4 text-center">
+            <p className="text-muted-foreground mb-4 text-center">
               {`Please switch to ${_.map(
                 SUPPORTED_CHAINS,
                 chain => chain.name,
@@ -48,7 +48,7 @@ export function ConnectWeb3() {
         {isClient && !isConnected && (
           <button
             onClick={openConnectModal}
-            className="px-12 py-2 bg-[#3D88F8] text-white rounded-md font-medium hover:bg-[#2B69C5] transition-colors disabled:opacity-50"
+            className="px-12 py-2 bg-primary text-white rounded-md font-medium hover:bg-primary/80 transition-colors disabled:opacity-50"
             disabled={isConnecting}
           >
             {isConnecting ? 'Connecting...' : 'Connect Wallet'}

@@ -60,7 +60,7 @@ export function DatePicker({
                 <span title={tooltip}>
                   <InfoOutlineIcon
                     boxSize={3}
-                    className="text-blue-500 bg-white rounded-full cursor-help"
+                    className="text-primary bg-background rounded-full cursor-help"
                   />
                 </span>
               )}
@@ -74,8 +74,8 @@ export function DatePicker({
                   <button
                     className={`px-3 py-1.5 text-sm rounded-md ${
                       variant === 'outline'
-                        ? 'border border-gray-300 bg-transparent hover:bg-gray-50'
-                        : 'bg-gray-100 hover:bg-gray-200'
+                        ? 'border border-input bg-transparent hover:bg-primary/10'
+                        : 'bg-muted hover:bg-muted/80'
                     } transition-colors`}
                     type="button"
                   >

@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { PropsWithChildren, useEffect } from 'react';
 import { useAccount, useChainId } from 'wagmi';
 
-import { Footer } from '../molecules/Footer';
 import { Header } from '../molecules/Header';
 import { SubgraphHealthAlert } from '../molecules/SubgraphHealthAlert';
 import { ConnectWeb3 } from './ConnectWeb3';
@@ -37,14 +36,13 @@ export function Layout({ children }: PropsWithChildren) {
   const isValid = isOpenPath || isValidConnection;
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full h-full min-h-screen overflow-x-hidden bg-[#F5F6F8] bg-cover text-[#323C47]">
+    <div className="relative flex flex-col items-center justify-center w-full h-full min-h-screen overflow-x-hidden bg-background bg-cover text-foreground">
       <Header />
       <div className="flex-grow relative flex flex-col items-center justify-center w-full h-full">
         <SubgraphHealthAlert chainId={queryChainId} />
         {isValid ? children : <ConnectWeb3 />}
       </div>
       <Analytics />
-      <Footer />
     </div>
   );
 }

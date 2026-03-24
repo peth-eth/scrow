@@ -137,18 +137,18 @@ export function DepositTip({
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-full text-black items-center">
+    <div className="flex flex-col gap-4 w-full text-foreground items-center">
       <h3 className="text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
         Add a Tip
       </h3>
-      <p className="text-center text-sm mb-4 text-black/70">
+      <p className="text-center text-sm mb-4 text-muted-foreground">
         The invoice is fully paid! Add an optional tip to show your appreciation
         for great service.
       </p>
 
       <div className="flex flex-col gap-2 items-center">
         <div className="flex items-center gap-2">
-          <p className="font-medium text-black/70">
+          <p className="font-medium text-muted-foreground">
             Enter Tip Amount
           </p>
           {paymentType === PAYMENT_TYPES.NATIVE ? (
@@ -211,7 +211,7 @@ export function DepositTip({
         )}
       </div>
       <div
-        className={`flex text-black/70 justify-between text-sm ${
+        className={`flex text-muted-foreground justify-between text-sm ${
           currentMilestoneAmount ? 'w-[70%]' : 'w-[50%]'
         }`}
       >

@@ -25,7 +25,7 @@ export function ShareButton({ invoice }: { invoice: Partial<InvoiceDetails> }) {
         url,
       }}
     >
-      <button className="p-1 bg-transparent text-blue-500 hover:text-blue-700 transition-colors">
+      <button className="p-1 bg-transparent text-primary hover:text-primary/80 transition-colors">
         <ShareIcon boxSize={5} />
       </button>
     </RWebShare>

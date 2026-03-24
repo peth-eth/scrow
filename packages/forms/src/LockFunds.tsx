@@ -100,7 +100,7 @@ export function LockFunds({
         before making a decision on how to fairly distribute remaining funds.
       </p>
       <div className="flex flex-col gap-1 mb-2">
-        <p className="text-sm font-bold text-black/70">
+        <p className="text-sm font-bold text-muted-foreground">
           What happens when you raise a dispute?
         </p>
         <ol className="list-decimal pl-6 space-y-1 text-sm text-muted-foreground">

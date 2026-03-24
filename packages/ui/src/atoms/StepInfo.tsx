@@ -16,25 +16,25 @@ function StepCircle({
   isCompleted: boolean;
   isCurrent: boolean;
 }) {
-  let bgClass = 'bg-gray-200';
-  let textClass = 'text-gray-500';
-  let borderClass = 'border-gray-200';
+  let bgClass = 'bg-muted';
+  let textClass = 'text-muted-foreground';
+  let borderClass = 'border-border';
 
   if (isCompleted) {
-    bgClass = 'bg-blue-400';
+    bgClass = 'bg-primary';
     textClass = 'text-white';
-    borderClass = 'border-blue-400';
+    borderClass = 'border-primary';
   } else if (isCurrent) {
-    bgClass = 'bg-white';
-    textClass = 'text-blue-400';
-    borderClass = 'border-blue-400';
+    bgClass = 'bg-background';
+    textClass = 'text-primary';
+    borderClass = 'border-primary';
   }
 
   const labelColorClass = isCurrent
-    ? 'text-blue-500 font-semibold'
+    ? 'text-primary font-semibold'
     : isCompleted
-      ? 'text-blue-400'
-      : 'text-gray-400';
+      ? 'text-primary'
+      : 'text-muted-foreground';
 
   return (
     <div className="flex flex-col items-center min-w-0">
@@ -55,7 +55,7 @@ function StepCircle({
 function ConnectorLine({ isCompleted }: { isCompleted: boolean }) {
   return (
     <div
-      className={`flex-1 h-0.5 ${isCompleted ? 'bg-blue-400' : 'bg-gray-200'} self-start mt-[13px] md:mt-[17px] mx-1`}
+      className={`flex-1 h-0.5 ${isCompleted ? 'bg-primary' : 'bg-muted'} self-start mt-[13px] md:mt-[17px] mx-1`}
     />
   );
 }
@@ -104,7 +104,7 @@ export function StepInfo({
         {stepNum !== 1 && stepNum !== 5 && !!goBack ? (
           <button
             onClick={() => goBack()}
-            className="p-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
+            className="p-2 bg-muted rounded hover:bg-muted/80 transition-colors"
             aria-label="back"
           >
             <BackArrowIcon
@@ -115,7 +115,7 @@ export function StepInfo({
           <div className="max-w-[50px]" />
         )}
 
-        <h2 className="text-[#323C47] text-base sm:text-lg md:text-xl font-heading">
+        <h2 className="text-foreground text-base sm:text-lg md:text-xl font-heading">
           Step {stepNum}: {stepTitle}
         </h2>
 
@@ -124,7 +124,7 @@ export function StepInfo({
 
       {/* Step details */}
       {stepDetails.map((detail: string) => (
-        <p className="text-gray-500 text-sm" key={hashCode(detail)}>
+        <p className="text-muted-foreground text-sm" key={hashCode(detail)}>
           {detail}
         </p>
       ))}

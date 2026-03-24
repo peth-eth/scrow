@@ -35,7 +35,7 @@ export function GenerateInvoicePDF({
     <div className="flex flex-col items-stretch">
       <button
         onClick={onOpen}
-        className="px-2 py-1 text-xs uppercase border border-blue-500 text-blue-500 rounded font-normal font-mono hover:bg-blue-50 transition-colors"
+        className="px-2 py-1 text-xs uppercase border border-primary text-primary rounded font-normal font-mono hover:bg-primary/10 transition-colors"
         {...buttonProps}
       >
         {buttonText}
@@ -47,14 +47,14 @@ export function GenerateInvoicePDF({
           onClick={onClose}
         >
           <div
-            className="relative bg-white rounded-lg w-[100vw] max-w-[80rem] h-[90vh]"
+            className="relative bg-card rounded-lg w-[100vw] max-w-[80rem] h-[90vh]"
             onClick={e => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-4 text-black">
+            <div className="flex items-center justify-between p-4 text-foreground">
               <h3 className="font-semibold">Smart Invoice {address}</h3>
               <button
                 onClick={onClose}
-                className="p-1 text-black hover:bg-gray-100 rounded transition-colors"
+                className="p-1 text-foreground hover:bg-muted rounded transition-colors"
                 aria-label="Close"
               >
                 <svg
@@ -119,7 +119,7 @@ export function GenerateInvoicePDFMenuItem({
     <div className="flex flex-col items-stretch">
       <button
         onClick={onOpen}
-        className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors"
+        className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
         {...props}
       >
         {text}
@@ -131,14 +131,14 @@ export function GenerateInvoicePDFMenuItem({
           onClick={onClose}
         >
           <div
-            className="relative bg-white rounded-lg w-[100vw] max-w-[80rem] h-[90vh]"
+            className="relative bg-card rounded-lg w-[100vw] max-w-[80rem] h-[90vh]"
             onClick={e => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-4 text-black">
+            <div className="flex items-center justify-between p-4 text-foreground">
               <h3 className="font-semibold">Smart Invoice {address}</h3>
               <button
                 onClick={onClose}
-                className="p-1 text-black hover:bg-gray-100 rounded transition-colors"
+                className="p-1 text-foreground hover:bg-muted rounded transition-colors"
                 aria-label="Close"
               >
                 <svg

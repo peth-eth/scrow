@@ -134,7 +134,7 @@ export function CreateInvoiceEscrow() {
             care to add permissions to your project agreement document.
           </p>
 
-          <div className="flex w-full flex-col justify-between rounded-lg bg-white p-4">
+          <div className="flex w-full flex-col justify-between rounded-lg bg-card p-4">
             <StepInfo
               stepNum={currentStep}
               stepsDetails={ESCROW_STEPS}

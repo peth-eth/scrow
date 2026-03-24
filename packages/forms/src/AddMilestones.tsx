@@ -140,7 +140,7 @@ export function AddMilestones({
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <h2 className="font-bold mb-4 uppercase text-center text-black text-lg">
+      <h2 className="font-bold mb-4 uppercase text-center text-foreground text-lg">
         Add New Payment Milestones
       </h2>
 
@@ -245,7 +245,7 @@ export function AddMilestones({
       {!!newTotalDue && (
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <p className="font-bold text-black">
+            <p className="font-bold text-foreground">
               Total {milestones?.length} milestones:
             </p>
 
@@ -256,7 +256,7 @@ export function AddMilestones({
           </div>
 
           <div className="flex items-center gap-2">
-            <p className="font-bold text-black">
+            <p className="font-bold text-foreground">
               Potential dispute fee:
             </p>
             <p>
