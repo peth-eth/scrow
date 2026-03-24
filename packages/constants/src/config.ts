@@ -324,6 +324,14 @@ export const NETWORK_CONFIG: Record<SupportedChainId, NetworkConfig> = {
   },
 };
 
+// ⚠️ BEFORE DEPLOYING: Replace PLATFORM_FEE_ADDRESS with your actual wallet address
+export const PLATFORM_FEE_ADDRESS =
+  '0x0000000000000000000000000000000000000000' as Address;
+export const PLATFORM_FEE_BPS = 100n; // 1% (basis points out of 10000)
+
+// Default arbitrator — resolved from Farcaster at runtime
+export const DEFAULT_ARBITRATOR_FC_USERNAME = 'peth';
+
 export const IPFS_ENDPOINT = 'https://gateway.pinata.cloud';
 
 export const ARWEAVE_ENDPOINT = 'https://arweave.net';

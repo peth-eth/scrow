@@ -2,6 +2,8 @@ import {
   INVOICE_VERSION,
   KnownResolverType,
   LOG_TYPE,
+  PLATFORM_FEE_ADDRESS,
+  PLATFORM_FEE_BPS,
   SMART_INVOICE_FACTORY_ABI,
   TOASTS,
 } from '@smartinvoicexyz/constants';
@@ -34,7 +36,7 @@ import { SimulateContractErrorType, WriteContractErrorType } from './types';
 import { useDetailsPin } from './useDetailsPin';
 import { useFetchTokens } from './useFetchTokens';
 
-const ESCROW_TYPE = toHex('updatable-v2', { size: 32 });
+const ESCROW_TYPE = toHex('split-escrow', { size: 32 });
 
 interface UseInvoiceCreate {
   invoiceForm: UseFormReturn<Partial<FormInvoice>>;
@@ -72,9 +74,7 @@ export const useInvoiceCreate = ({
   const invoiceValues = getValues();
   const {
     client,
-    clientReceiver,
     provider,
-    providerReceiver,
     resolverType,
     klerosCourt,
     resolverAddress: customResolverAddress,
@@ -88,9 +88,7 @@ export const useInvoiceCreate = ({
     endDate,
   } = _.pick(invoiceValues, [
     'client',
-    'clientReceiver',
     'provider',
-    'providerReceiver',
     'resolverType',
     'resolverAddress',
     'token',
@@ -188,35 +186,32 @@ export const useInvoiceCreate = ({
       return '0x';
     }
 
-    const providerReceiverFinal = providerReceiver ?? provider;
-    const clientReceiverFinal = clientReceiver ?? client;
-
     return encodeAbiParameters(
       [
-        { type: 'address' }, //     _client, address that controls the invoice for the client
-        { type: 'uint8' }, //     _resolverTypeType,
-        { type: 'address' }, //     _resolverType,
-        { type: 'address' }, //     _token,
+        { type: 'address' }, //     _client
+        { type: 'uint8' }, //     _resolverType
+        { type: 'address' }, //     _resolver
+        { type: 'address' }, //     _token
         { type: 'uint256' }, //     _terminationTime, seconds since epoch
-        { type: 'bytes32' }, //     _details,
-        { type: 'address' }, //     _wrappedNativeToken,
-        { type: 'bool' }, //     _requireVerification, warns the client not to deposit funds until verifying they can release or lock funds
-        { type: 'address' }, //     _factory,
-        { type: 'address' }, //     _providerReceiver, address that receives funds for the provider
-        { type: 'address' }, //     _clientReceiver, address that receives funds for the client
+        { type: 'bytes32' }, //     _details
+        { type: 'address' }, //     _wrappedNativeToken
+        { type: 'bool' }, //     _requireVerification
+        { type: 'address' }, //     _factory
+        { type: 'address' }, //     _dao, platform fee recipient
+        { type: 'uint256' }, //     _daoFee, basis points (100 = 1%)
       ],
       [
         client as Address,
         0, // all are individual resolvers
         resolverAddress as Address,
-        networkConfig?.token ?? (token as Address), // address _token (payment token address)
-        BigInt(new Date(safetyValveDate.toString()).getTime() / 1000), // safety valve date
-        detailHash ?? '0x', // bytes32 _details detailHash
+        networkConfig?.token ?? (token as Address),
+        BigInt(new Date(safetyValveDate.toString()).getTime() / 1000),
+        detailHash ?? '0x',
         wrappedNativeToken,
         REQUIRES_VERIFICATION,
         invoiceFactory,
-        providerReceiverFinal as Address,
-        clientReceiverFinal as Address,
+        PLATFORM_FEE_ADDRESS,
+        PLATFORM_FEE_BPS,
       ],
     );
   }, [client, resolverType, token, detailHash, safetyValveDate, provider]);

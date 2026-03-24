@@ -31,9 +31,7 @@ export type FormInvoice = {
   deadline?: Date;
   token: string;
   client: string;
-  clientReceiver?: string;
   provider: string;
-  providerReceiver?: string;
   // instant details
   paymentDue?: string;
   lateFee?: string;
