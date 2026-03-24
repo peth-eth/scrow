@@ -1,7 +1,5 @@
-import { Button, Heading, Stack, Text } from '@chakra-ui/react';
 import { useInvoiceDetails } from '@smartinvoicexyz/hooks';
 import {
-  ChakraNextLink,
   Container,
   InvoiceNotFound,
   Loader,
@@ -13,9 +11,12 @@ import {
   parseChainId,
 } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Hex, isAddress } from 'viem';
+
+import { Button } from '../../../../components/ui/button';
 
 function LockedInvoice() {
   const router = useRouter();
@@ -67,67 +68,57 @@ function LockedInvoice() {
 
   return (
     <Container overlay>
-      <Stack
-        w="100%"
-        spacing="1rem"
-        align="center"
-        justify="center"
-        my="8rem"
-        maxW="35rem"
-        px="1rem"
-      >
-        <Heading fontWeight="normal" textAlign="center">
+      <div className="my-32 flex w-full max-w-[35rem] flex-col items-center justify-center gap-4 px-4">
+        <h1 className="text-center text-2xl font-normal">
           Funds Securely Locked
-        </Heading>
+        </h1>
 
-        <Text color="white" textAlign="center" fontSize="sm" mb="1rem">
+        <p className="mb-4 text-center text-sm text-white">
           You can view the transaction{' '}
-          <ChakraNextLink
+          <a
             href={getTxLink(invoiceChainId, dispute.txHash)}
-            isExternal
-            color="red.500"
-            textDecoration="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-destructive underline"
           >
             here
-          </ChakraNextLink>
+          </a>
           <br />
           You can view the details on IPFS{' '}
-          <ChakraNextLink
+          <a
             href={getIpfsLink(dispute.ipfsHash)}
-            isExternal
-            color="red.500"
-            textDecoration="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-destructive underline"
           >
             here
-          </ChakraNextLink>
-        </Text>
+          </a>
+        </p>
 
-        <Text color="white" fontStyle="italic" textAlign="center" mb="1rem">
+        <p className="mb-4 text-center italic text-white">
           Once a decision is made, the funds will be dispersed according to the
           ruling.
           <br />
           Return to the{' '}
-          <ChakraNextLink href={`/invoice/${invoiceChainLabel}/${invoiceId}`}>
-            <u>invoice details page</u>
-          </ChakraNextLink>{' '}
+          <Link
+            href={`/invoice/${invoiceChainLabel}/${invoiceId}`}
+            className="underline"
+          >
+            invoice details page
+          </Link>{' '}
           to view the results.
-        </Text>
+        </p>
 
-        <ChakraNextLink href="/">
+        <Link href="/" className="w-full max-w-[30rem]">
           <Button
-            w="100%"
-            maxW="30rem"
             variant="outline"
-            colorScheme="red"
-            textTransform="uppercase"
-            fontFamily="mono"
-            fontWeight="normal"
             size="lg"
+            className="w-full font-mono font-normal uppercase text-destructive border-destructive hover:bg-destructive/10"
           >
             Return Home
           </Button>
-        </ChakraNextLink>
-      </Stack>
+        </Link>
+      </div>
     </Container>
   );
 }

@@ -1,14 +1,8 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  SimpleGrid,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import { ChakraNextLink, Container, useMediaStyles } from '@smartinvoicexyz/ui';
+import { Container } from '@smartinvoicexyz/ui';
+import Link from 'next/link';
 import React from 'react';
+
+import { Button } from '../../components/ui/button';
 
 const STEPS = [
   {
@@ -41,119 +35,71 @@ function StepCard({
   description: string;
 }) {
   return (
-    <VStack
-      bg="white"
-      border="1px solid"
-      borderColor="gray.200"
-      borderRadius="lg"
-      p={6}
-      spacing={3}
-      textAlign="center"
-      _hover={{ borderColor: 'blue.1', shadow: 'md' }}
-      transition="all 0.2s"
-    >
-      <Flex
-        align="center"
-        justify="center"
-        bg="blue.1"
-        color="white"
-        borderRadius="full"
-        w="40px"
-        h="40px"
-        fontSize="lg"
-        fontWeight="bold"
-        fontFamily="mono"
-      >
+    <div className="flex flex-col items-center gap-3 rounded-lg border border-gray-200 bg-white p-6 text-center transition-all hover:border-primary hover:shadow-md">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-mono text-lg font-bold text-white">
         {number}
-      </Flex>
-      <Heading fontSize="lg" color="gray.700">
-        {title}
-      </Heading>
-      <Text fontSize="sm" color="gray.500" lineHeight="tall">
+      </div>
+      <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
+      <p className="text-sm leading-relaxed text-muted-foreground">
         {description}
-      </Text>
-    </VStack>
+      </p>
+    </div>
   );
 }
 
 function Home() {
-  const { primaryButtonSize } = useMediaStyles();
-
   return (
     <Container overlay>
-      <VStack spacing={16} py={12} w="100%" maxW="800px" px={4}>
+      <div className="flex w-full max-w-[800px] flex-col items-center gap-16 px-4 py-12">
         {/* Hero */}
-        <VStack spacing={4} textAlign="center">
-          <Heading
-            fontWeight={700}
-            fontSize={{ base: '2xl', md: '4xl' }}
-            color="gray.700"
-            lineHeight="shorter"
-          >
+        <div className="flex flex-col items-center gap-4 text-center">
+          <h1 className="text-2xl font-bold leading-tight text-gray-700 md:text-4xl">
             Secure Escrow for Web3 Freelancers
-          </Heading>
-          <Text
-            fontSize={{ base: 'md', md: 'lg' }}
-            color="gray.500"
-            maxW="560px"
-          >
+          </h1>
+          <p className="max-w-[560px] text-base text-muted-foreground md:text-lg">
             Get paid safely with milestone-based escrow, community arbitration,
             and transparent fees.
-          </Text>
-        </VStack>
+          </p>
+        </div>
 
         {/* How It Works */}
-        <VStack spacing={6} w="100%">
-          <Heading fontSize="xl" color="gray.600" textTransform="uppercase">
+        <div className="flex w-full flex-col items-center gap-6">
+          <h2 className="text-xl font-semibold uppercase text-gray-600">
             How It Works
-          </Heading>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} w="100%">
+          </h2>
+          <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-3">
             {STEPS.map(step => (
               <StepCard key={step.number} {...step} />
             ))}
-          </SimpleGrid>
-        </VStack>
+          </div>
+        </div>
 
         {/* Fee Transparency */}
-        <Box
-          bg="gray.50"
-          borderRadius="lg"
-          px={6}
-          py={4}
-          w="100%"
-          textAlign="center"
-        >
-          <Text fontSize="sm" color="gray.600" fontFamily="mono">
+        <div className="w-full rounded-lg bg-gray-50 px-6 py-4 text-center">
+          <p className="font-mono text-sm text-gray-600">
             1% platform fee on releases &middot; 5% arbitration fee only if
             disputed
-          </Text>
-        </Box>
+          </p>
+        </div>
 
         {/* CTA Buttons */}
-        <Flex
-          direction={{ base: 'column', md: 'row' }}
-          gap={4}
-          w="100%"
-          justify="center"
-          align="center"
-        >
-          <ChakraNextLink href="/create">
-            <Button size={primaryButtonSize} minW="250px" paddingY={6}>
+        <div className="flex w-full flex-col items-center justify-center gap-4 md:flex-row">
+          <Link href="/create">
+            <Button size="lg" className="min-w-[250px] py-6">
               Create Invoice
             </Button>
-          </ChakraNextLink>
-          <ChakraNextLink href="/invoices">
+          </Link>
+          <Link href="/invoices">
             <Button
-              size={primaryButtonSize}
-              minW="250px"
-              paddingY={6}
+              size="lg"
               variant="outline"
+              className="min-w-[250px] py-6"
             >
               View Existing Invoices
             </Button>
-          </ChakraNextLink>
-        </Flex>
-      </VStack>
+          </Link>
+        </div>
+      </div>
     </Container>
   );
 }

@@ -1,4 +1,3 @@
-import { Badge, Button, Stack } from '@chakra-ui/react';
 import { INVOICE_TYPES } from '@smartinvoicexyz/constants';
 import {
   InstantButtonManager,
@@ -26,6 +25,8 @@ import { useMemo } from 'react';
 import { Hex, isAddress } from 'viem';
 import { useAccount, useChainId, useSwitchChain } from 'wagmi';
 
+import { Badge } from '../../../../components/ui/badge';
+import { Button } from '../../../../components/ui/button';
 import { useOverlay } from '../../../../contexts/OverlayContext';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -71,6 +72,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     },
   };
 }
+
+const ROLE_BADGE_VARIANTS: Record<string, 'default' | 'success' | 'secondary' | 'outline'> = {
+  blue: 'default',
+  green: 'success',
+  purple: 'default',
+  gray: 'secondary',
+};
 
 function ViewInvoice() {
   const router = useRouter();
@@ -130,30 +138,17 @@ function ViewInvoice() {
 
   return (
     <Container overlay>
-      <Stack
-        spacing="2rem"
-        justify="center"
-        align="center"
-        direction={{ base: 'column', lg: 'row' }}
-        w="100%"
-        px="1rem"
-        py="8rem"
-      >
+      <div className="relative flex w-full flex-col items-center justify-center gap-8 px-4 py-32 lg:flex-row">
         <Badge
-          colorScheme={roleBadge.color}
-          fontSize="sm"
-          px={3}
-          py={1}
-          borderRadius="md"
-          position="absolute"
-          top="5rem"
+          variant={ROLE_BADGE_VARIANTS[roleBadge.color] || 'secondary'}
+          className="absolute top-20 rounded-md px-3 py-1 text-sm"
         >
           {roleBadge.label}
         </Badge>
 
         <InvoiceMetaDetails invoice={invoiceDetails} />
 
-        <Stack maxW="60rem" w="100%" spacing={4}>
+        <div className="flex w-full max-w-[60rem] flex-col gap-4">
           {invoiceType === INVOICE_TYPES.Instant ? (
             <>
               <InstantPaymentDetails invoice={invoiceDetails} />
@@ -167,17 +162,14 @@ function ViewInvoice() {
           )}
           {showNetworkError && (
             <Button
-              bg="orange.600"
-              _hover={{ bg: 'orange.700' }}
+              className="w-full gap-2 bg-orange-600 hover:bg-orange-700"
               onClick={() => switchChain?.({ chainId: invoiceChainId })}
-              gap={2}
-              w="100%"
             >
               Click here to switch network to {getChainName(invoiceChainId)}
             </Button>
           )}
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </Container>
   );
 }

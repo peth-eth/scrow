@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import 'focus-visible/dist/focus-visible';
 import '@rainbow-me/rainbowkit/styles.css';
+import '../styles/globals.css';
 
 import { ChakraProvider, ColorModeScript, CSSReset } from '@chakra-ui/react';
 import { Global } from '@emotion/react';
@@ -20,6 +21,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { hashFn } from '@wagmi/core/query';
+import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
 import React, { useState } from 'react';
 import { WagmiProvider } from 'wagmi';
@@ -44,31 +46,33 @@ function App({ Component, pageProps }: AppProps) {
   );
 
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        <HydrationBoundary state={pageProps.dehydratedState}>
-          <RainbowKitProvider avatar={AccountAvatar}>
-            <ChakraProvider theme={theme}>
-              <ColorModeScript
-                initialColorMode={theme.config.initialColorMode}
-              />
-              <CSSReset />
-              <Global styles={globalStyles} />
-              <ErrorBoundary>
-                <FrameProvider>
-                  <OverlayContextProvider>
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                  </OverlayContextProvider>
-                </FrameProvider>
-              </ErrorBoundary>
-            </ChakraProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </RainbowKitProvider>
-        </HydrationBoundary>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <HydrationBoundary state={pageProps.dehydratedState}>
+            <RainbowKitProvider avatar={AccountAvatar}>
+              <ChakraProvider theme={theme}>
+                <ColorModeScript
+                  initialColorMode={theme.config.initialColorMode}
+                />
+                <CSSReset />
+                <Global styles={globalStyles} />
+                <ErrorBoundary>
+                  <FrameProvider>
+                    <OverlayContextProvider>
+                      <Layout>
+                        <Component {...pageProps} />
+                      </Layout>
+                    </OverlayContextProvider>
+                  </FrameProvider>
+                </ErrorBoundary>
+              </ChakraProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+            </RainbowKitProvider>
+          </HydrationBoundary>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ThemeProvider>
   );
 }
 

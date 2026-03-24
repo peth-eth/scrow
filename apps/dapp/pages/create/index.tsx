@@ -1,16 +1,4 @@
 import {
-  Button,
-  Flex,
-  Heading,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Stack,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
-import {
   ESCROW_STEPS,
   INVOICE_TYPES,
   TOASTS,
@@ -38,6 +26,13 @@ import { Address, Hex } from 'viem';
 import { useChainId } from 'wagmi';
 
 import { SaveTemplateModal } from '../../components/SaveTemplateModal';
+import { Button } from '../../components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../../components/ui/dropdown-menu';
 
 export function CreateInvoiceEscrow() {
   const invoiceForm = useForm();
@@ -50,7 +45,7 @@ export function CreateInvoiceEscrow() {
   const chainId = useChainId();
   const [currentChainId, setCurrentChainId] = useState(chainId);
   const { templates, saveTemplate, deleteTemplate } = useInvoiceTemplates();
-  const saveModal = useDisclosure();
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   useEffect(() => {
     if (chainId !== currentChainId) {
@@ -110,64 +105,53 @@ export function CreateInvoiceEscrow() {
     );
     saveTemplate(name, data);
     toast.success({ title: `Template "${name}" saved` });
-    saveModal.onClose();
+    setSaveModalOpen(false);
   };
 
   return (
     <Container overlay>
-      <Stack
-        direction={{ base: 'column', lg: 'column' }}
-        spacing="2rem"
-        align="center"
-        justify="center"
-        w={columnWidth}
-        px="1rem"
-        my="2rem"
-        maxW="45rem"
+      <div
+        className="my-8 flex flex-col items-center justify-center gap-8 px-4"
+        style={{ width: columnWidth, maxWidth: '45rem' }}
       >
-        <Stack
-          spacing={{ base: '1.5rem', lg: '1rem' }}
-          w={{ base: '100%', md: 'auto' }}
-        >
-          <Heading fontWeight="700" fontSize={headingSize} textAlign="center">
+        <div className="flex w-full flex-col gap-4 md:w-auto md:gap-4">
+          <h1
+            className="text-center font-bold"
+            style={{ fontSize: headingSize }}
+          >
             Create an Escrow Invoice
-          </Heading>
+          </h1>
 
           {currentStep === 1 && templates.length > 0 && (
-            <Menu>
-              <MenuButton as={Button} size="sm" variant="outline">
-                Load Template
-              </MenuButton>
-              <MenuList>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" variant="outline">
+                  Load Template
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
                 {templates.map(t => (
-                  <MenuItem key={t.id} onClick={() => loadTemplate(t.id)}>
+                  <DropdownMenuItem
+                    key={t.id}
+                    onClick={() => loadTemplate(t.id)}
+                  >
                     {t.name}
-                  </MenuItem>
+                  </DropdownMenuItem>
                 ))}
-              </MenuList>
-            </Menu>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
 
-          <Text
-            color="#90A0B7"
-            as="i"
-            width="100%"
+          <p
+            className="w-full text-center italic text-muted-foreground"
             style={{ textIndent: 20 }}
-            align="center"
           >
             Note: All invoice data will be stored publicly on IPFS and can be
             viewed by anyone. If you have privacy concerns, we recommend taking
             care to add permissions to your project agreement document.
-          </Text>
+          </p>
 
-          <Flex
-            direction="column"
-            justify="space-between"
-            p="1rem"
-            bg="white"
-            borderRadius="0.5rem"
-            w="100%"
-          >
+          <div className="flex w-full flex-col justify-between rounded-lg bg-white p-4">
             <StepInfo
               stepNum={currentStep}
               stepsDetails={ESCROW_STEPS}
@@ -204,15 +188,15 @@ export function CreateInvoiceEscrow() {
                   isLoading={isLoading}
                   type={INVOICE_TYPES.Escrow}
                 />
-                <Flex justify="center" mt={4}>
+                <div className="mt-4 flex justify-center">
                   <Button
                     size="sm"
                     variant="ghost"
-                    onClick={saveModal.onOpen}
+                    onClick={() => setSaveModalOpen(true)}
                   >
                     Save as Template
                   </Button>
-                </Flex>
+                </div>
               </>
             )}
 
@@ -222,13 +206,13 @@ export function CreateInvoiceEscrow() {
                 txHash={txHash as Address}
               />
             )}
-          </Flex>
-        </Stack>
-      </Stack>
+          </div>
+        </div>
+      </div>
 
       <SaveTemplateModal
-        isOpen={saveModal.isOpen}
-        onClose={saveModal.onClose}
+        isOpen={saveModalOpen}
+        onClose={() => setSaveModalOpen(false)}
         onSave={handleSaveTemplate}
       />
     </Container>

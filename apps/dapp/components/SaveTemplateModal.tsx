@@ -1,16 +1,15 @@
-import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-} from '@chakra-ui/react';
 import { useState } from 'react';
+
+import { Button } from './ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from './ui/dialog';
+import { Input } from './ui/input';
 
 type Props = {
   isOpen: boolean;
@@ -29,33 +28,33 @@ export function SaveTemplateModal({ isOpen, onClose, onSave }: Props) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Save as Template</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Text fontSize="sm" color="gray.600" mb={3}>
+    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Save as Template</DialogTitle>
+          <DialogDescription>
             Save the current invoice settings as a reusable template. Next time
             you create an invoice, you can load this template to pre-fill the
             form.
-          </Text>
-          <Input
-            placeholder="Template name (e.g., Monthly Retainer)"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleSave()}
-          />
-        </ModalBody>
-        <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
+          </DialogDescription>
+        </DialogHeader>
+
+        <Input
+          placeholder="Template name (e.g., Monthly Retainer)"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSave()}
+        />
+
+        <DialogFooter>
+          <Button variant="ghost" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={handleSave} isDisabled={!name.trim()}>
+          <Button onClick={handleSave} disabled={!name.trim()}>
             Save Template
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
