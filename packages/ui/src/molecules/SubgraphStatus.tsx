@@ -124,9 +124,9 @@ export function InvoiceMetaDetails({
         },
       !!terminationTime &&
         BigInt(terminationTime) !== BigInt(0) && {
-          label: 'Safety Valve Withdrawal Date:',
+          label: 'Withdrawal Deadline:',
           value: getDateString(_.toNumber(_.toString(terminationTime))),
-          tip: `The Safety Valve gets activated on ${new Date(
+          tip: `The Withdrawal Deadline activates on ${new Date(
             Number(terminationTime) * 1000,
           ).toUTCString()}`,
         },

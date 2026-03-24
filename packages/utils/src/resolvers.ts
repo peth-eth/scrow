@@ -33,19 +33,6 @@ export const escrowDetailsSchema = (chainId: number) =>
           },
         });
       }),
-    clientReceiver: Yup.string()
-      .optional()
-      .test({
-        name: 'clientReceiverIsAddress',
-        test: (v, { createError }) => {
-          if (!v || isAddress(v)) return true;
-          return createError({
-            path: 'clientReceiver',
-            message: 'Client receiver must be a valid address',
-          });
-        },
-        message: 'Client receiver must be a valid address',
-      }),
     provider: Yup.string()
       .required()
       .test({
@@ -58,27 +45,19 @@ export const escrowDetailsSchema = (chainId: number) =>
           });
         },
       }),
-    providerReceiver: Yup.string()
-      .optional()
-      .test({
-        name: 'providerReceiverIsAddress',
-        test: (v, { createError }) => {
-          if (!v || isAddress(v)) return true;
-          return createError({
-            path: 'providerReceiver',
-            message: 'Provider receiver must be a valid address',
-          });
-        },
-        message: 'Provider receiver must be a valid address',
-      }),
     resolverType: Yup.string()
       .required()
       .oneOf(['kleros', 'custom', 'lexdao', 'smart-invoice']),
     resolverAddress: Yup.string().when('resolverType', (r, localSchema) => {
-      if (_.first(r) !== 'custom') return localSchema;
+      const type = _.first(r);
+      if (type !== 'custom') return localSchema;
       return localSchema
-        .required('Custom resolver address is required')
-        .test((value: string) => isAddress(value));
+        .required('Arbitrator address is required')
+        .test(
+          'resolverIsAddress',
+          'Arbitrator must be a valid address',
+          (value: string) => isAddress(value),
+        );
     }),
     klerosCourt: Yup.number().when('resolverType', (r, localSchema) => {
       if (_.first(r) !== 'kleros') return localSchema;
@@ -219,7 +198,7 @@ export const projectDetailsSchema = Yup.object().shape({
   safetyValveDate: Yup.date().when(['endDate'], (endDate, schema) => {
     return schema.min(
       sevenDaysFromDate(endDate.toString()),
-      'Safety Valve Date must be at least 7 days after End Date',
+      'Withdrawal Deadline must be at least 7 days after End Date',
     );
   }),
 });

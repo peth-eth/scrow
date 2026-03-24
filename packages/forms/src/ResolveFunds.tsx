@@ -112,7 +112,7 @@ export function ResolveFunds({
           Resolve Dispute
         </Heading>
         <Text textAlign="center" fontSize="sm" mb="1rem">
-          Invoice is not locked
+          Invoice is not disputed
         </Text>
         <Button
           onClick={onClose}

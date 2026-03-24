@@ -55,11 +55,11 @@ const fetchInvoicesForPage = async (
   return invoices.map(invoice => {
     const totaDeposits = calcTotal(invoice.deposits);
     let status:
-      | 'Locked'
+      | 'Disputed'
       | 'Awaiting Funds'
       | 'In Progress'
       | 'Expired'
-      | 'Completed' = 'Locked';
+      | 'Completed' = 'Disputed';
     if (invoice.isLocked !== true) {
       if (
         totalDueReleases({

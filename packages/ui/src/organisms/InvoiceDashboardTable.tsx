@@ -39,7 +39,7 @@ const getStatusColor = (status?: string) => {
       return 'green.400';
     case 'Completed':
       return 'blue.400';
-    case 'Locked':
+    case 'Disputed':
       return 'red.400';
     case 'Expired':
       return 'gray.400';
@@ -120,7 +120,7 @@ export function InvoiceDashboardTable() {
             return 'Provider';
           }
           if (_.toLower(address) === _.toLower(resolver)) {
-            return 'Resolver';
+            return 'Arbitrator';
           }
           return 'Unknown';
         },

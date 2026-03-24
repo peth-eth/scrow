@@ -89,7 +89,7 @@ export function LockFunds({
         transition="all ease-in-out .25s"
         _hover={{ cursor: 'pointer', color: 'raid' }}
       >
-        Lock Funds
+        Raise Dispute
       </Heading>
       <Text textAlign="center" fontSize="sm" mb="1rem">
         Locking freezes all remaining funds in the contract and initiates a
@@ -139,7 +139,7 @@ export function LockFunds({
         textTransform="uppercase"
         variant="solid"
       >
-        {`Lock ${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
+        {`Raise Dispute ${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
       </Button>
       {resolverInfo?.id === 'kleros' && (
         <Alert bg="red.300" borderRadius="md" color="red.600" gap={2}>

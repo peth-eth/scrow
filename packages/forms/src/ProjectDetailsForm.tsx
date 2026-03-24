@@ -145,7 +145,7 @@ export function ProjectDetailsForm({
             />
           ) : (
             <DatePicker
-              label="Safety Valve Date"
+              label="Withdrawal Deadline"
               name="safetyValveDate"
               tooltip="The date the client can withdraw funds. Should be well in the future generally!"
               localForm={localForm}

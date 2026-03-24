@@ -122,11 +122,9 @@ export function InvoiceMetaDetails({
         },
       !!terminationTime &&
         BigInt(terminationTime) !== BigInt(0) && {
-          label: 'Safety Valve Withdrawal Date:',
+          label: 'Withdrawal Deadline:',
           value: getDateString(_.toNumber(_.toString(terminationTime))),
-          tip: `The Safety Valve gets activated on ${new Date(
-            Number(terminationTime) * 1000,
-          ).toUTCString()}`,
+          tip: 'If no dispute is raised, the client can reclaim remaining funds after this date',
         },
       !!deadline && {
         label: 'Payment Deadline:',
@@ -267,12 +265,28 @@ export function InvoiceMetaDetails({
         {invoiceType === INVOICE_TYPES.Escrow && (
           <Wrap>
             <WrapItem>
-              <Text>{'Non-Client Deposits Enabled: '}</Text>
+              <HStack spacing={1}>
+                <Text>{'Non-Client Deposits Enabled: '}</Text>
+                <Tooltip
+                  label="When enabled, anyone (not just the client) can deposit funds into this escrow"
+                  placement="auto-start"
+                >
+                  <QuestionIcon boxSize="0.75rem" color="gray" />
+                </Tooltip>
+              </HStack>
             </WrapItem>
 
             <WrapItem fontWeight="bold">
               {invoice && verifiedStatus ? (
-                <Text color="green.500">Enabled!</Text>
+                <HStack spacing={1}>
+                  <Text color="green.500">Enabled!</Text>
+                  <Tooltip
+                    label="The client has confirmed they can interact with this escrow contract"
+                    placement="auto-start"
+                  >
+                    <QuestionIcon boxSize="0.75rem" color="gray" />
+                  </Tooltip>
+                </HStack>
               ) : (
                 <Text color="red.500">Not enabled</Text>
               )}

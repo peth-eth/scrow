@@ -116,7 +116,7 @@ export function InvoiceButtonManager({
             textTransform="uppercase"
             onClick={() => openModal(ModalTypes.LOCK)}
           >
-            Lock
+            Raise Dispute
           </Button>
         )}
         {buttonEnabled.deposit && (

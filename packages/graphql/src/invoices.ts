@@ -36,7 +36,7 @@ export type InvoiceDisplayData = {
   status?:
     | 'Awaiting Funds'
     | 'In Progress'
-    | 'Locked'
+    | 'Disputed'
     | 'Expired'
     | 'Completed';
   tokenMetadata: {
