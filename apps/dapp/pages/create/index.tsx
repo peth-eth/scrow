@@ -17,7 +17,6 @@ import {
 import {
   Container,
   StepInfo,
-  useMediaStyles,
   useToast,
 } from '@smartinvoicexyz/ui';
 import React, { useEffect, useState } from 'react';
@@ -41,7 +40,6 @@ export function CreateInvoiceEscrow() {
   const [txHash, setTxHash] = useState<Hex>();
 
   const [invoiceId, setInvoiceId] = useState<Address>();
-  const { headingSize, columnWidth } = useMediaStyles();
   const chainId = useChainId();
   const [currentChainId, setCurrentChainId] = useState(chainId);
   const { templates, saveTemplate, deleteTemplate } = useInvoiceTemplates();
@@ -112,12 +110,12 @@ export function CreateInvoiceEscrow() {
     <Container overlay>
       <div
         className="my-8 flex flex-col items-center justify-center gap-8 px-4"
-        style={{ width: columnWidth, maxWidth: '45rem' }}
+        className="w-[95%] max-w-[45rem]"
       >
         <div className="flex w-full flex-col gap-4 md:w-auto md:gap-4">
           <h1
             className="text-center font-bold"
-            style={{ fontSize: headingSize }}
+            className="text-xl md:text-2xl"
           >
             Create an Escrow Invoice
           </h1>

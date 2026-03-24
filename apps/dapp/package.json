@@ -10,8 +10,6 @@
     "safari >= 14"
   ],
   "dependencies": {
-    "@chakra-ui/react": "^2.10.9",
-    "@emotion/react": "^11.14.0",
     "@farcaster/frame-sdk": "^0.0.50",
     "@next/bundle-analyzer": "^15.3.4",
     "@rainbow-me/rainbowkit": "^2.2.5",

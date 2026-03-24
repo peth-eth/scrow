@@ -4,8 +4,8 @@
   "version": "0.1.28",
   "author": "",
   "dependencies": {
-    "@chakra-ui/react": "^2.10.9",
     "@hookform/resolvers": "^3.9.0",
+    "lucide-react": "^0.475.0",
     "@smartinvoicexyz/constants": "workspace:*",
     "@smartinvoicexyz/graphql": "workspace:*",
     "@smartinvoicexyz/hooks": "workspace:*",

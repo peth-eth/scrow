@@ -112,15 +112,16 @@ export function FarcasterArbitratorPicker({
               @{selectedUser.username}
             </p>
           </div>
-          <span
-            className="text-xs text-blue-500 cursor-pointer"
+          <button
+            type="button"
+            className="text-xs text-blue-500 cursor-pointer hover:underline"
             onClick={() => {
               setSelectedUser(null);
               setQuery('');
             }}
           >
             Change
-          </span>
+          </button>
         </div>
       )}
 

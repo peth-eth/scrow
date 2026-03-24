@@ -18,6 +18,15 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -26,7 +35,9 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className="relative p-8 max-w-[40rem] w-full bg-white rounded-lg mx-4"
+        role="dialog"
+        aria-modal="true"
+        className="relative p-8 max-w-[40rem] w-full bg-white dark:bg-card rounded-lg mx-4"
         onClick={e => e.stopPropagation()}
       >
         <button

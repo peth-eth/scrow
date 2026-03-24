@@ -15,7 +15,6 @@ import { formatUnits } from 'viem';
 import { useAccount, useChainId } from 'wagmi';
 
 import { ChakraNextLink, Loader } from '../atoms';
-import { useMediaStyles } from '../hooks';
 import { Styles } from '../molecules/InvoicesStyles';
 
 const getStatusColor = (status?: string) => {
@@ -73,7 +72,6 @@ export function InvoiceDashboardTable() {
   const isConnected = !!address;
   const chainId = useChainId();
 
-  const { primaryButtonSize } = useMediaStyles();
 
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
