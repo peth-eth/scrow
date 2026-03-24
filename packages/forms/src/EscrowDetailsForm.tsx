@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
+  ARBITRATION_FEE_PERCENT,
   DEFAULT_ARBITRATOR_FC_USERNAME,
   ESCROW_STEPS,
   KLEROS_COURTS,
@@ -218,7 +219,7 @@ export function EscrowDetailsForm({
           <Alert status="info" borderRadius="md" fontSize="sm">
             <AlertIcon />
             <AlertDescription>
-              If a dispute occurs, the arbitrator receives a 5% resolution fee
+              If a dispute occurs, the arbitrator receives a {ARBITRATION_FEE_PERCENT}% resolution fee
               from the disputed funds.
             </AlertDescription>
           </Alert>

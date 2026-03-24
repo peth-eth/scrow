@@ -8,6 +8,7 @@ import {
   Spinner,
   Stack,
   Text,
+  useOutsideClick,
 } from '@chakra-ui/react';
 import { useFarcasterSearch } from '@smartinvoicexyz/hooks';
 import type { FarcasterUser } from '@smartinvoicexyz/hooks';
@@ -64,20 +65,11 @@ export function FarcasterArbitratorPicker({
     };
   }, []);
 
-  // Close dropdown on outside click — only listen when open
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen]);
+  useOutsideClick({
+    ref: containerRef,
+    handler: () => setIsOpen(false),
+    enabled: isOpen,
+  });
 
   const handleSelect = useCallback(
     (user: FarcasterUser) => {

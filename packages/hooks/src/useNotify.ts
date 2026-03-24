@@ -1,13 +1,8 @@
+import { NotificationEvent } from '@smartinvoicexyz/types';
 import { useCallback } from 'react';
 import { useChainId } from 'wagmi';
 
-export type NotificationEvent =
-  | 'deposit'
-  | 'release'
-  | 'dispute'
-  | 'resolution'
-  | 'milestone_added'
-  | 'withdraw';
+export type { NotificationEvent };
 
 type NotifyParams = {
   invoiceId: string;

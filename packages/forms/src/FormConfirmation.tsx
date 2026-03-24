@@ -10,6 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import {
+  ARBITRATION_FEE_PERCENT,
   ESCROW_STEPS,
   INVOICE_TYPES,
   KLEROS_COURTS,
@@ -102,7 +103,7 @@ export function FormConfirmation({
       {
         label: 'Arbitration Fee:',
         value: (
-          <Text textAlign="right">5% (only on disputes)</Text>
+          <Text textAlign="right">{ARBITRATION_FEE_PERCENT}% (only on disputes)</Text>
         ),
       },
       startDate && {

@@ -20,7 +20,11 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ESCROW_STEPS, PLATFORM_FEE_BPS } from '@smartinvoicexyz/constants';
+import {
+  ARBITRATION_FEE_PERCENT,
+  ESCROW_STEPS,
+  PLATFORM_FEE_BPS,
+} from '@smartinvoicexyz/constants';
 import { useFetchTokens } from '@smartinvoicexyz/hooks';
 import { FormInvoice, IToken } from '@smartinvoicexyz/types';
 import {
@@ -280,7 +284,7 @@ export function PaymentsForm({
           Platform Fee: {Number(PLATFORM_FEE_BPS) / 100}% on each release
         </Text>
         <Text fontSize="xs" color="grey">
-          Arbitration Fee: 5% of disputed amount (only if a dispute occurs)
+          Arbitration Fee: {ARBITRATION_FEE_PERCENT}% of disputed amount (only if a dispute occurs)
         </Text>
       </Stack>
 

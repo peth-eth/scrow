@@ -2,7 +2,6 @@ import {
   Button,
   Flex,
   Heading,
-  HStack,
   Menu,
   MenuButton,
   MenuItem,
@@ -85,33 +84,31 @@ export function CreateInvoiceEscrow() {
     setTxHash(hash);
   };
 
+  const TEMPLATE_FIELDS = [
+    'title',
+    'description',
+    'document',
+    'milestones',
+    'token',
+    'resolverType',
+    'resolverAddress',
+  ] as const;
+
   const loadTemplate = (templateId: string) => {
     const tmpl = templates.find(t => t.id === templateId);
     if (!tmpl) return;
-    const { data } = tmpl;
-    if (data.title) invoiceForm.setValue('title', data.title);
-    if (data.description) invoiceForm.setValue('description', data.description);
-    if (data.document) invoiceForm.setValue('document', data.document);
-    if (data.milestones) invoiceForm.setValue('milestones', data.milestones);
-    if (data.token) invoiceForm.setValue('token', data.token);
-    if (data.resolverType)
-      invoiceForm.setValue('resolverType', data.resolverType);
-    if (data.resolverAddress)
-      invoiceForm.setValue('resolverAddress', data.resolverAddress);
+    TEMPLATE_FIELDS.forEach(field => {
+      if (tmpl.data[field]) invoiceForm.setValue(field, tmpl.data[field]);
+    });
     toast.success({ title: `Template "${tmpl.name}" loaded` });
   };
 
   const handleSaveTemplate = (name: string) => {
     const values = invoiceForm.getValues();
-    saveTemplate(name, {
-      title: values.title,
-      description: values.description,
-      document: values.document,
-      milestones: values.milestones,
-      token: values.token,
-      resolverType: values.resolverType,
-      resolverAddress: values.resolverAddress,
-    });
+    const data = Object.fromEntries(
+      TEMPLATE_FIELDS.map(f => [f, values[f]]),
+    );
+    saveTemplate(name, data);
     toast.success({ title: `Template "${name}" saved` });
     saveModal.onClose();
   };
@@ -137,20 +134,18 @@ export function CreateInvoiceEscrow() {
           </Heading>
 
           {currentStep === 1 && templates.length > 0 && (
-            <HStack justify="center" spacing={2}>
-              <Menu>
-                <MenuButton as={Button} size="sm" variant="outline">
-                  Load Template
-                </MenuButton>
-                <MenuList>
-                  {templates.map(t => (
-                    <MenuItem key={t.id} onClick={() => loadTemplate(t.id)}>
-                      {t.name}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </Menu>
-            </HStack>
+            <Menu>
+              <MenuButton as={Button} size="sm" variant="outline">
+                Load Template
+              </MenuButton>
+              <MenuList>
+                {templates.map(t => (
+                  <MenuItem key={t.id} onClick={() => loadTemplate(t.id)}>
+                    {t.name}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Menu>
           )}
 
           <Text

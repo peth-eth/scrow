@@ -328,6 +328,7 @@ export const NETWORK_CONFIG: Record<SupportedChainId, NetworkConfig> = {
 export const PLATFORM_FEE_ADDRESS =
   '0x0000000000000000000000000000000000000000' as Address;
 export const PLATFORM_FEE_BPS = 100n; // 1% (basis points out of 10000)
+export const ARBITRATION_FEE_PERCENT = 5; // 5% resolution fee on disputes
 
 // Default arbitrator — resolved from Farcaster at runtime
 export const DEFAULT_ARBITRATOR_FC_USERNAME = 'peth';

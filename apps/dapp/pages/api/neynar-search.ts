@@ -1,15 +1,7 @@
+import { FarcasterUser } from '@smartinvoicexyz/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { withCors } from '../../utils/cors';
-
-export type NeynarUser = {
-  fid: number;
-  username: string;
-  display_name: string;
-  pfp_url: string;
-  eth_addresses: string[];
-  primary_eth_address: string | null;
-};
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { q } = req.query;
@@ -37,7 +29,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     const data = await response.json();
 
-    const users: NeynarUser[] = (data.result?.users ?? []).map(
+    const users: FarcasterUser[] = (data.result?.users ?? []).map(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (u: any) => ({
         fid: u.fid,

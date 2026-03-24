@@ -10,7 +10,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { KLEROS_GOOGLE_FORM } from '@smartinvoicexyz/constants';
+import {
+  ARBITRATION_FEE_PERCENT,
+  KLEROS_GOOGLE_FORM,
+} from '@smartinvoicexyz/constants';
 import {
   createInvoiceDetailsQueryKey,
   FormLock,
@@ -120,7 +123,7 @@ export function LockFunds({
           <ListItem>All remaining funds are frozen</ListItem>
           <ListItem>The arbitrator reviews the case</ListItem>
           <ListItem>Funds are distributed based on the ruling</ListItem>
-          <ListItem>A 5% arbitration fee is deducted</ListItem>
+          <ListItem>A {ARBITRATION_FEE_PERCENT}% arbitration fee is deducted</ListItem>
         </OrderedList>
       </Stack>
 

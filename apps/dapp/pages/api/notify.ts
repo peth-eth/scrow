@@ -1,12 +1,5 @@
+import { NotificationEvent } from '@smartinvoicexyz/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-export type NotificationEvent =
-  | 'deposit'
-  | 'release'
-  | 'dispute'
-  | 'resolution'
-  | 'milestone_added'
-  | 'withdraw';
 
 type NotifyRequest = {
   invoiceId: string;
