@@ -146,7 +146,6 @@ export function FormConfirmation({
           value: (
             <ChakraNextLink
               href={_.find(KLEROS_COURTS, { id: klerosCourt })?.link}
-              textAlign="right"
               isExternal
             >
               {_.find(KLEROS_COURTS, { id: klerosCourt })?.name}

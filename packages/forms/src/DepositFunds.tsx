@@ -220,10 +220,9 @@ export function DepositFunds({
           <NumberInput
             name="amount"
             type="number"
-            variant="outline"
             placeholder="0"
             defaultValue="0"
-            minW="300px"
+            className="min-w-[300px]"
             min={0}
             max={amountsSum}
             localForm={localForm}

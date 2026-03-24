@@ -169,9 +169,8 @@ export function PaymentsForm({
                         min={0}
                         max={1_000_000}
                         placeholder="500"
-                        variant="outline"
                         localForm={localForm}
-                        w="100%"
+                        className="w-full"
                         rightElement={
                           <span className="p-2">{invoiceTokenData?.symbol}</span>
                         }

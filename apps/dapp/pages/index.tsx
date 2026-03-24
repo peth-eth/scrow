@@ -2,7 +2,7 @@ import { Container } from '@smartinvoicexyz/ui';
 import Link from 'next/link';
 import React from 'react';
 
-import { Button } from '../../components/ui/button';
+import { Button } from '../components/ui/button';
 
 const STEPS = [
   {
@@ -14,8 +14,7 @@ const STEPS = [
   {
     number: '2',
     title: 'Client Deposits',
-    description:
-      'Funds are locked in escrow until milestones are completed.',
+    description: 'Funds are locked in escrow until milestones are completed.',
   },
   {
     number: '3',
@@ -90,11 +89,7 @@ function Home() {
             </Button>
           </Link>
           <Link href="/invoices">
-            <Button
-              size="lg"
-              variant="outline"
-              className="min-w-[250px] py-6"
-            >
+            <Button size="lg" variant="outline" className="min-w-[250px] py-6">
               View Existing Invoices
             </Button>
           </Link>

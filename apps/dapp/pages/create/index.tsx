@@ -10,15 +10,8 @@ import {
   ProjectDetailsForm,
   RegisterSuccess,
 } from '@smartinvoicexyz/forms';
-import {
-  useInvoiceCreate,
-  useInvoiceTemplates,
-} from '@smartinvoicexyz/hooks';
-import {
-  Container,
-  StepInfo,
-  useToast,
-} from '@smartinvoicexyz/ui';
+import { useInvoiceCreate, useInvoiceTemplates } from '@smartinvoicexyz/hooks';
+import { Container, StepInfo, useToast } from '@smartinvoicexyz/ui';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Address, Hex } from 'viem';
@@ -42,7 +35,7 @@ export function CreateInvoiceEscrow() {
   const [invoiceId, setInvoiceId] = useState<Address>();
   const chainId = useChainId();
   const [currentChainId, setCurrentChainId] = useState(chainId);
-  const { templates, saveTemplate, deleteTemplate } = useInvoiceTemplates();
+  const { templates, saveTemplate } = useInvoiceTemplates();
   const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   useEffect(() => {
@@ -98,9 +91,7 @@ export function CreateInvoiceEscrow() {
 
   const handleSaveTemplate = (name: string) => {
     const values = invoiceForm.getValues();
-    const data = Object.fromEntries(
-      TEMPLATE_FIELDS.map(f => [f, values[f]]),
-    );
+    const data = Object.fromEntries(TEMPLATE_FIELDS.map(f => [f, values[f]]));
     saveTemplate(name, data);
     toast.success({ title: `Template "${name}" saved` });
     setSaveModalOpen(false);
@@ -108,15 +99,9 @@ export function CreateInvoiceEscrow() {
 
   return (
     <Container overlay>
-      <div
-        className="my-8 flex flex-col items-center justify-center gap-8 px-4"
-        className="w-[95%] max-w-[45rem]"
-      >
+      <div className="my-8 flex w-[95%] max-w-[45rem] flex-col items-center justify-center gap-8 px-4">
         <div className="flex w-full flex-col gap-4 md:w-auto md:gap-4">
-          <h1
-            className="text-center font-bold"
-            className="text-xl md:text-2xl"
-          >
+          <h1 className="text-center text-xl font-bold md:text-2xl">
             Create an Escrow Invoice
           </h1>
 

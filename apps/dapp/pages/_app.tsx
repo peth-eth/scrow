@@ -4,11 +4,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import '../styles/globals.css';
 
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import {
-  AccountAvatar,
-  ErrorBoundary,
-  Layout,
-} from '@smartinvoicexyz/ui';
+import { AccountAvatar, ErrorBoundary, Layout } from '@smartinvoicexyz/ui';
 import { wagmiConfig } from '@smartinvoicexyz/utils';
 import {
   HydrationBoundary,
@@ -17,8 +13,8 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { hashFn } from '@wagmi/core/query';
-import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
+import { ThemeProvider } from 'next-themes';
 import React, { useState } from 'react';
 import { Toaster } from 'sonner';
 import { WagmiProvider } from 'wagmi';

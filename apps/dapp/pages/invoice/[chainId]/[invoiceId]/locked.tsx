@@ -1,9 +1,5 @@
 import { useInvoiceDetails } from '@smartinvoicexyz/hooks';
-import {
-  Container,
-  InvoiceNotFound,
-  Loader,
-} from '@smartinvoicexyz/ui';
+import { Container, InvoiceNotFound, Loader } from '@smartinvoicexyz/ui';
 import {
   chainLabelFromId,
   getIpfsLink,

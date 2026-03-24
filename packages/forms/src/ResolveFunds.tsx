@@ -192,7 +192,7 @@ export function ResolveFunds({
         name="resolverAward"
         label="Arbitration Fee"
         localForm={localForm}
-        isDisabled
+        disabled
         rightElement={<TokenDescriptor tokenBalance={tokenBalance} />}
       />
 

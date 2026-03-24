@@ -106,9 +106,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const plainText = text.replace(/<[^>]*>/g, '');
 
   const [telegramResult, farcasterResult] = await Promise.allSettled([
-    telegramChatId ? sendTelegram(text, telegramChatId) : Promise.resolve(false),
+    telegramChatId
+      ? sendTelegram(text, telegramChatId)
+      : Promise.resolve(false),
     farcasterFid
-      ? sendFarcasterDC(parseInt(farcasterFid), plainText)
+      ? sendFarcasterDC(parseInt(farcasterFid, 10), plainText)
       : Promise.resolve(false),
   ]);
 

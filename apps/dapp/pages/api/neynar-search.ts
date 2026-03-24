@@ -37,8 +37,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         display_name: u.display_name,
         pfp_url: u.pfp_url,
         eth_addresses: u.verified_addresses?.eth_addresses ?? [],
-        primary_eth_address:
-          u.verified_addresses?.primary?.eth_address ?? null,
+        primary_eth_address: u.verified_addresses?.primary?.eth_address ?? null,
       }),
     );
 

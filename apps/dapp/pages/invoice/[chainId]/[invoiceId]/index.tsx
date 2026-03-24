@@ -73,7 +73,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-const ROLE_BADGE_VARIANTS: Record<string, 'default' | 'success' | 'secondary' | 'outline'> = {
+const ROLE_BADGE_VARIANTS: Record<
+  string,
+  'default' | 'success' | 'secondary' | 'outline'
+> = {
   blue: 'default',
   green: 'success',
   purple: 'default',
@@ -105,7 +108,7 @@ function ViewInvoice() {
 
   if (!invoiceDetails || isLoading) {
     return (
-      <Container overlay gap={10}>
+      <Container overlay>
         <Loader size="80" />
         If the invoice does not load,
         <br />
@@ -134,7 +137,12 @@ function ViewInvoice() {
     if (lowerAddress && lowerAddress === _.toLower(invoiceDetails.resolver))
       return { label: 'You are the Arbitrator', color: 'purple' };
     return { label: 'Viewing as Observer', color: 'gray' };
-  }, [address, invoiceDetails.client, invoiceDetails.provider, invoiceDetails.resolver]);
+  }, [
+    address,
+    invoiceDetails.client,
+    invoiceDetails.provider,
+    invoiceDetails.resolver,
+  ]);
 
   return (
     <Container overlay>

@@ -193,9 +193,7 @@ export function AddMilestones({
                         min={0}
                         max={1_000_000}
                         placeholder="500"
-                        variant="outline"
                         localForm={localForm}
-                        w="100%"
                         rightElement={
                           <span className="p-2">{tokenMetadata?.symbol}</span>
                         }

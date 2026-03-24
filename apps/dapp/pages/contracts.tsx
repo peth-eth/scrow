@@ -50,8 +50,7 @@ function Contracts() {
           </TabsList>
 
           {_.map(chainIds, chainId => {
-            const INVOICE_FACTORY =
-              getInvoiceFactoryAddress(chainId) || '0x';
+            const INVOICE_FACTORY = getInvoiceFactoryAddress(chainId) || '0x';
             const TOKENS: IToken[] = _.filter(
               tokens,
               // eslint-disable-next-line eqeqeq

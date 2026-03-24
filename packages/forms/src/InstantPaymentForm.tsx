@@ -100,11 +100,10 @@ export function InstantPaymentForm({
         <NumberInput
           name="paymentDue"
           label="Total Payment Due"
-          variant="outline"
           placeholder="0.00"
           tooltip="This is the total payment for the entire invoice. This number is not based on fiat, but rather the number of tokens you'll receive in your chosen cryptocurrency. (e.g. 7.25 WETH, 100 USDC, etc)."
           registerOptions={{ required: true }}
-          w="100%"
+          className="w-full"
           localForm={localForm}
         />
         <Select
@@ -128,7 +127,7 @@ export function InstantPaymentForm({
           placeholder="0.00"
           tooltip="A fee imposed if the client does not pay by the deadline."
           localForm={localForm}
-          w="100%"
+          className="w-full"
         />
         <Select
           name="lateFeeTimeInterval"
