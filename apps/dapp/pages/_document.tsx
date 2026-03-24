@@ -2,18 +2,18 @@ import { BASE_URL } from '@smartinvoicexyz/constants';
 import Document, { Head, Html } from 'next/document';
 
 const m = {
-  title: 'Smart Invoice',
+  title: 'sCrow',
   type: 'website',
   description:
-    'Smart Invoice is an easy-to-use tool that provides web3 freelancers with cryptocurrency invoicing, escrow, and arbitration.',
+    'sCrow is an easy-to-use tool that provides web3 freelancers with cryptocurrency invoicing, escrow, and arbitration.',
   version: 'next',
   url: BASE_URL,
   imageUrl: `${BASE_URL}/si-banner.png`,
   button: {
-    title: 'Smart Invoice',
+    title: 'sCrow',
     action: {
       type: 'launch_frame',
-      name: 'Smart Invoice',
+      name: 'sCrow',
       url: BASE_URL,
       splashImageUrl: `${BASE_URL}/favicon-32x32.png`,
       splashBackgroundColor: '#ffffff',

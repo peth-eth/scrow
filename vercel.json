@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm --filter smartinvoicexyz-dapp build",
+  "buildCommand": "pnpm --filter scrow build",
   "outputDirectory": "apps/dapp/.next",
   "installCommand": "pnpm install",
   "framework": "nextjs"

@@ -56,8 +56,8 @@
   "scripts": {
     "build": "pnpm -r build",
     "clean": "pnpm -r clean",
-    "dapp:build": "pnpm packages:build && pnpm --filter 'smartinvoicexyz-dapp' build",
-    "dapp:dev": "pnpm --filter 'smartinvoicexyz-dapp' dev",
+    "dapp:build": "pnpm packages:build && pnpm --filter 'scrow' build",
+    "dapp:dev": "pnpm --filter 'scrow' dev",
     "format": "prettier --ignore-path .prettierignore --write --plugin=prettier-plugin-solidity \"{*,**/*}.{js,jsx,ts,tsx,json,md,sol}\"",
     "lint": "pnpm -r lint",
     "lint-staged": "lint-staged",

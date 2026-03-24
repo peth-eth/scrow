@@ -1,6 +1,6 @@
 {
-  "name": "smartinvoicexyz-dapp",
-  "description": "A Next.js application that provides a interface for web3 freelancers to manage cryptocurrency invoicing, escrow services, and arbitration.",
+  "name": "scrow",
+  "description": "sCrow — secure escrow for web3 freelancers. Milestone-based invoicing, community arbitration, and transparent fees.",
   "version": "0.1.28",
   "browserslist": [
     "chrome >= 67",

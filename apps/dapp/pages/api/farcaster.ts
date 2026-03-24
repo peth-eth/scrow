@@ -16,9 +16,9 @@ const ACCOUNT_ASSOCIATION = {
 function handler(_req: NextApiRequest, res: NextApiResponse) {
   const frame = {
     version: '1',
-    name: 'Smart Invoice',
+    name: 'sCrow',
     description:
-      'Smart Invoice is an easy-to-use tool that provides web3 freelancers with cryptocurrency invoicing, escrow, and arbitration.',
+      'sCrow is an easy-to-use tool that provides web3 freelancers with cryptocurrency invoicing, escrow, and arbitration.',
     iconUrl: `${BASE_URL}/favicon-32x32.png`,
     homeUrl: `${BASE_URL}`,
     heroImageUrl: `${BASE_URL}/si-banner.png`,
