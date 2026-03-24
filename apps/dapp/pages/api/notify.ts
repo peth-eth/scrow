@@ -108,23 +108,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const text = template(body);
-  const results: Record<string, boolean> = {};
-
-  // Send to Telegram (strip HTML for plain text version)
   const telegramChatId = process.env.TELEGRAM_CHAT_ID;
-  if (telegramChatId) {
-    results.telegram = await sendTelegram(text, telegramChatId);
-  }
-
-  // Send Farcaster DC if configured
   const farcasterFid = process.env.NOTIFY_FARCASTER_FID;
-  if (farcasterFid) {
-    const plainText = text.replace(/<[^>]*>/g, '');
-    results.farcaster = await sendFarcasterDC(
-      parseInt(farcasterFid),
-      plainText,
-    );
-  }
+  const plainText = text.replace(/<[^>]*>/g, '');
+
+  const [telegramResult, farcasterResult] = await Promise.allSettled([
+    telegramChatId ? sendTelegram(text, telegramChatId) : Promise.resolve(false),
+    farcasterFid
+      ? sendFarcasterDC(parseInt(farcasterFid), plainText)
+      : Promise.resolve(false),
+  ]);
+
+  const results = {
+    telegram: telegramResult.status === 'fulfilled' && telegramResult.value,
+    farcaster: farcasterResult.status === 'fulfilled' && farcasterResult.value,
+  };
 
   return res.status(200).json({ sent: results });
 }

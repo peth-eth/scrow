@@ -27,9 +27,9 @@ const loadTemplates = (): InvoiceTemplate[] => {
   }
 };
 
-const persistTemplates = (templates: InvoiceTemplate[]) => {
+const persistTemplates = (list: InvoiceTemplate[]) => {
   if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(templates));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
 };
 
 export const useInvoiceTemplates = () => {
@@ -47,23 +47,28 @@ export const useInvoiceTemplates = () => {
         createdAt: Date.now(),
         data,
       };
-      const updated = [...loadTemplates(), template];
-      persistTemplates(updated);
-      setTemplates(updated);
+      setTemplates(prev => {
+        const updated = [...prev, template];
+        persistTemplates(updated);
+        return updated;
+      });
       return template;
     },
     [],
   );
 
   const deleteTemplate = useCallback((id: string) => {
-    const updated = loadTemplates().filter(t => t.id !== id);
-    persistTemplates(updated);
-    setTemplates(updated);
+    setTemplates(prev => {
+      const updated = prev.filter(t => t.id !== id);
+      persistTemplates(updated);
+      return updated;
+    });
   }, []);
 
-  const getTemplate = useCallback((id: string) => {
-    return loadTemplates().find(t => t.id === id) ?? null;
-  }, []);
+  const getTemplate = useCallback(
+    (id: string) => templates.find(t => t.id === id) ?? null,
+    [templates],
+  );
 
   return { templates, saveTemplate, deleteTemplate, getTemplate };
 };

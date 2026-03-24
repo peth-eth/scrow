@@ -37,9 +37,11 @@ export function FarcasterArbitratorPicker({
       return;
     }
 
+    let cancelled = false;
     fetch(`/api/neynar-search?q=${encodeURIComponent(defaultUsername)}`)
       .then(res => res.json())
       .then(data => {
+        if (cancelled) return;
         const match = (data.users ?? []).find(
           (u: FarcasterUser) => u.username === defaultUsername,
         );
@@ -53,11 +55,18 @@ export function FarcasterArbitratorPicker({
         }
       })
       .catch(() => {})
-      .finally(() => setDefaultLoading(false));
+      .finally(() => {
+        if (!cancelled) setDefaultLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // Close dropdown on outside click
+  // Close dropdown on outside click — only listen when open
   useEffect(() => {
+    if (!isOpen) return;
     const handleClickOutside = (e: MouseEvent) => {
       if (
         containerRef.current &&
@@ -68,7 +77,7 @@ export function FarcasterArbitratorPicker({
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [isOpen]);
 
   const handleSelect = useCallback(
     (user: FarcasterUser) => {

@@ -131,25 +131,11 @@ export function InvoiceDashboardTable() {
         // eslint-disable-next-line react/no-unstable-nested-components
         cell: info => <InvoiceDisplay cell={info} />,
       }),
-      columnHelper.accessor(
-        row => {
-          const { provider, client, resolver } = row;
-          if (_.toLower(address) === _.toLower(client)) {
-            return 'Client';
-          }
-          if (_.toLower(address) === _.toLower(provider)) {
-            return 'Provider';
-          }
-          if (_.toLower(address) === _.toLower(resolver)) {
-            return 'Arbitrator';
-          }
-          return 'Unknown';
-        },
-        {
-          header: 'Role',
-          cell: info => info.getValue(),
-        },
-      ),
+      columnHelper.accessor(row => getRole(row), {
+        id: 'role',
+        header: 'Role',
+        cell: info => info.getValue(),
+      }),
       columnHelper.accessor(
         row => {
           const value = formatUnits(

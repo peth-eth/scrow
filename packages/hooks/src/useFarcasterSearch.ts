@@ -23,32 +23,31 @@ export const useFarcasterSearch = (query: string) => {
       return;
     }
 
-    let cancelled = false;
+    const controller = new AbortController();
     setIsLoading(true);
     setError(null);
 
-    fetch(`/api/neynar-search?q=${encodeURIComponent(debouncedQuery)}`)
+    fetch(`/api/neynar-search?q=${encodeURIComponent(debouncedQuery)}`, {
+      signal: controller.signal,
+    })
       .then(res => {
         if (!res.ok) throw new Error('Search failed');
         return res.json();
       })
       .then(data => {
-        if (!cancelled) {
-          setUsers(data.users ?? []);
-        }
+        setUsers(data.users ?? []);
       })
       .catch(err => {
-        if (!cancelled) {
-          setError(err.message);
-          setUsers([]);
-        }
+        if (err.name === 'AbortError') return;
+        setError(err.message);
+        setUsers([]);
       })
       .finally(() => {
-        if (!cancelled) setIsLoading(false);
+        if (!controller.signal.aborted) setIsLoading(false);
       });
 
     return () => {
-      cancelled = true;
+      controller.abort();
     };
   }, [debouncedQuery]);
 
