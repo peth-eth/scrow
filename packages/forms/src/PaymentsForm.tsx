@@ -20,7 +20,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ESCROW_STEPS } from '@smartinvoicexyz/constants';
+import { ESCROW_STEPS, PLATFORM_FEE_BPS } from '@smartinvoicexyz/constants';
 import { useFetchTokens } from '@smartinvoicexyz/hooks';
 import { FormInvoice, IToken } from '@smartinvoicexyz/types';
 import {
@@ -274,6 +274,15 @@ export function PaymentsForm({
           {invoiceTokenData?.symbol}
         </Text>
       </HStack>
+
+      <Stack spacing={1} pl={2} pr={6}>
+        <Text fontSize="xs" color="grey">
+          Platform Fee: {Number(PLATFORM_FEE_BPS) / 100}% on each release
+        </Text>
+        <Text fontSize="xs" color="grey">
+          Arbitration Fee: 5% of disputed amount (only if a dispute occurs)
+        </Text>
+      </Stack>
 
       <Grid templateColumns="1fr" gap="1rem" w="100%">
         <Button

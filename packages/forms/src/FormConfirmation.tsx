@@ -14,6 +14,7 @@ import {
   INVOICE_TYPES,
   KLEROS_COURTS,
   LATE_FEE_INTERVAL_OPTIONS,
+  PLATFORM_FEE_BPS,
 } from '@smartinvoicexyz/constants';
 import { useFetchTokens } from '@smartinvoicexyz/hooks';
 import { ValueOf } from '@smartinvoicexyz/types';
@@ -51,9 +52,7 @@ export function FormConfirmation({
     description,
     document,
     client,
-    clientReceiver,
     provider,
-    providerReceiver,
     klerosCourt,
     startDate,
     endDate,
@@ -67,17 +66,6 @@ export function FormConfirmation({
     lateFeeTimeInterval,
     paymentDue,
   } = watch();
-
-  const validClientReceiver =
-    clientReceiver && clientReceiver.toLowerCase() !== client?.toLowerCase()
-      ? clientReceiver
-      : undefined;
-
-  const validProviderReceiver =
-    providerReceiver &&
-    providerReceiver.toLowerCase() !== provider?.toLowerCase()
-      ? providerReceiver
-      : undefined;
 
   const lateFeeIntervalLabel = _.toLower(
     _.find(LATE_FEE_INTERVAL_OPTIONS, { value: lateFeeTimeInterval })?.label,
@@ -99,18 +87,22 @@ export function FormConfirmation({
         label: 'Client Address',
         value: <AccountLink address={client} chainId={chainId} />,
       },
-      validProviderReceiver && {
-        label: 'Client Receiver Address',
-        value: <AccountLink address={validClientReceiver} chainId={chainId} />,
-      },
       {
         label: 'Provider Address',
         value: <AccountLink address={provider} chainId={chainId} />,
       },
-      validClientReceiver && {
-        label: 'Provider Receiver Address',
+      {
+        label: 'Platform Fee:',
         value: (
-          <AccountLink address={validProviderReceiver} chainId={chainId} />
+          <Text textAlign="right">
+            {`${Number(PLATFORM_FEE_BPS) / 100}%`}
+          </Text>
+        ),
+      },
+      {
+        label: 'Arbitration Fee:',
+        value: (
+          <Text textAlign="right">5% (only on disputes)</Text>
         ),
       },
       startDate && {
@@ -127,7 +119,7 @@ export function FormConfirmation({
       },
       type === INVOICE_TYPES.Escrow
         ? {
-            label: 'Safety Valve Date:',
+            label: 'Withdrawal Deadline:',
             value: (
               <Text textAlign="right">
                 {getDateString(safetyValveDate / 1000)}
