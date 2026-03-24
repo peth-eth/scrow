@@ -14,16 +14,16 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { hashFn } from '@wagmi/core/query';
 import { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
 import { ThemeProvider } from 'next-themes';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Toaster } from 'sonner';
 import { WagmiProvider } from 'wagmi';
 
 import { FrameProvider } from '../contexts/FrameContext';
 import { OverlayContextProvider } from '../contexts/OverlayContext';
 
-function AppInner({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
+  const [mounted, setMounted] = useState(false);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -38,6 +38,13 @@ function AppInner({ Component, pageProps }: AppProps) {
         },
       }),
   );
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent SSR — wagmi/rainbowkit require browser APIs (localStorage, window.ethereum)
+  if (!mounted) return null;
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -63,8 +70,5 @@ function AppInner({ Component, pageProps }: AppProps) {
     </ThemeProvider>
   );
 }
-
-// Prevent SSR for the entire app shell — wagmi/rainbowkit require browser APIs
-const App = dynamic(() => Promise.resolve(AppInner), { ssr: false });
 
 export default App;
