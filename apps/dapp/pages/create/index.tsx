@@ -1,4 +1,16 @@
-import { Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Stack,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import {
   ESCROW_STEPS,
   INVOICE_TYPES,
@@ -11,7 +23,10 @@ import {
   ProjectDetailsForm,
   RegisterSuccess,
 } from '@smartinvoicexyz/forms';
-import { useInvoiceCreate } from '@smartinvoicexyz/hooks';
+import {
+  useInvoiceCreate,
+  useInvoiceTemplates,
+} from '@smartinvoicexyz/hooks';
 import {
   Container,
   StepInfo,
@@ -23,6 +38,8 @@ import { useForm } from 'react-hook-form';
 import { Address, Hex } from 'viem';
 import { useChainId } from 'wagmi';
 
+import { SaveTemplateModal } from '../../components/SaveTemplateModal';
+
 export function CreateInvoiceEscrow() {
   const invoiceForm = useForm();
   const toast = useToast();
@@ -33,6 +50,8 @@ export function CreateInvoiceEscrow() {
   const { headingSize, columnWidth } = useMediaStyles();
   const chainId = useChainId();
   const [currentChainId, setCurrentChainId] = useState(chainId);
+  const { templates, saveTemplate, deleteTemplate } = useInvoiceTemplates();
+  const saveModal = useDisclosure();
 
   useEffect(() => {
     if (chainId !== currentChainId) {
@@ -51,11 +70,7 @@ export function CreateInvoiceEscrow() {
 
   const onTxSuccess = (result: Address) => {
     toast.success(TOASTS.useInvoiceCreate.success);
-    // invalidate cache
-
     setInvoiceId(result as Address);
-
-    // Send to Success step
     nextStepHandler();
   };
 
@@ -68,6 +83,37 @@ export function CreateInvoiceEscrow() {
   const handleSubmit = async () => {
     const hash = await writeAsync?.();
     setTxHash(hash);
+  };
+
+  const loadTemplate = (templateId: string) => {
+    const tmpl = templates.find(t => t.id === templateId);
+    if (!tmpl) return;
+    const { data } = tmpl;
+    if (data.title) invoiceForm.setValue('title', data.title);
+    if (data.description) invoiceForm.setValue('description', data.description);
+    if (data.document) invoiceForm.setValue('document', data.document);
+    if (data.milestones) invoiceForm.setValue('milestones', data.milestones);
+    if (data.token) invoiceForm.setValue('token', data.token);
+    if (data.resolverType)
+      invoiceForm.setValue('resolverType', data.resolverType);
+    if (data.resolverAddress)
+      invoiceForm.setValue('resolverAddress', data.resolverAddress);
+    toast.success({ title: `Template "${tmpl.name}" loaded` });
+  };
+
+  const handleSaveTemplate = (name: string) => {
+    const values = invoiceForm.getValues();
+    saveTemplate(name, {
+      title: values.title,
+      description: values.description,
+      document: values.document,
+      milestones: values.milestones,
+      token: values.token,
+      resolverType: values.resolverType,
+      resolverAddress: values.resolverAddress,
+    });
+    toast.success({ title: `Template "${name}" saved` });
+    saveModal.onClose();
   };
 
   return (
@@ -89,6 +135,23 @@ export function CreateInvoiceEscrow() {
           <Heading fontWeight="700" fontSize={headingSize} textAlign="center">
             Create an Escrow Invoice
           </Heading>
+
+          {currentStep === 1 && templates.length > 0 && (
+            <HStack justify="center" spacing={2}>
+              <Menu>
+                <MenuButton as={Button} size="sm" variant="outline">
+                  Load Template
+                </MenuButton>
+                <MenuList>
+                  {templates.map(t => (
+                    <MenuItem key={t.id} onClick={() => loadTemplate(t.id)}>
+                      {t.name}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </Menu>
+            </HStack>
+          )}
 
           <Text
             color="#90A0B7"
@@ -138,13 +201,24 @@ export function CreateInvoiceEscrow() {
             )}
 
             {currentStep === 4 && (
-              <FormConfirmation
-                invoiceForm={invoiceForm}
-                handleSubmit={handleSubmit}
-                canSubmit={!!writeAsync}
-                isLoading={isLoading}
-                type={INVOICE_TYPES.Escrow}
-              />
+              <>
+                <FormConfirmation
+                  invoiceForm={invoiceForm}
+                  handleSubmit={handleSubmit}
+                  canSubmit={!!writeAsync}
+                  isLoading={isLoading}
+                  type={INVOICE_TYPES.Escrow}
+                />
+                <Flex justify="center" mt={4}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={saveModal.onOpen}
+                  >
+                    Save as Template
+                  </Button>
+                </Flex>
+              </>
             )}
 
             {currentStep === 5 && (
@@ -156,6 +230,12 @@ export function CreateInvoiceEscrow() {
           </Flex>
         </Stack>
       </Stack>
+
+      <SaveTemplateModal
+        isOpen={saveModal.isOpen}
+        onClose={saveModal.onClose}
+        onSave={handleSaveTemplate}
+      />
     </Container>
   );
 }
