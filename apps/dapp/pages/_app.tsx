@@ -15,7 +15,7 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { hashFn } from '@wagmi/core/query';
 import { AppProps } from 'next/app';
-import { Space_Grotesk } from 'next/font/google';
+import { Outfit } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import React, { useEffect, useState } from 'react';
 import { Toaster } from 'sonner';
@@ -25,9 +25,9 @@ import { ChatBubble } from '../components/ChatBubble';
 import { FrameProvider } from '../contexts/FrameContext';
 import { OverlayContextProvider } from '../contexts/OverlayContext';
 
-const spaceGrotesk = Space_Grotesk({
+const outfit = Outfit({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  variable: '--font-outfit',
   display: 'swap',
 });
 
@@ -80,7 +80,7 @@ function App({ Component, pageProps }: AppProps) {
   }
 
   return (
-    <div className={spaceGrotesk.variable}>
+    <div className={outfit.variable}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <WagmiProvider config={wagmiConfig}>
           <QueryClientProvider client={queryClient}>

@@ -8,11 +8,12 @@ import {
 } from '@smartinvoicexyz/constants';
 import { useFetchTokens } from '@smartinvoicexyz/hooks';
 import { ValueOf } from '@smartinvoicexyz/types';
+import { AccountLink, ChakraNextLink } from '@smartinvoicexyz/ui';
 import {
-  AccountLink,
-  ChakraNextLink,
-} from '@smartinvoicexyz/ui';
-import { getDateString, getResolverInfo } from '@smartinvoicexyz/utils';
+  getChainName,
+  getDateString,
+  getResolverInfo,
+} from '@smartinvoicexyz/utils';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
@@ -68,8 +69,14 @@ export function FormConfirmation({
       Number(t.chainId) === chainId,
   )[0]?.symbol;
 
+  const chainName = getChainName(chainId);
+
   const details = useMemo(() => {
     return _.compact([
+      {
+        label: 'Network:',
+        value: <p className="text-right font-semibold">{chainName}</p>,
+      },
       {
         label: 'Client Address',
         value: <AccountLink address={client} chainId={chainId} />,
@@ -81,15 +88,15 @@ export function FormConfirmation({
       {
         label: 'Platform Fee:',
         value: (
-          <p className="text-right">
-            {`${Number(PLATFORM_FEE_BPS) / 100}%`}
-          </p>
+          <p className="text-right">{`${Number(PLATFORM_FEE_BPS) / 100}%`}</p>
         ),
       },
       {
         label: 'Arbitration Fee:',
         value: (
-          <p className="text-right">{ARBITRATION_FEE_PERCENT}% (only on disputes)</p>
+          <p className="text-right">
+            {ARBITRATION_FEE_PERCENT}% (only on disputes)
+          </p>
         ),
       },
       startDate && {
@@ -154,6 +161,7 @@ export function FormConfirmation({
         },
     ]);
   }, [
+    chainName,
     client,
     provider,
     startDate,

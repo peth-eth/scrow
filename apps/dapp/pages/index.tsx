@@ -9,19 +9,19 @@ const STEPS = [
     number: '1',
     title: 'Create a Contract',
     description:
-      'Define milestones, choose an arbitrator, and send the link. Takes 2 minutes.',
+      'Set milestones, pick an arbitrator, share the link.',
   },
   {
     number: '2',
     title: 'Funds Lock in Escrow',
     description:
-      'Your counterparty deposits into a smart contract. Nobody touches the funds until milestones are met.',
+      'Deposits go into a smart contract. Nobody touches them until milestones are met.',
   },
   {
     number: '3',
     title: 'Deliver & Get Paid',
     description:
-      'Funds release per milestone. Dispute? Your chosen arbitrator resolves it onchain.',
+      'Funds release per milestone. Disputes get resolved onchain by your arbitrator.',
   },
 ];
 
@@ -59,13 +59,12 @@ function Home() {
           <h1 className="text-3xl font-bold leading-tight text-foreground md:text-5xl">
             Stop sending crypto on a promise.
           </h1>
-          <p className="max-w-[620px] text-lg text-muted-foreground md:text-xl">
-            sCrow locks funds in a smart contract until the work is done.
-            Milestone payments, onchain arbitration, and a downloadable
-            contract PDF &mdash; all on Base.
+          <p className="max-w-[580px] text-lg text-muted-foreground md:text-xl">
+            Smart contract escrow with milestone payments, onchain arbitration,
+            and a downloadable contract PDF.
           </p>
-          <p className="max-w-[520px] text-base italic text-muted-foreground/70">
-            No more chasing payments. No more &ldquo;trust me&rdquo; handshakes.
+          <p className="max-w-[480px] text-base italic text-muted-foreground/70">
+            No more chasing payments. No more handshakes.
             Just code that holds both sides accountable.
           </p>
         </div>
