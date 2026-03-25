@@ -53,7 +53,7 @@ export function Header() {
         <div className="hidden lg:flex justify-end">
           <ConnectButton
             accountStatus="full"
-            chainStatus="full"
+            chainStatus="none"
             showBalance={false}
           />
         </div>
@@ -78,7 +78,7 @@ export function Header() {
       >
         <ConnectButton
           accountStatus="address"
-          chainStatus="icon"
+          chainStatus="none"
           showBalance={false}
         />
 

@@ -154,8 +154,8 @@ const chains: readonly [Chain, ...Chain[]] = [
   // mainnet,
   // polygon,
   // optimism,
-  gnosis,
-  arbitrum,
+  // gnosis,
+  // arbitrum,
 ];
 
 export const SUPPORTED_CHAIN_IDS = chains.map(chain => chain.id);
