@@ -8,8 +8,7 @@ const STEPS = [
   {
     number: '1',
     title: 'Create a Contract',
-    description:
-      'Set milestones, pick an arbitrator, share the link.',
+    description: 'Set milestones, pick an arbitrator, share the link.',
   },
   {
     number: '2',
@@ -64,8 +63,8 @@ function Home() {
             and a downloadable contract PDF.
           </p>
           <p className="max-w-[480px] text-base italic text-muted-foreground/70">
-            No more chasing payments. No more handshakes.
-            Just code that holds both sides accountable.
+            No more chasing payments. No more handshakes. Just code that holds
+            both sides accountable.
           </p>
         </div>
 
