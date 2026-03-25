@@ -5,18 +5,19 @@ const m = {
   title: 'sCrow',
   type: 'website',
   description:
-    'sCrow — secure escrow contracts for web3 freelancers with milestone payments and arbitration.',
+    'sCrow — secure smart contract escrow with milestone payments and arbitration on Base.',
   version: 'next',
   url: BASE_URL,
-  imageUrl: `${BASE_URL}/si-banner.png`,
+  imageUrl: `${BASE_URL}/scrow-logo.png`,
   button: {
     title: 'sCrow',
     action: {
       type: 'launch_frame',
       name: 'sCrow',
       url: BASE_URL,
-      splashImageUrl: `${BASE_URL}/favicon-32x32.png`,
-      splashBackgroundColor: '#ffffff',
+      splashImageUrl: `${BASE_URL}/scrow-logo.png`,
+      iconUrl: `${BASE_URL}/scrow-logo.png`,
+      splashBackgroundColor: '#7c5bbf',
     },
   },
 };

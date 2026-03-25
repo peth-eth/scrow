@@ -29,9 +29,10 @@ export function Header() {
       <ChakraNextLink href="/">
         <div className="cursor-pointer">
           <img
-            src="/assets/smart-invoice/normal.svg"
-            alt="Smart Invoice"
-            style={{ height: 34.84 }}
+            src="/scrow-logo.png"
+            alt="sCrow"
+            className="rounded-md"
+            style={{ height: 38 }}
           />
         </div>
       </ChakraNextLink>

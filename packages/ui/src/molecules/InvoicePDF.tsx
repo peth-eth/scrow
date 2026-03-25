@@ -180,8 +180,8 @@ function InvoicePDFInner({ invoice }: InvoicePDFProps) {
         {/* Header */}
         <View style={styles.header}>
           <Image
-            src={`${BASE_URL}/assets/smart-invoice/normal.png`}
-            style={{ height: 34.84, width: 220 }}
+            src={`${BASE_URL}/scrow-logo.png`}
+            style={{ height: 50, width: 50 }}
           />
         </View>
 

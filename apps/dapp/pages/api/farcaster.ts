@@ -18,13 +18,13 @@ function handler(_req: NextApiRequest, res: NextApiResponse) {
     version: '1',
     name: 'sCrow',
     description:
-      'sCrow is an easy-to-use tool that provides web3 freelancers with cryptocurrency invoicing, escrow, and arbitration.',
-    iconUrl: `${BASE_URL}/favicon-32x32.png`,
+      'sCrow — secure smart contract escrow with milestone payments and arbitration on Base.',
+    iconUrl: `${BASE_URL}/scrow-logo.png`,
     homeUrl: `${BASE_URL}`,
-    heroImageUrl: `${BASE_URL}/si-banner.png`,
-    splashImageUrl: `${BASE_URL}/favicon-32x32.png`,
-    splashBackgroundColor: '#ffffff',
-    primaryCategory: 'social',
+    heroImageUrl: `${BASE_URL}/scrow-logo.png`,
+    splashImageUrl: `${BASE_URL}/scrow-logo.png`,
+    splashBackgroundColor: '#7c5bbf',
+    primaryCategory: 'finance',
   };
 
   const accountAssociation =
