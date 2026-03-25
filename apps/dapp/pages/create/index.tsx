@@ -12,6 +12,7 @@ import {
 } from '@smartinvoicexyz/forms';
 import { useInvoiceCreate, useInvoiceTemplates } from '@smartinvoicexyz/hooks';
 import { Container, StepInfo, useToast } from '@smartinvoicexyz/ui';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Address, Hex } from 'viem';
@@ -29,6 +30,7 @@ import {
 export function CreateInvoiceEscrow() {
   const invoiceForm = useForm();
   const toast = useToast();
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [txHash, setTxHash] = useState<Hex>();
 
@@ -37,6 +39,23 @@ export function CreateInvoiceEscrow() {
   const [currentChainId, setCurrentChainId] = useState(chainId);
   const { templates, saveTemplate } = useInvoiceTemplates();
   const [saveModalOpen, setSaveModalOpen] = useState(false);
+
+  // Pre-fill from query params (e.g. from Farcaster bot link)
+  useEffect(() => {
+    const { client, amount, token } = router.query;
+    if (client && typeof client === 'string') {
+      invoiceForm.setValue('client', client);
+    }
+    if (amount && typeof amount === 'string') {
+      invoiceForm.setValue('milestones', [
+        { title: 'Milestone 1', amount },
+      ]);
+    }
+    if (token && typeof token === 'string') {
+      invoiceForm.setValue('token', token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query]);
 
   useEffect(() => {
     if (chainId !== currentChainId) {
