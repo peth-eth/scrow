@@ -18,7 +18,7 @@ function handler(_req: NextApiRequest, res: NextApiResponse) {
     version: '1',
     name: 'sCrow',
     description:
-      'sCrow — secure smart contract escrow with milestone payments and arbitration on Base.',
+      'sCrow — escrow contracts for people and agents. Milestone payments and arbitration on Base.',
     iconUrl: `${BASE_URL}/scrow-logo.png`,
     homeUrl: `${BASE_URL}`,
     heroImageUrl: `${BASE_URL}/scrow-logo.png`,

@@ -5,7 +5,7 @@ const m = {
   title: 'sCrow',
   type: 'website',
   description:
-    'sCrow — secure smart contract escrow with milestone payments and arbitration on Base.',
+    'sCrow — escrow contracts for people and agents. Milestone payments and arbitration on Base.',
   version: 'next',
   url: BASE_URL,
   imageUrl: `${BASE_URL}/scrow-logo.png`,

@@ -1,7 +1,7 @@
 {
   "name": "sCrow",
   "short_name": "sCrow",
-  "description": "sCrow is a secure escrow platform that provides web3 freelancers with milestone-based contracts and arbitration.",
+  "description": "sCrow — escrow contracts for people and agents. Milestone payments and arbitration on Base.",
   "iconPath": "favicon.ico",
   "providedBy": { "name": "Raid Guild", "url": "https://raidguild.org" },
   "icons": [

@@ -53,6 +53,9 @@ function Home() {
       <div className="flex w-full max-w-[800px] flex-col items-center gap-16 px-4 py-12">
         {/* Hero */}
         <div className="flex flex-col items-center gap-6 text-center">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">
+            Escrow contracts for people and agents
+          </p>
           <h1 className="text-2xl font-bold leading-tight text-foreground md:text-4xl">
             Stop sending crypto on a promise.
           </h1>
