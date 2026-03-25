@@ -91,6 +91,7 @@ function App({ Component, pageProps }: AppProps) {
                   accentColor: '#8A63D2',
                   accentColorForeground: 'white',
                   borderRadius: 'medium',
+                  fontStack: 'system',
                 })}
               >
                 <ErrorBoundary>

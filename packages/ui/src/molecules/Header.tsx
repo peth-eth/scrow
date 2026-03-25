@@ -13,7 +13,7 @@ type Link = {
 };
 
 const LINKS: Link[] = [
-  { label: 'Contracts', href: '/invoices', isInternal: true },
+  { label: 'My Contracts', href: '/invoices', isInternal: true },
 ];
 
 export function Header() {
@@ -26,28 +26,30 @@ export function Header() {
 
   return (
     <div className="flex w-full h-[75px] px-8 py-4 text-muted-foreground font-mono justify-between items-center bg-background z-[5] relative">
-      <ChakraNextLink href="/">
-        <div className="cursor-pointer">
-          <img
-            src="/scrow-logo.png"
-            alt="sCrow"
-            className="rounded-md"
-            style={{ height: 38 }}
-          />
-        </div>
-      </ChakraNextLink>
+      <div className="flex items-center gap-6">
+        <ChakraNextLink href="/">
+          <div className="cursor-pointer">
+            <img
+              src="/scrow-logo.png"
+              alt="sCrow"
+              className="rounded-md"
+              style={{ height: 38 }}
+            />
+          </div>
+        </ChakraNextLink>
 
-      <div className="hidden lg:flex gap-8 justify-center items-center absolute left-1/2 -translate-x-1/2">
-        {_.map(links, ({ label, href }) => (
-          <ChakraNextLink
-            key={href}
-            href={href}
-            isExternal={!href?.startsWith('/')}
-            className="hover:text-primary transition-colors"
-          >
-            {label}
-          </ChakraNextLink>
-        ))}
+        <div className="hidden lg:flex gap-6 items-center">
+          {_.map(links, ({ label, href }) => (
+            <ChakraNextLink
+              key={href}
+              href={href}
+              isExternal={!href?.startsWith('/')}
+              className="hover:text-primary transition-colors"
+            >
+              {label}
+            </ChakraNextLink>
+          ))}
+        </div>
       </div>
 
       <div className="flex items-center h-32 transition-[width] duration-1000 ease-out justify-end">

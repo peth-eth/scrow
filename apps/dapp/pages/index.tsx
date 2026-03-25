@@ -53,18 +53,18 @@ function Home() {
       <div className="flex w-full max-w-[800px] flex-col items-center gap-16 px-4 py-12">
         {/* Hero */}
         <div className="flex flex-col items-center gap-6 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">
+          <p className="font-mono text-sm uppercase tracking-[0.2em] text-primary">
             Escrow contracts for people and agents
           </p>
-          <h1 className="text-2xl font-bold leading-tight text-foreground md:text-4xl">
+          <h1 className="text-3xl font-bold leading-tight text-foreground md:text-5xl">
             Stop sending crypto on a promise.
           </h1>
-          <p className="max-w-[580px] text-base text-muted-foreground md:text-lg">
+          <p className="max-w-[620px] text-lg text-muted-foreground md:text-xl">
             sCrow locks funds in a smart contract until the work is done.
             Milestone payments, on-chain arbitration, and a downloadable
             contract PDF &mdash; all on Base.
           </p>
-          <p className="max-w-[520px] text-sm italic text-muted-foreground/70">
+          <p className="max-w-[520px] text-base italic text-muted-foreground/70">
             No more chasing payments. No more &ldquo;trust me&rdquo; handshakes.
             Just code that holds both sides accountable.
           </p>
