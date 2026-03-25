@@ -10,7 +10,7 @@ describe('Home component', function () {
     expect(
       screen.getByText('Secure Escrow for Web3 Freelancers'),
     ).toBeInTheDocument();
-    expect(screen.getByText('Create Invoice')).toBeInTheDocument();
-    expect(screen.getByText('View Existing Invoices')).toBeInTheDocument();
+    expect(screen.getByText('Create Contract')).toBeInTheDocument();
+    expect(screen.getByText('View Existing Contracts')).toBeInTheDocument();
   });
 });

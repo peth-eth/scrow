@@ -82,7 +82,7 @@ export function InstantPaymentForm({
         label="Client Address"
         name="client"
         placeholder="0x..."
-        tooltip="This is the wallet address your client uses to access the invoice, pay with, & release escrow funds with. It's essential your client has control of this address. (Do NOT use a multi-sig address)."
+        tooltip="This is the wallet address your client uses to access the contract, pay with, & release escrow funds with. It's essential your client has control of this address. (Do NOT use a multi-sig address)."
         registerOptions={{ required: true }}
         localForm={localForm}
       />
@@ -91,7 +91,7 @@ export function InstantPaymentForm({
         label="Service Provider Address"
         name="provider"
         placeholder="0x..."
-        tooltip="This is the address of the recipient/provider. It's how you access this invoice & where you'll receive funds released from escrow. It's essential you have control of this address. (Do NOT use a multi-sig address)."
+        tooltip="This is the address of the recipient/provider. It's how you access this contract & where you'll receive funds released from escrow. It's essential you have control of this address. (Do NOT use a multi-sig address)."
         registerOptions={{ required: true }}
         localForm={localForm}
       />
@@ -101,7 +101,7 @@ export function InstantPaymentForm({
           name="paymentDue"
           label="Total Payment Due"
           placeholder="0.00"
-          tooltip="This is the total payment for the entire invoice. This number is not based on fiat, but rather the number of tokens you'll receive in your chosen cryptocurrency. (e.g. 7.25 WETH, 100 USDC, etc)."
+          tooltip="This is the total payment for the entire contract. This number is not based on fiat, but rather the number of tokens you'll receive in your chosen cryptocurrency. (e.g. 7.25 WETH, 100 USDC, etc)."
           registerOptions={{ required: true }}
           className="w-full"
           localForm={localForm}
@@ -109,7 +109,7 @@ export function InstantPaymentForm({
         <Select
           name="token"
           required="required"
-          tooltip="This is the cryptocurrency you'll receive payment in. The network your wallet is connected to determines which tokens display here. (If you change your wallet network now, you'll be forced to start the invoice over)."
+          tooltip="This is the cryptocurrency you'll receive payment in. The network your wallet is connected to determines which tokens display here. (If you change your wallet network now, you'll be forced to start the contract over)."
           localForm={localForm}
         >
           {_.map(TOKENS, t => (

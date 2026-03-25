@@ -49,7 +49,7 @@ export function WhatIsThisModal({ isOpen, onClose }: WhatIsThisModalProps) {
           </h2>
 
           <p>
-            Smart invoice builds trust between payer and payee by creating a
+            sCrow builds trust between payer and payee by creating a
             secure neutral channel for transferring money. The payer proves
             their commitment by locking money in the contract, and controls
             when it is released to the payee. No middle party, no leap of

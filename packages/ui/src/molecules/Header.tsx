@@ -13,7 +13,7 @@ type Link = {
 };
 
 const LINKS: Link[] = [
-  { label: 'Dashboard', href: '/invoices', isInternal: true },
+  { label: 'Contracts', href: '/invoices', isInternal: true },
 ];
 
 export function Header() {
@@ -26,7 +26,7 @@ export function Header() {
 
   return (
     <div className="flex w-full h-[75px] px-8 py-4 text-muted-foreground font-mono justify-between items-center bg-background z-[5] relative">
-      <ChakraNextLink href={isConnected ? '/invoices' : '/'}>
+      <ChakraNextLink href="/">
         <div className="cursor-pointer">
           <img
             src="/assets/smart-invoice/normal.svg"

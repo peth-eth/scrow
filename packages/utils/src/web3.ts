@@ -31,7 +31,7 @@ import {
 
 const APP_NAME = 'Smart Invoice';
 const APP_DESCRIPTION =
-  'Smart Invoice is an easy-to-use tool that provides web3 freelancers with cryptocurrency invoicing, escrow, and arbitration.';
+  'sCrow is a secure escrow platform that provides web3 freelancers with milestone-based contracts and arbitration.';
 const APP_ICON = `${BASE_URL}/favicon-32x32.png`;
 const PROJECT_ID = process.env.NEXT_PUBLIC_WALLETCONNECT_ID || '';
 const INFURA_ID = process.env.NEXT_PUBLIC_INFURA_ID || '';

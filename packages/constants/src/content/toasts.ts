@@ -4,20 +4,20 @@
 export const TOASTS = {
   useInvoiceCreate: {
     waitingForTx: {
-      title: 'Creating invoice',
+      title: 'Creating contract',
       description: 'Waiting for transaction confirmation',
       duration: null,
       isClosable: false,
     },
     waitingForIndex: {
-      title: 'Invoice has been created',
-      description: 'Waiting for invoice to be indexed by the subgraph',
+      title: 'Contract has been created',
+      description: 'Waiting for contract to be indexed by the subgraph',
       duration: null,
       isClosable: false,
     },
     success: {
-      title: 'Invoice created',
-      description: 'Your invoice has been created!',
+      title: 'Contract created',
+      description: 'Your contract has been created!',
       duration: 5000,
       isClosable: true,
     },
@@ -38,7 +38,7 @@ export const TOASTS = {
     success: {
       title: 'Deposit successful',
       description:
-        'Your payment has been deposited into the invoice. Refreshing balances...',
+        'Your payment has been deposited into the contract. Refreshing balances...',
       duration: 5000,
       isClosable: true,
     },
@@ -80,7 +80,7 @@ export const TOASTS = {
     success: {
       title: 'Lock successful',
       description:
-        'Your invoice has been locked for dispute. Refreshing balances...',
+        'Your contract has been locked for dispute. Refreshing balances...',
       duration: 5000,
       isClosable: true,
     },
@@ -141,7 +141,7 @@ export const TOASTS = {
     },
     success: {
       title: 'Milestone(s) Updated successfully',
-      description: 'Your milestones have been updated. Refreshing Invoice...',
+      description: 'Your milestones have been updated. Refreshing Contract...',
       duration: 5000,
       isClosable: true,
     },
@@ -162,7 +162,7 @@ export const TOASTS = {
     },
     success: {
       title: 'Non-Client Deposits enabled successfully',
-      description: 'Your settings have been updated. Refreshing Invoice...',
+      description: 'Your settings have been updated. Refreshing Contract...',
       duration: 5000,
       isClosable: true,
     },

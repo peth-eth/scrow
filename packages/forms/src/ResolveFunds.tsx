@@ -110,7 +110,7 @@ export function ResolveFunds({
           Resolve Dispute
         </h3>
         <p className="text-center text-sm mb-4">
-          Invoice is not disputed
+          Contract is not disputed
         </p>
         <button
           onClick={onClose}

@@ -51,7 +51,7 @@ export function RegisterSuccess({
       </p>
 
       <div className="flex flex-col w-full items-stretch">
-        <p className="font-bold">Your Invoice ID</p>
+        <p className="font-bold">Your Contract ID</p>
 
         <div className="flex p-2 justify-between items-center bg-card rounded w-full">
           <div className="flex items-center gap-2 bg-muted p-3 rounded overflow-clip w-full">
@@ -73,7 +73,7 @@ export function RegisterSuccess({
       </div>
 
       <div className="flex flex-col w-full items-stretch mb-6">
-        <p className="font-bold">Link to Invoice</p>
+        <p className="font-bold">Link to Contract</p>
         <div className="flex p-2 justify-between items-center bg-card rounded w-full">
           <div className="flex items-center gap-2 bg-muted p-3 rounded overflow-clip w-full">
             <a
@@ -101,7 +101,7 @@ export function RegisterSuccess({
           What happens next?
         </p>
         <ol className="list-decimal pl-6 space-y-1 text-sm text-muted-foreground">
-          <li>Share the invoice link with your client</li>
+          <li>Share the contract link with your client</li>
           <li>Client deposits funds into escrow</li>
           <li>Release funds as milestones are completed</li>
         </ol>
@@ -115,7 +115,7 @@ export function RegisterSuccess({
         </ChakraNextLink>
         <ChakraNextLink href={url}>
           <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 text-lg font-medium">
-            View Invoice
+            View Contract
           </button>
         </ChakraNextLink>
       </div>

@@ -1,7 +1,7 @@
 {
-  "name": "Smart Invoice",
-  "short_name": "Smart Invoice",
-  "description": "Smart Invoice is an easy-to-use tool that provides web3 freelancers with cryptocurrency invoicing, escrow, and arbitration.",
+  "name": "sCrow",
+  "short_name": "sCrow",
+  "description": "sCrow is a secure escrow platform that provides web3 freelancers with milestone-based contracts and arbitration.",
   "iconPath": "favicon.ico",
   "providedBy": { "name": "Raid Guild", "url": "https://raidguild.org" },
   "icons": [

@@ -142,7 +142,7 @@ export function DepositTip({
         Add a Tip
       </h3>
       <p className="text-center text-sm mb-4 text-muted-foreground">
-        The invoice is fully paid! Add an optional tip to show your appreciation
+        The contract is fully paid! Add an optional tip to show your appreciation
         for great service.
       </p>
 

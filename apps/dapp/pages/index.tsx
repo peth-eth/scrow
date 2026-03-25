@@ -7,7 +7,7 @@ import { Button } from '../components/ui/button';
 const STEPS = [
   {
     number: '1',
-    title: 'Create Invoice',
+    title: 'Create Contract',
     description:
       'Set milestones, pick an arbitrator, and share with your client.',
   },
@@ -85,12 +85,12 @@ function Home() {
         <div className="flex w-full flex-col items-center justify-center gap-4 md:flex-row">
           <Link href="/create">
             <Button size="lg" className="min-w-[250px] py-6">
-              Create Invoice
+              Create Contract
             </Button>
           </Link>
           <Link href="/invoices">
             <Button size="lg" variant="outline" className="min-w-[250px] py-6">
-              View Existing Invoices
+              View Existing Contracts
             </Button>
           </Link>
         </div>

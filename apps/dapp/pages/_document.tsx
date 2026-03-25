@@ -5,7 +5,7 @@ const m = {
   title: 'sCrow',
   type: 'website',
   description:
-    'sCrow — secure escrow for web3 freelancers with cryptocurrency invoicing and arbitration.',
+    'sCrow — secure escrow contracts for web3 freelancers with milestone payments and arbitration.',
   version: 'next',
   url: BASE_URL,
   imageUrl: `${BASE_URL}/si-banner.png`,

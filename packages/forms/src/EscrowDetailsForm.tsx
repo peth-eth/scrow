@@ -94,7 +94,7 @@ export function EscrowDetailsForm({
         <div className="flex flex-col gap-4">
           <Input
             label="Client Address"
-            tooltip="This is the wallet address your client uses to access the invoice, pay with, & release escrow funds. Ensure your client has full control of this address."
+            tooltip="This is the wallet address your client uses to access the contract, pay with, & release escrow funds. Ensure your client has full control of this address."
             placeholder="0x..."
             name="client"
             localForm={localForm}
@@ -105,7 +105,7 @@ export function EscrowDetailsForm({
         <div className="flex flex-col gap-4">
           <Input
             label="Service Provider Address"
-            tooltip="This is your controlling address. You use it to access this invoice, manage transactions, and receive funds released from escrow. Ensure you have full control over this address."
+            tooltip="This is your controlling address. You use it to access this contract, manage transactions, and receive funds released from escrow. Ensure you have full control over this address."
             placeholder="0x..."
             name="provider"
             localForm={localForm}
@@ -167,11 +167,11 @@ export function EscrowDetailsForm({
                 <AlertCircle className="h-5 w-5 mt-0.5 text-white/80 shrink-0" />
                 <div>
                   <h5 className="font-medium text-sm">
-                    Only choose Kleros if total invoice value is greater than
+                    Only choose Kleros if total contract value is greater than
                     1000 USD
                   </h5>
                   <p className="text-sm">
-                    Smart Invoice will only escalate claims to Kleros that are
+                    sCrow will only escalate claims to Kleros that are
                     linked to smart escrows holding tokens with a minimum value
                     of 1000 USD at the time of locking the funds.
                   </p>

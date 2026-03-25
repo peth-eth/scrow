@@ -35,12 +35,12 @@ export const ESCROW_STEPS: { [key: number]: EscrowStep } = {
   4: {
     step_title: 'Confirmation',
     step_details: [],
-    next: 'create invoice',
+    next: 'create contract',
   },
   5: {
-    step_title: 'Invoice Created',
+    step_title: 'Contract Created',
     step_details: [],
-    next: 'invoice created',
+    next: 'contract created',
   },
 };
 
@@ -53,16 +53,16 @@ export const INSTANT_STEPS: { [key: number]: EscrowStep } = {
   2: {
     step_title: 'Payment Details',
     step_details: [],
-    next: 'confirm invoice',
+    next: 'confirm contract',
   },
   3: {
     step_title: 'Confirmation',
     step_details: [],
-    next: 'create invoice',
+    next: 'create contract',
   },
   4: {
-    step_title: 'Invoice Created',
+    step_title: 'Contract Created',
     step_details: [],
-    next: 'invoice created',
+    next: 'contract created',
   },
 };

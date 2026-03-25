@@ -102,7 +102,7 @@ export function CreateInvoiceEscrow() {
       <div className="my-8 flex w-[95%] max-w-[45rem] flex-col items-center justify-center gap-8 px-4">
         <div className="flex w-full flex-col gap-4 md:w-auto md:gap-4">
           <h1 className="text-center text-xl font-bold md:text-2xl">
-            Create an Escrow Invoice
+            Create an Escrow Contract
           </h1>
 
           {currentStep === 1 && templates.length > 0 && (
@@ -129,7 +129,7 @@ export function CreateInvoiceEscrow() {
             className="w-full text-center italic text-muted-foreground"
             style={{ textIndent: 20 }}
           >
-            Note: All invoice data will be stored publicly on IPFS and can be
+            Note: All contract data will be stored publicly on IPFS and can be
             viewed by anyone. If you have privacy concerns, we recommend taking
             care to add permissions to your project agreement document.
           </p>

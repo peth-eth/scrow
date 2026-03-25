@@ -33,8 +33,8 @@ export function SaveTemplateModal({ isOpen, onClose, onSave }: Props) {
         <DialogHeader>
           <DialogTitle>Save as Template</DialogTitle>
           <DialogDescription>
-            Save the current invoice settings as a reusable template. Next time
-            you create an invoice, you can load this template to pre-fill the
+            Save the current contract settings as a reusable template. Next time
+            you create a contract, you can load this template to pre-fill the
             form.
           </DialogDescription>
         </DialogHeader>

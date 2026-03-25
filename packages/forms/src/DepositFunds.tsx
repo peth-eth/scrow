@@ -149,7 +149,7 @@ export function DepositFunds({
   return (
     <div className="flex flex-col gap-4 w-full text-foreground items-center">
       <h3 className="text-2xl font-semibold transition-all ease-in-out duration-300 hover:cursor-pointer">
-        Pay Invoice
+        Pay Contract
       </h3>
       <p className="text-center text-sm mb-4 text-muted-foreground">
         At a minimum, you&apos;ll need to deposit enough to cover the{' '}

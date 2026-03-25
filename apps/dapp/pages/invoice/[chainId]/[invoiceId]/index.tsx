@@ -110,7 +110,7 @@ function ViewInvoice() {
     return (
       <Container overlay>
         <Loader size="80" />
-        If the invoice does not load,
+        If the contract does not load,
         <br />
         please refresh the browser.
       </Container>

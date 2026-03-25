@@ -153,7 +153,7 @@ export function InvoiceDashboardTable() {
         <div className="flex flex-col items-center justify-center gap-4 w-full">
           {isConnected ? (
             <h2 className="text-muted-foreground text-xl font-heading">
-              No invoices found for {getChainName(chainId)}!
+              No contracts found for {getChainName(chainId)}!
             </h2>
           ) : (
             <h2 className="text-muted-foreground text-xl font-heading">
@@ -163,7 +163,7 @@ export function InvoiceDashboardTable() {
 
           <ChakraNextLink href="/create">
             <button className="min-w-[250px] py-3 px-6 bg-primary text-white rounded-md font-medium hover:bg-primary/80 transition-colors text-sm sm:text-base md:text-lg">
-              Create Invoice
+              Create Contract
             </button>
           </ChakraNextLink>
         </div>
@@ -176,14 +176,14 @@ export function InvoiceDashboardTable() {
       <Styles>
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-left text-foreground text-2xl font-heading">
-            My Invoices
+            My Contracts
           </h1>
 
           <button
             className="bg-primary hover:bg-primary/70 active:bg-primary/70 text-white px-4 py-2 rounded-md transition-colors"
             onClick={() => router.push('/create')}
           >
-            Create Invoice
+            Create Contract
           </button>
         </div>
 
@@ -212,7 +212,7 @@ export function InvoiceDashboardTable() {
           </select>
           {(roleFilter !== 'all' || statusFilter !== 'all') && (
             <p className="text-sm text-muted-foreground">
-              {filteredData.length} of {data?.length ?? 0} invoices
+              {filteredData.length} of {data?.length ?? 0} contracts
             </p>
           )}
         </div>

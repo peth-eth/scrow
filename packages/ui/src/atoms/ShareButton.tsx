@@ -15,7 +15,7 @@ export function ShareButton({ invoice }: { invoice: Partial<InvoiceDetails> }) {
 
   const url = `${BASE_URL}/invoice/${chainLabel}/${invoiceId}`;
 
-  const text = `Smart Invoice for ${title} on ${getChainName(chainId)}`;
+  const text = `sCrow contract for ${title} on ${getChainName(chainId)}`;
 
   return (
     <RWebShare

@@ -286,7 +286,7 @@ export function InvoiceMetaDetails({
         <div className="flex flex-wrap">
           <GenerateInvoicePDF
             invoice={invoice}
-            buttonText="Preview & Download Invoice PDF"
+            buttonText="Preview & Download Contract PDF"
           />
         </div>
       </div>
