@@ -13,24 +13,16 @@ export function Footer() {
         </a>
 
         <p className="text-xs text-muted-foreground/60">
-          Protocol by{' '}
+          Based on{' '}
           <a
             href="https://smartinvoice.xyz"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-muted-foreground"
           >
-            Smart Invoice
+            smartinvoice.xyz
           </a>
-          {' · Built by '}
-          <a
-            href="https://raidguild.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-muted-foreground"
-          >
-            Raid Guild
-          </a>
+          {' by Raid Guild. A resurrection by peth.eth, with love.'}
         </p>
       </div>
     </div>
