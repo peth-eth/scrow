@@ -21,7 +21,7 @@ const STEPS = [
     number: '3',
     title: 'Deliver & Get Paid',
     description:
-      'Funds release per milestone. Dispute? Your chosen arbitrator resolves it on-chain.',
+      'Funds release per milestone. Dispute? Your chosen arbitrator resolves it onchain.',
   },
 ];
 
@@ -61,7 +61,7 @@ function Home() {
           </h1>
           <p className="max-w-[620px] text-lg text-muted-foreground md:text-xl">
             sCrow locks funds in a smart contract until the work is done.
-            Milestone payments, on-chain arbitration, and a downloadable
+            Milestone payments, onchain arbitration, and a downloadable
             contract PDF &mdash; all on Base.
           </p>
           <p className="max-w-[520px] text-base italic text-muted-foreground/70">
