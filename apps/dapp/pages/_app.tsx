@@ -14,8 +14,15 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { hashFn } from '@wagmi/core/query';
 import { AppProps } from 'next/app';
+import { Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import React, { useEffect, useState } from 'react';
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+});
 import { Toaster } from 'sonner';
 import { WagmiProvider } from 'wagmi';
 
@@ -72,6 +79,7 @@ function App({ Component, pageProps }: AppProps) {
   }
 
   return (
+    <div className={spaceGrotesk.variable}>
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
@@ -101,6 +109,7 @@ function App({ Component, pageProps }: AppProps) {
         </QueryClientProvider>
       </WagmiProvider>
     </ThemeProvider>
+    </div>
   );
 }
 

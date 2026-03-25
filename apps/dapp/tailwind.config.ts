@@ -52,7 +52,7 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['var(--font-space-grotesk)', 'Space Grotesk', 'sans-serif'],
       },
     },
   },
