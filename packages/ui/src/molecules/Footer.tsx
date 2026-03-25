@@ -22,7 +22,25 @@ export function Footer() {
           >
             smartinvoice.xyz
           </a>
-          {' by Raid Guild. A resurrection by peth.eth, with love.'}
+          {' by '}
+          <a
+            href="https://raidguild.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-muted-foreground"
+          >
+            Raid Guild
+          </a>
+          {'. A resurrection by '}
+          <a
+            href="https://warpcast.com/peth.eth"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-muted-foreground"
+          >
+            peth.eth
+          </a>
+          {', with love.'}
         </p>
       </div>
     </div>
