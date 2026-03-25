@@ -3,7 +3,6 @@ import {
   SMART_INVOICE_UPDATABLE_ABI,
   TOASTS,
 } from '@smartinvoicexyz/constants';
-import { waitForSubgraphSync } from '@smartinvoicexyz/graphql';
 import {
   Document,
   FormInvoice,
@@ -18,8 +17,9 @@ import {
   parseToDate,
   uriToDocument,
 } from '@smartinvoicexyz/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Hex, parseUnits } from 'viem';
 import {
@@ -29,6 +29,10 @@ import {
   useWriteContract,
 } from 'wagmi';
 
+import {
+  optimisticInvoiceUpdate,
+  syncSubgraphInBackground,
+} from './backgroundSync';
 import { SimulateContractErrorType, WriteContractErrorType } from './types';
 import { useDetailsPin } from './useDetailsPin';
 
@@ -54,6 +58,7 @@ export const useAddMilestones = ({
 } => {
   const publicClient = usePublicClient();
   const chainId = useChainId();
+  const queryClient = useQueryClient();
 
   const { tokenMetadata, metadata, amounts, resolver } = _.pick(invoice, [
     'tokenMetadata',
@@ -174,8 +179,6 @@ export const useAddMilestones = ({
     },
   });
 
-  const [waitingForTx, setWaitingForTx] = useState(false);
-
   const {
     writeContractAsync,
     isPending: isLoading,
@@ -183,17 +186,39 @@ export const useAddMilestones = ({
   } = useWriteContract({
     mutation: {
       onSuccess: async hash => {
-        setWaitingForTx(true);
         toast.loading(TOASTS.useAddMilestone.waitingForTx);
         const receipt = await publicClient?.waitForTransactionReceipt({ hash });
 
-        toast.loading(TOASTS.useAddMilestone.waitingForIndex);
         if (receipt && publicClient) {
-          await waitForSubgraphSync(publicClient.chain.id, receipt.blockNumber);
-        }
-        setWaitingForTx(false);
+          // Optimistically add the new milestone amounts to the invoice
+          optimisticInvoiceUpdate({
+            queryClient,
+            chainId: publicClient.chain.id,
+            invoiceAddress: address,
+            updater: prev => ({
+              ...prev,
+              amounts: [...prev.amounts, ...parsedMilestones],
+              total:
+                prev.total +
+                parsedMilestones.reduce((sum, m) => sum + m, BigInt(0)),
+            }),
+          });
 
-        onTxSuccess?.();
+          // Fire callback immediately
+          onTxSuccess?.();
+
+          // Sync in background
+          syncSubgraphInBackground({
+            chainId: publicClient.chain.id,
+            blockNumber: receipt.blockNumber,
+            queryClient,
+            invoiceAddress: address,
+            toast,
+            toastMessage: TOASTS.useAddMilestone.waitingForIndex,
+          });
+        } else {
+          onTxSuccess?.();
+        }
       },
       onError: (error: Error) =>
         errorToastHandler('useAddMilestones', error, toast),
@@ -214,7 +239,7 @@ export const useAddMilestones = ({
 
   return {
     writeAsync,
-    isLoading: isLoading || waitingForTx || prepareLoading || detailsLoading,
+    isLoading: isLoading || prepareLoading || detailsLoading,
     prepareError,
     writeError,
   };

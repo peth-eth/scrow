@@ -1,7 +1,7 @@
 import { IERC20_ABI, PAYMENT_TYPES, TOASTS } from '@smartinvoicexyz/constants';
-import { waitForSubgraphSync } from '@smartinvoicexyz/graphql';
 import { InvoiceDetails, UseToastReturn } from '@smartinvoicexyz/types';
 import { errorToastHandler } from '@smartinvoicexyz/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { Hex } from 'viem';
 import {
@@ -12,6 +12,10 @@ import {
   useWriteContract,
 } from 'wagmi';
 
+import {
+  optimisticInvoiceUpdate,
+  syncSubgraphInBackground,
+} from './backgroundSync';
 import { SimulateContractErrorType, WriteContractErrorType } from './types';
 
 export const useDeposit = ({
@@ -35,6 +39,7 @@ export const useDeposit = ({
   writeError: WriteContractErrorType | null;
 } => {
   const chainId = useChainId();
+  const queryClient = useQueryClient();
 
   const { tokenMetadata, address } = _.pick(invoice, [
     'tokenMetadata',
@@ -58,39 +63,61 @@ export const useDeposit = ({
     },
   });
 
+  const handleTxSuccess = async (hash: Hex) => {
+    toast.loading(TOASTS.useDeposit.waitingForTx);
+    const receipt = await publicClient?.waitForTransactionReceipt({ hash });
+
+    if (receipt && publicClient) {
+      // Optimistically update the cached invoice with the new deposit
+      optimisticInvoiceUpdate({
+        queryClient,
+        chainId: publicClient.chain.id,
+        invoiceAddress: address as Hex,
+        updater: prev => ({
+          ...prev,
+          deposits: [
+            ...prev.deposits,
+            {
+              id: hash,
+              txHash: hash,
+              sender: '',
+              amount,
+              timestamp: BigInt(Math.floor(Date.now() / 1000)),
+            },
+          ],
+        }),
+      });
+
+      // Fire onTxSuccess immediately — don't wait for subgraph
+      onTxSuccess?.();
+
+      // Sync subgraph in background
+      syncSubgraphInBackground({
+        chainId: publicClient.chain.id,
+        blockNumber: receipt.blockNumber,
+        queryClient,
+        invoiceAddress: address as Hex,
+        toast,
+        toastMessage: TOASTS.useDeposit.waitingForIndex,
+      });
+    } else {
+      onTxSuccess?.();
+    }
+  };
+
   const {
     writeContractAsync,
     isPending: writeLoading,
     error: writeError,
   } = useWriteContract({
     mutation: {
-      onSuccess: async hash => {
-        toast.loading(TOASTS.useDeposit.waitingForTx);
-        const receipt = await publicClient?.waitForTransactionReceipt({ hash });
-
-        toast.loading(TOASTS.useDeposit.waitingForIndex);
-        if (receipt && publicClient) {
-          await waitForSubgraphSync(publicClient.chain.id, receipt.blockNumber);
-        }
-
-        onTxSuccess?.();
-      },
+      onSuccess: handleTxSuccess,
     },
   });
 
   const { isPending: sendLoading, sendTransactionAsync } = useSendTransaction({
     mutation: {
-      onSuccess: async hash => {
-        toast.loading(TOASTS.useDeposit.waitingForTx);
-        const receipt = await publicClient?.waitForTransactionReceipt({ hash });
-
-        toast.loading(TOASTS.useDeposit.waitingForIndex);
-        if (receipt && publicClient) {
-          await waitForSubgraphSync(publicClient.chain.id, receipt.blockNumber);
-        }
-
-        onTxSuccess?.();
-      },
+      onSuccess: handleTxSuccess,
     },
   });
 

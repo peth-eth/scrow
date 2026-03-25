@@ -3,7 +3,6 @@ import {
   SMART_INVOICE_UPDATABLE_ABI,
   TOASTS,
 } from '@smartinvoicexyz/constants';
-import { waitForSubgraphSync } from '@smartinvoicexyz/graphql';
 import {
   BasicMetadata,
   InvoiceDetails,
@@ -14,8 +13,9 @@ import {
   getDateString,
   uriToDocument,
 } from '@smartinvoicexyz/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Hex } from 'viem';
 import {
@@ -25,6 +25,10 @@ import {
   useWriteContract,
 } from 'wagmi';
 
+import {
+  optimisticInvoiceUpdate,
+  syncSubgraphInBackground,
+} from './backgroundSync';
 import { SimulateContractErrorType, WriteContractErrorType } from './types';
 import { useDetailsPin } from './useDetailsPin';
 
@@ -52,6 +56,7 @@ export const useLock = ({
   writeError: WriteContractErrorType | null;
 } => {
   const currentChainId = useChainId();
+  const queryClient = useQueryClient();
   const { chainId: invoiceChainId, metadata } = _.pick(invoice, [
     'chainId',
     'metadata',
@@ -100,8 +105,6 @@ export const useLock = ({
     },
   });
 
-  const [waitingForTx, setWaitingForTx] = useState(false);
-
   const {
     writeContractAsync,
     isPending: writeLoading,
@@ -109,17 +112,47 @@ export const useLock = ({
   } = useWriteContract({
     mutation: {
       onSuccess: async hash => {
-        setWaitingForTx(true);
         toast.loading(TOASTS.useLock.waitingForTx);
         const receipt = await publicClient?.waitForTransactionReceipt({ hash });
 
-        toast.loading(TOASTS.useLock.waitingForIndex);
         if (receipt && publicClient) {
-          await waitForSubgraphSync(publicClient.chain.id, receipt.blockNumber);
-        }
+          // Optimistically mark invoice as locked
+          optimisticInvoiceUpdate({
+            queryClient,
+            chainId: publicClient.chain.id,
+            invoiceAddress: invoice?.address as Hex,
+            updater: prev => ({
+              ...prev,
+              isLocked: true,
+              disputes: [
+                ...prev.disputes,
+                {
+                  id: hash,
+                  txHash: hash,
+                  sender: '',
+                  details: description,
+                  ipfsHash: (details ?? detailsHash ?? '') as string,
+                  timestamp: BigInt(Math.floor(Date.now() / 1000)),
+                },
+              ],
+            }),
+          });
 
-        setWaitingForTx(false);
-        onTxSuccess?.();
+          // Fire callback immediately
+          onTxSuccess?.();
+
+          // Sync in background
+          syncSubgraphInBackground({
+            chainId: publicClient.chain.id,
+            blockNumber: receipt.blockNumber,
+            queryClient,
+            invoiceAddress: invoice?.address as Hex,
+            toast,
+            toastMessage: TOASTS.useLock.waitingForIndex,
+          });
+        } else {
+          onTxSuccess?.();
+        }
       },
       onError: error => errorToastHandler('useLock', error, toast),
     },
@@ -139,11 +172,7 @@ export const useLock = ({
 
   return {
     writeAsync,
-    isLoading:
-      prepareLoading ||
-      writeLoading ||
-      waitingForTx ||
-      !(details || !detailsLoading),
+    isLoading: prepareLoading || writeLoading || !(details || !detailsLoading),
     prepareError,
     writeError,
   };

@@ -2,11 +2,11 @@ import {
   SMART_INVOICE_UPDATABLE_ABI,
   TOASTS,
 } from '@smartinvoicexyz/constants';
-import { waitForSubgraphSync } from '@smartinvoicexyz/graphql';
 import { InvoiceDetails, UseToastReturn } from '@smartinvoicexyz/types';
 import { errorToastHandler } from '@smartinvoicexyz/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Hex } from 'viem';
 import {
   useChainId,
@@ -15,6 +15,10 @@ import {
   useWriteContract,
 } from 'wagmi';
 
+import {
+  optimisticInvoiceUpdate,
+  syncSubgraphInBackground,
+} from './backgroundSync';
 import { SimulateContractErrorType, WriteContractErrorType } from './types';
 
 export const useRelease = ({
@@ -35,6 +39,7 @@ export const useRelease = ({
 } => {
   const chainId = useChainId();
   const publicClient = usePublicClient();
+  const queryClient = useQueryClient();
 
   const specifiedMilestone = _.isNumber(milestone);
 
@@ -53,8 +58,6 @@ export const useRelease = ({
     },
   });
 
-  const [waitingForTx, setWaitingForTx] = useState(false);
-
   const {
     writeContractAsync,
     isPending: writeLoading,
@@ -62,16 +65,53 @@ export const useRelease = ({
   } = useWriteContract({
     mutation: {
       onSuccess: async hash => {
-        setWaitingForTx(true);
         toast.loading(TOASTS.useRelease.waitingForTx);
         const receipt = await publicClient?.waitForTransactionReceipt({ hash });
 
-        toast.loading(TOASTS.useRelease.waitingForIndex);
         if (receipt && publicClient) {
-          await waitForSubgraphSync(publicClient.chain.id, receipt.blockNumber);
+          // Optimistically update: increment currentMilestone and add release
+          const releaseMilestone = specifiedMilestone
+            ? BigInt(milestone)
+            : (invoice?.currentMilestone ?? BigInt(0));
+          const releaseAmount =
+            invoice?.amounts?.[Number(releaseMilestone)] ?? BigInt(0);
+
+          optimisticInvoiceUpdate({
+            queryClient,
+            chainId: publicClient.chain.id,
+            invoiceAddress: invoice?.address as Hex,
+            updater: prev => ({
+              ...prev,
+              currentMilestone: prev.currentMilestone + BigInt(1),
+              released: prev.released + releaseAmount,
+              releases: [
+                ...prev.releases,
+                {
+                  id: hash,
+                  txHash: hash,
+                  milestone: releaseMilestone,
+                  amount: releaseAmount,
+                  timestamp: BigInt(Math.floor(Date.now() / 1000)),
+                },
+              ],
+            }),
+          });
+
+          // Fire callback immediately
+          onTxSuccess?.();
+
+          // Sync in background
+          syncSubgraphInBackground({
+            chainId: publicClient.chain.id,
+            blockNumber: receipt.blockNumber,
+            queryClient,
+            invoiceAddress: invoice?.address as Hex,
+            toast,
+            toastMessage: TOASTS.useRelease.waitingForIndex,
+          });
+        } else {
+          onTxSuccess?.();
         }
-        setWaitingForTx(false);
-        onTxSuccess?.();
       },
       onError: (error: Error) => errorToastHandler('useRelease', error, toast),
     },
@@ -91,7 +131,7 @@ export const useRelease = ({
 
   return {
     writeAsync,
-    isLoading: prepareLoading || writeLoading || waitingForTx,
+    isLoading: prepareLoading || writeLoading,
     prepareError,
     writeError,
   };

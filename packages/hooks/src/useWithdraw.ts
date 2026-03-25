@@ -2,14 +2,15 @@ import {
   SMART_INVOICE_UPDATABLE_ABI,
   TOASTS,
 } from '@smartinvoicexyz/constants';
-import { waitForSubgraphSync } from '@smartinvoicexyz/graphql';
 import { InvoiceDetails, UseToastReturn } from '@smartinvoicexyz/types';
 import { errorToastHandler } from '@smartinvoicexyz/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Hex } from 'viem';
 import { usePublicClient, useSimulateContract, useWriteContract } from 'wagmi';
 
+import { syncSubgraphInBackground } from './backgroundSync';
 import { SimulateContractErrorType, WriteContractErrorType } from './types';
 
 export const useWithdraw = ({
@@ -27,6 +28,7 @@ export const useWithdraw = ({
   writeError: WriteContractErrorType | null;
 } => {
   const publicClient = usePublicClient();
+  const queryClient = useQueryClient();
   const { address } = _.pick(invoice, ['address']);
 
   const {
@@ -43,8 +45,6 @@ export const useWithdraw = ({
     },
   });
 
-  const [waitingForTx, setWaitingForTx] = useState(false);
-
   const {
     writeContractAsync,
     isPending: writeLoading,
@@ -52,17 +52,25 @@ export const useWithdraw = ({
   } = useWriteContract({
     mutation: {
       onSuccess: async hash => {
-        setWaitingForTx(true);
         toast.loading(TOASTS.useWithdraw.waitingForTx);
         const receipt = await publicClient?.waitForTransactionReceipt({ hash });
 
-        toast.loading(TOASTS.useWithdraw.waitingForIndex);
         if (receipt && publicClient) {
-          await waitForSubgraphSync(publicClient.chain.id, receipt.blockNumber);
-        }
+          // Fire callback immediately — don't block on subgraph
+          onTxSuccess?.();
 
-        setWaitingForTx(false);
-        onTxSuccess?.();
+          // Sync in background
+          syncSubgraphInBackground({
+            chainId: publicClient.chain.id,
+            blockNumber: receipt.blockNumber,
+            queryClient,
+            invoiceAddress: address as Hex,
+            toast,
+            toastMessage: TOASTS.useWithdraw.waitingForIndex,
+          });
+        } else {
+          onTxSuccess?.();
+        }
       },
       onError: error => errorToastHandler('useWithdraw', error, toast),
     },
@@ -82,7 +90,7 @@ export const useWithdraw = ({
 
   return {
     writeAsync,
-    isLoading: prepareLoading || writeLoading || waitingForTx,
+    isLoading: prepareLoading || writeLoading,
     prepareError,
     writeError,
   };

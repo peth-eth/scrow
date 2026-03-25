@@ -2,7 +2,6 @@ import {
   INVOICE_VERSION,
   SMART_INVOICE_UPDATABLE_ABI,
 } from '@smartinvoicexyz/constants';
-import { waitForSubgraphSync } from '@smartinvoicexyz/graphql';
 import {
   BasicMetadata,
   InvoiceDetails,
@@ -13,12 +12,17 @@ import {
   getDateString,
   uriToDocument,
 } from '@smartinvoicexyz/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Hex, parseUnits } from 'viem';
 import { usePublicClient, useSimulateContract, useWriteContract } from 'wagmi';
 
+import {
+  optimisticInvoiceUpdate,
+  syncSubgraphInBackground,
+} from './backgroundSync';
 import { SimulateContractErrorType, WriteContractErrorType } from './types';
 import { useDetailsPin } from './useDetailsPin';
 
@@ -49,6 +53,7 @@ export const useResolve = ({
   writeError: WriteContractErrorType | null;
 } => {
   const publicClient = usePublicClient();
+  const queryClient = useQueryClient();
 
   const {
     document,
@@ -118,7 +123,6 @@ export const useResolve = ({
         !!description,
     },
   });
-  const [waitingForTx, setWaitingForTx] = useState(false);
 
   const {
     writeContractAsync,
@@ -127,18 +131,48 @@ export const useResolve = ({
   } = useWriteContract({
     mutation: {
       onSuccess: async hash => {
-        setWaitingForTx(true);
         const receipt = await publicClient?.waitForTransactionReceipt({
           hash,
         });
 
         if (!receipt) return;
         if (receipt && publicClient) {
-          await waitForSubgraphSync(publicClient.chain.id, receipt.blockNumber);
-        }
-        setWaitingForTx(false);
+          // Optimistically mark invoice as resolved (unlocked)
+          optimisticInvoiceUpdate({
+            queryClient,
+            chainId: publicClient.chain.id,
+            invoiceAddress: address as Hex,
+            updater: prev => ({
+              ...prev,
+              isLocked: false,
+              resolutions: [
+                ...prev.resolutions,
+                {
+                  id: hash,
+                  txHash: hash,
+                  ipfsHash: (details ?? detailsHash ?? '') as string,
+                  resolverType: prev.resolverType,
+                  resolver: prev.resolver,
+                  clientAward,
+                  providerAward,
+                  timestamp: BigInt(Math.floor(Date.now() / 1000)),
+                },
+              ],
+            }),
+          });
 
-        onTxSuccess?.();
+          // Fire callback immediately
+          onTxSuccess?.();
+
+          // Sync in background
+          syncSubgraphInBackground({
+            chainId: publicClient.chain.id,
+            blockNumber: receipt.blockNumber,
+            queryClient,
+            invoiceAddress: address as Hex,
+            toast,
+          });
+        }
       },
       onError: error => {
         if (toast) errorToastHandler('useResolve', error, toast);
@@ -160,11 +194,7 @@ export const useResolve = ({
 
   return {
     writeAsync,
-    isLoading:
-      prepareLoading ||
-      writeLoading ||
-      waitingForTx ||
-      !(details || !detailsLoading),
+    isLoading: prepareLoading || writeLoading || !(details || !detailsLoading),
     prepareError,
     writeError,
   };
