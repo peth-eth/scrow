@@ -3,19 +3,35 @@ import React from 'react';
 
 import { ErrorBoundary } from '../../src/molecules/ErrorBoundary';
 
-describe('ErrorBoundary', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  const mockResetErrorBoundary = jest.fn();
+function ThrowingChild(): React.JSX.Element {
+  throw new Error('Test error');
+}
 
-  it('should render', function () {
-    const error = new Error('Test error');
+describe('ErrorBoundary', function () {
+  it('should render fallback when child throws', function () {
+    // Suppress console.error from React's error boundary logging
+    const consoleSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
     const view = render(
-      <ErrorBoundary
-        error={error}
-        resetErrorBoundary={mockResetErrorBoundary}
-      />,
+      <ErrorBoundary>
+        <ThrowingChild />
+      </ErrorBoundary>,
     );
 
-    expect(view.asFragment()).toMatchSnapshot();
+    expect(view.getByText('Something went wrong')).toBeTruthy();
+
+    consoleSpy.mockRestore();
+  });
+
+  it('should render children when no error', function () {
+    const view = render(
+      <ErrorBoundary>
+        <div>Hello</div>
+      </ErrorBoundary>,
+    );
+
+    expect(view.getByText('Hello')).toBeTruthy();
   });
 });

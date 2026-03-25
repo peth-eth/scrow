@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable camelcase */
 import 'focus-visible/dist/focus-visible';
 import '@rainbow-me/rainbowkit/styles.css';
 import '../styles/globals.css';
@@ -17,18 +18,18 @@ import { AppProps } from 'next/app';
 import { Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import React, { useEffect, useState } from 'react';
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-});
 import { Toaster } from 'sonner';
 import { WagmiProvider } from 'wagmi';
 
 import { ChatBubble } from '../components/ChatBubble';
 import { FrameProvider } from '../contexts/FrameContext';
 import { OverlayContextProvider } from '../contexts/OverlayContext';
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+});
 
 function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = useState(false);
@@ -80,35 +81,35 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <div className={spaceGrotesk.variable}>
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-      <WagmiProvider config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
-          <HydrationBoundary state={pageProps.dehydratedState}>
-            <RainbowKitProvider
-              avatar={AccountAvatar}
-              theme={darkTheme({
-                accentColor: '#8A63D2',
-                accentColorForeground: 'white',
-                borderRadius: 'medium',
-              })}
-            >
-              <ErrorBoundary>
-                <FrameProvider>
-                  <OverlayContextProvider>
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                  </OverlayContextProvider>
-                </FrameProvider>
-              </ErrorBoundary>
-              <Toaster position="bottom-right" richColors />
-              <ChatBubble />
-              <ReactQueryDevtools initialIsOpen={false} />
-            </RainbowKitProvider>
-          </HydrationBoundary>
-        </QueryClientProvider>
-      </WagmiProvider>
-    </ThemeProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <WagmiProvider config={wagmiConfig}>
+          <QueryClientProvider client={queryClient}>
+            <HydrationBoundary state={pageProps.dehydratedState}>
+              <RainbowKitProvider
+                avatar={AccountAvatar}
+                theme={darkTheme({
+                  accentColor: '#8A63D2',
+                  accentColorForeground: 'white',
+                  borderRadius: 'medium',
+                })}
+              >
+                <ErrorBoundary>
+                  <FrameProvider>
+                    <OverlayContextProvider>
+                      <Layout>
+                        <Component {...pageProps} />
+                      </Layout>
+                    </OverlayContextProvider>
+                  </FrameProvider>
+                </ErrorBoundary>
+                <Toaster position="bottom-right" richColors />
+                <ChatBubble />
+                <ReactQueryDevtools initialIsOpen={false} />
+              </RainbowKitProvider>
+            </HydrationBoundary>
+          </QueryClientProvider>
+        </WagmiProvider>
+      </ThemeProvider>
     </div>
   );
 }

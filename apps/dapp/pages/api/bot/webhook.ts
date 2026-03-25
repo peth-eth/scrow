@@ -1,6 +1,5 @@
-import crypto from 'crypto';
-
 import { BASE_URL } from '@smartinvoicexyz/constants';
+import crypto from 'crypto';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY || '';
@@ -51,10 +50,7 @@ function validateSignature(
   return signature === hash;
 }
 
-async function replyCast(
-  replyToHash: string,
-  text: string,
-): Promise<boolean> {
+async function replyCast(replyToHash: string, text: string): Promise<boolean> {
   if (!NEYNAR_API_KEY || !BOT_SIGNER_UUID) return false;
   try {
     const res = await fetch('https://api.neynar.com/v2/farcaster/cast', {
@@ -75,9 +71,7 @@ async function replyCast(
   }
 }
 
-async function resolveAddress(
-  username: string,
-): Promise<string | undefined> {
+async function resolveAddress(username: string): Promise<string | undefined> {
   try {
     const res = await fetch(
       `https://api.neynar.com/v2/farcaster/user/search?q=${encodeURIComponent(username)}&limit=1`,
@@ -87,9 +81,7 @@ async function resolveAddress(
     const data = await res.json();
     const user = data.result?.users?.[0];
     if (!user) return undefined;
-    return (
-      user.verified_addresses?.eth_addresses?.[0] || user.custody_address
-    );
+    return user.verified_addresses?.eth_addresses?.[0] || user.custody_address;
   } catch {
     return undefined;
   }
@@ -111,9 +103,7 @@ function parseIntent(cast: NeynarCast): ParsedIntent {
   const result: ParsedIntent = {};
 
   // Find mentioned counterparty (first non-bot mention)
-  const mentions = cast.mentioned_profiles?.filter(
-    p => p.username !== 'scrow',
-  );
+  const mentions = cast.mentioned_profiles?.filter(p => p.username !== 'scrow');
   if (mentions?.length) {
     const counterparty = mentions[0];
     result.counterparty = counterparty.username;

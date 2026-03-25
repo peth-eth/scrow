@@ -1,27 +1,31 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { logError } from '@smartinvoicexyz/utils';
-import React from 'react';
+import React, { ErrorInfo, ReactNode } from 'react';
 
-export class ErrorBoundary extends React.Component {
-  // eslint-disable-next-line react/static-property-placement
-  props: any;
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
 
-  // eslint-disable-next-line react/state-in-constructor
-  state: any;
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
 
-  constructor(props: any) {
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     if (error) {
       return { hasError: true };
     }
     return { hasError: false };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     logError({ error, errorInfo });
   }
 

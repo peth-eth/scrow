@@ -29,9 +29,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     const data = await response.json();
 
+    interface NeynarUser {
+      fid: number;
+      username: string;
+      display_name: string;
+      pfp_url: string;
+      verified_addresses?: {
+        eth_addresses?: string[];
+        primary?: { eth_address?: string };
+      };
+    }
+
     const users: FarcasterUser[] = (data.result?.users ?? []).map(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (u: any) => ({
+      (u: NeynarUser) => ({
         fid: u.fid,
         username: u.username,
         display_name: u.display_name,

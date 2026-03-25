@@ -63,6 +63,7 @@
     "lint-staged": "lint-staged",
     "packages:build": "pnpm --filter '@smartinvoicexyz/*' build",
     "preinstall": "only-allow pnpm",
+    "test": "jest --config jest.config.ts",
     "syncpack": "syncpack list-mismatches",
     "syncpack:fix": "syncpack fix-mismatches",
     "typecheck": "pnpm -r typecheck",

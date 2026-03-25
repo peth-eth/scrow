@@ -24,8 +24,13 @@ export const createInvoiceDetailsQueryKey = (
   address: Hex | undefined,
 ) => [QUERY_KEY_INVOICE_DETAILS, { chainId, address }];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const serializeBigInts = (obj: any): any => {
+type JsonPrimitive = string | number | boolean | null;
+type JsonSerializable =
+  | JsonPrimitive
+  | JsonSerializable[]
+  | { [key: string]: JsonSerializable };
+
+const serializeBigInts = (obj: unknown): JsonSerializable => {
   if (obj === null || obj === undefined) {
     return null;
   }
@@ -46,7 +51,7 @@ const serializeBigInts = (obj: any): any => {
     );
   }
 
-  return obj;
+  return obj as JsonPrimitive;
 };
 
 // Server-side prefetch function with minimal imports

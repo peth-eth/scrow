@@ -47,9 +47,7 @@ export function CreateInvoiceEscrow() {
       invoiceForm.setValue('client', client);
     }
     if (amount && typeof amount === 'string') {
-      invoiceForm.setValue('milestones', [
-        { title: 'Milestone 1', amount },
-      ]);
+      invoiceForm.setValue('milestones', [{ title: 'Milestone 1', amount }]);
     }
     if (token && typeof token === 'string') {
       invoiceForm.setValue('token', token);
