@@ -73,7 +73,7 @@ export function VerifyInvoice({
         disabled={isLoading || !writeAsync}
         onClick={handleVerify}
       >
-        {isLoading ? 'Loading...' : 'Enable Non-Client Account Deposits'}
+        {isLoading ? 'Loading...' : 'Enable Third-Party Deposits'}
       </button>
     </div>
   );

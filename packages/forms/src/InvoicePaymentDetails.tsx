@@ -165,11 +165,32 @@ export function InvoicePaymentDetails({
             </button>
           </div>
         )}
+        {deposited !== undefined && released !== undefined && (
+          <div className="rounded-lg border bg-card p-6 flex items-center justify-between w-full">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-semibold">Escrow Balance</span>
+              <span title="Current funds held in escrow (total deposited minus total released)">
+                <QuestionIcon className="w-3 h-3 text-muted-foreground cursor-help" />
+              </span>
+            </div>
+            <span className="text-2xl font-bold text-primary">
+              {commify(
+                formatUnits(
+                  deposited - released,
+                  tokenBalance?.decimals || tokenMetadata?.decimals || 18,
+                ),
+              )}{' '}
+              {tokenBalance?.symbol || tokenMetadata?.symbol}
+            </span>
+          </div>
+        )}
         <div className="rounded-lg border bg-card py-6 flex flex-col w-full">
           <div className="flex flex-col w-full">
             <div className="flex flex-col gap-4 w-full px-6">
               <div className="flex items-center w-full justify-between">
-                <h3 className="text-base font-semibold">Total Project Amount</h3>
+                <h3 className="text-base font-semibold">
+                  Total Project Amount
+                </h3>
                 {!!total && (
                   <h3 className="text-base font-semibold">
                     {commify(
@@ -208,11 +229,25 @@ export function InvoicePaymentDetails({
                       <div className="flex items-center justify-end gap-2">
                         {release && (
                           <a
-                            className="text-xs text-muted-foreground italic"
+                            className="inline-flex items-center gap-1 text-xs text-green-600 italic hover:text-green-700 transition-colors"
                             href={getTxLink(invoice?.chainId, release.txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
+                            title="View release transaction"
                           >
+                            <svg
+                              className="w-3.5 h-3.5"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10" />
+                              <polyline points="8 12 12 8 16 12" />
+                              <line x1="12" y1="16" x2="12" y2="8" />
+                            </svg>
                             Released{' '}
                             {getDateString(
                               Number(release.timestamp) * 1000,
@@ -222,11 +257,25 @@ export function InvoicePaymentDetails({
                         )}
                         {deposit && !release && (
                           <a
-                            className="text-xs text-muted-foreground italic"
+                            className="inline-flex items-center gap-1 text-xs text-amber-600 italic hover:text-amber-700 transition-colors"
                             href={getTxLink(invoice?.chainId, deposit?.txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
+                            title="View deposit transaction"
                           >
+                            <svg
+                              className="w-3.5 h-3.5"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10" />
+                              <polyline points="8 12 12 16 16 12" />
+                              <line x1="12" y1="8" x2="12" y2="16" />
+                            </svg>
                             {`${_.capitalize(depositedText)} `}
                             {getDateString(
                               Number(deposit?.timestamp) * 1000,
@@ -283,7 +332,9 @@ export function InvoicePaymentDetails({
                 <div className="flex justify-between items-center px-6">
                   {isExpired || (due === BigInt(0) && !isReleasable) ? (
                     <>
-                      <h3 className="text-base font-semibold">Remaining Balance</h3>
+                      <h3 className="text-base font-semibold">
+                        Remaining Balance
+                      </h3>
                       <h3 className="text-base font-semibold">
                         {`${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
                       </h3>
@@ -310,7 +361,10 @@ export function InvoicePaymentDetails({
             {_.map(
               disputesWithResolution,
               ({ dispute, resolution, resolutionDetails }, i) => (
-                <div className="flex flex-col gap-4 w-full" key={dispute.id + i}>
+                <div
+                  className="flex flex-col gap-4 w-full"
+                  key={dispute.id + i}
+                >
                   {dispute && !resolution && (
                     <div className="flex flex-col px-6">
                       <div className="flex justify-between items-center font-bold text-lg">

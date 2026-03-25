@@ -1,8 +1,5 @@
 import { useSubgraphHealth } from '@smartinvoicexyz/hooks';
-import {
-  chainByName,
-  getChainName,
-} from '@smartinvoicexyz/utils';
+import { chainByName, getChainName } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import { useAccount } from 'wagmi';
@@ -256,7 +253,7 @@ export function InvoiceMetaDetails({
         {invoiceType === INVOICE_TYPES.Escrow && (
           <div className="flex flex-wrap gap-1">
             <span>
-              <p>{'Non-Client Deposits Enabled: '}</p>
+              <p>{'Third-Party Deposits: '}</p>
             </span>
 
             <span className="font-bold">

@@ -55,7 +55,7 @@ export const SubgraphHealthAlert: React.FC<{ chainId?: number }> = ({
 
   return (
     <div
-      className="absolute bottom-0 left-0 right-0 flex justify-center items-center z-10"
+      className="sticky bottom-0 left-0 right-0 flex justify-center items-center z-10"
       style={{ boxShadow: '0px -2px 16px rgba(0, 0, 0, 0.05)' }}
     >
       <div

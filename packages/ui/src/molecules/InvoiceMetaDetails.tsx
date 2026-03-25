@@ -247,7 +247,7 @@ export function InvoiceMetaDetails({
           <div className="flex flex-wrap gap-1">
             <span>
               <div className="flex items-center gap-1">
-                <p>{'Non-Client Deposits Enabled: '}</p>
+                <p>{'Third-Party Deposits: '}</p>
                 <span title="When enabled, anyone (not just the client) can deposit funds into this escrow">
                   <QuestionIcon
                     boxSize={3}

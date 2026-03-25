@@ -149,19 +149,19 @@ export const TOASTS = {
 
   useVerify: {
     waitingForTx: {
-      title: 'Enabling Non-Client Deposits ',
+      title: 'Enabling Third-Party Deposits',
       description: 'Waiting for transaction confirmation',
       duration: null,
       isClosable: false,
     },
     waitingForIndex: {
-      title: 'Non-Client Deposits have been enabled onchain',
+      title: 'Third-Party Deposits have been enabled onchain',
       description: 'Waiting for update to be indexed by the subgraph',
       duration: null,
       isClosable: false,
     },
     success: {
-      title: 'Non-Client Deposits enabled successfully',
+      title: 'Third-Party Deposits enabled successfully',
       description: 'Your settings have been updated. Refreshing Contract...',
       duration: 5000,
       isClosable: true,
