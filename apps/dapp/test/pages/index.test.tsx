@@ -8,9 +8,9 @@ describe('Home component', function () {
   it('renders correctly', function () {
     render(<Home />);
     expect(
-      screen.getByText('Secure Escrow for Web3 Freelancers'),
+      screen.getByText('Stop sending crypto on a promise.'),
     ).toBeInTheDocument();
-    expect(screen.getByText('Create Contract')).toBeInTheDocument();
-    expect(screen.getByText('View Existing Contracts')).toBeInTheDocument();
+    expect(screen.getByText('Create a Contract')).toBeInTheDocument();
+    expect(screen.getByText('View Your Contracts')).toBeInTheDocument();
   });
 });

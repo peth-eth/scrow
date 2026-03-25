@@ -7,20 +7,21 @@ import { Button } from '../components/ui/button';
 const STEPS = [
   {
     number: '1',
-    title: 'Create Contract',
+    title: 'Create a Contract',
     description:
-      'Set milestones, pick an arbitrator, and share with your client.',
+      'Define milestones, choose an arbitrator, and send the link. Takes 2 minutes.',
   },
   {
     number: '2',
-    title: 'Client Deposits',
-    description: 'Funds are locked in escrow until milestones are completed.',
+    title: 'Funds Lock in Escrow',
+    description:
+      'Your counterparty deposits into a smart contract. Nobody touches the funds until milestones are met.',
   },
   {
     number: '3',
-    title: 'Get Paid',
+    title: 'Deliver & Get Paid',
     description:
-      'Release funds as you deliver. Disputes? Your arbitrator has it covered.',
+      'Funds release per milestone. Dispute? Your chosen arbitrator resolves it on-chain.',
   },
 ];
 
@@ -51,13 +52,18 @@ function Home() {
     <Container overlay>
       <div className="flex w-full max-w-[800px] flex-col items-center gap-16 px-4 py-12">
         {/* Hero */}
-        <div className="flex flex-col items-center gap-4 text-center">
+        <div className="flex flex-col items-center gap-6 text-center">
           <h1 className="text-2xl font-bold leading-tight text-foreground md:text-4xl">
-            Secure Escrow for Web3 Freelancers
+            Stop sending crypto on a promise.
           </h1>
-          <p className="max-w-[560px] text-base text-muted-foreground md:text-lg">
-            Get paid safely with milestone-based escrow, community arbitration,
-            and transparent fees.
+          <p className="max-w-[580px] text-base text-muted-foreground md:text-lg">
+            sCrow locks funds in a smart contract until the work is done.
+            Milestone payments, on-chain arbitration, and a downloadable
+            contract PDF &mdash; all on Base.
+          </p>
+          <p className="max-w-[520px] text-sm italic text-muted-foreground/70">
+            No more chasing payments. No more &ldquo;trust me&rdquo; handshakes.
+            Just code that holds both sides accountable.
           </p>
         </div>
 
@@ -85,12 +91,12 @@ function Home() {
         <div className="flex w-full flex-col items-center justify-center gap-4 md:flex-row">
           <Link href="/create">
             <Button size="lg" className="min-w-[250px] py-6">
-              Create Contract
+              Create a Contract
             </Button>
           </Link>
           <Link href="/invoices">
             <Button size="lg" variant="outline" className="min-w-[250px] py-6">
-              View Existing Contracts
+              View Your Contracts
             </Button>
           </Link>
         </div>
