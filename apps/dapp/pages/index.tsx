@@ -100,6 +100,11 @@ function Home() {
               View Your Contracts
             </Button>
           </Link>
+          <Link href="/developers">
+            <Button size="lg" variant="outline" className="min-w-[250px] py-6">
+              For Agents
+            </Button>
+          </Link>
         </div>
       </div>
     </Container>
