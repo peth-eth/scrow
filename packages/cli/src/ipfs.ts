@@ -3,7 +3,7 @@ import { type Hex } from 'viem';
 const PINATA_API = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
 const DAPP_URL =
   process.env.SCROW_DAPP_URL || 'https://scrow-pi.vercel.app';
-const PINATA_JWT = process.env.PINATA_JWT;
+// Platform handles IPFS — no user keys needed
 
 // Base58 alphabet for CID conversion
 const BASE58_ALPHABET =
@@ -50,16 +50,12 @@ export function cidToBytes32(cid: string): Hex {
 }
 
 async function getPinataToken(): Promise<string> {
-  // Prefer user's own Pinata JWT (env var)
-  if (PINATA_JWT) return PINATA_JWT;
-
-  // Fall back to dapp's upload-start proxy
   const res = await fetch(`${DAPP_URL}/api/upload-start`, {
     method: 'POST',
   });
   if (!res.ok) {
     throw new Error(
-      `IPFS pinning failed (${res.status}). Set PINATA_JWT env var or ensure dapp API is running.`,
+      `IPFS pinning failed (${res.status}). The sCrow API may be temporarily unavailable.`,
     );
   }
   const data = await res.json();

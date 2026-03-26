@@ -1,11 +1,10 @@
 import {
   type Address,
   encodeAbiParameters,
+  encodeFunctionData,
   parseUnits,
-  decodeEventLog,
 } from 'viem';
 
-import { getAccount, getPublicClient, getWalletClient } from '../client.js';
 import {
   DEFAULT_RESOLVER,
   ESCROW_TYPE,
@@ -29,15 +28,6 @@ const FACTORY_ABI = [
     outputs: [{ name: '', type: 'address' }],
     stateMutability: 'nonpayable',
     type: 'function',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, name: 'id', type: 'uint256' },
-      { indexed: true, name: 'invoice', type: 'address' },
-    ],
-    name: 'LogNewInvoice',
-    type: 'event',
   },
 ] as const;
 
@@ -71,8 +61,8 @@ export async function createContract(opts: CreateOptions) {
     Math.floor(Date.now() / 1000) + safetyDays * 24 * 60 * 60,
   );
 
-  console.log('Pinning metadata to IPFS...');
-  const { bytes32: detailsHash } = await pinMetadata({
+  console.error('Pinning metadata to IPFS...');
+  const { cid, bytes32: detailsHash } = await pinMetadata({
     title: opts.title,
     description: opts.description,
     milestones: milestoneAmounts.map((a, i) => ({
@@ -80,6 +70,7 @@ export async function createContract(opts: CreateOptions) {
       amount: a,
     })),
   });
+  console.error(`IPFS: ${cid}`);
 
   const resolver = (opts.resolver || DEFAULT_RESOLVER) as Address;
 
@@ -112,14 +103,7 @@ export async function createContract(opts: CreateOptions) {
     ],
   );
 
-  const account = getAccount();
-  const publicClient = getPublicClient();
-  const walletClient = getWalletClient();
-
-  console.log('Simulating transaction...');
-  const { request } = await publicClient.simulateContract({
-    account,
-    address: FACTORY_ADDRESS,
+  const calldata = encodeFunctionData({
     abi: FACTORY_ABI,
     functionName: 'create',
     args: [
@@ -130,32 +114,16 @@ export async function createContract(opts: CreateOptions) {
     ],
   });
 
-  console.log('Sending transaction...');
-  const hash = await walletClient.writeContract(request);
-  console.log(`Transaction: https://basescan.org/tx/${hash}`);
+  const tx = {
+    to: FACTORY_ADDRESS,
+    data: calldata,
+    value: '0',
+    chainId: 8453,
+  };
 
-  console.log('Waiting for confirmation...');
-  const receipt = await publicClient.waitForTransactionReceipt({ hash });
-
-  // Extract invoice address from LogNewInvoice event
-  let invoiceAddress: string | undefined;
-  for (const log of receipt.logs) {
-    try {
-      const decoded = decodeEventLog({
-        abi: FACTORY_ABI,
-        data: log.data,
-        topics: log.topics,
-      });
-      if (decoded.eventName === 'LogNewInvoice') {
-        invoiceAddress = (decoded.args as { invoice: string }).invoice;
-        break;
-      }
-    } catch {
-      // Not our event, skip
-    }
-  }
-
-  console.log('\nContract created!');
-  console.log(`Address: ${invoiceAddress || 'check transaction logs'}`);
-  console.log(`View: https://scrow-pi.vercel.app/invoice/8453/${invoiceAddress}`);
+  // JSON to stdout (agents parse this), status messages to stderr
+  console.error('\nUnsigned transaction ready. Sign and broadcast with your wallet.');
+  console.error(`Factory: ${FACTORY_ADDRESS}`);
+  console.error(`Chain: Base (8453)\n`);
+  console.log(JSON.stringify(tx, null, 2));
 }

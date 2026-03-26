@@ -1,6 +1,5 @@
-import { type Address } from 'viem';
+import { type Address, encodeFunctionData } from 'viem';
 
-import { getAccount, getPublicClient, getWalletClient } from '../client.js';
 import { fetchInvoice } from '../subgraph.js';
 
 const ESCROW_ABI = [
@@ -38,39 +37,27 @@ export async function releaseContract(opts: ReleaseOptions) {
     ? parseInt(opts.milestone, 10)
     : current;
 
-  console.log(
-    `Releasing milestone ${milestoneIdx + 1} of ${total}`,
-  );
+  console.error(`Releasing milestone ${milestoneIdx + 1} of ${total}`);
 
-  const account = getAccount();
-  const publicClient = getPublicClient();
-  const walletClient = getWalletClient();
+  const calldata = opts.milestone !== undefined
+    ? encodeFunctionData({
+        abi: ESCROW_ABI,
+        functionName: 'release',
+        args: [BigInt(milestoneIdx)],
+      })
+    : encodeFunctionData({
+        abi: ESCROW_ABI,
+        functionName: 'release',
+        args: [],
+      });
 
-  const contractAddress = opts.contract as Address;
+  const tx = {
+    to: opts.contract as Address,
+    data: calldata,
+    value: '0',
+    chainId: 8453,
+  };
 
-  if (opts.milestone !== undefined) {
-    const { request } = await publicClient.simulateContract({
-      account,
-      address: contractAddress,
-      abi: ESCROW_ABI,
-      functionName: 'release',
-      args: [BigInt(milestoneIdx)],
-    });
-    const hash = await walletClient.writeContract(request);
-    console.log(`Transaction: https://basescan.org/tx/${hash}`);
-    await publicClient.waitForTransactionReceipt({ hash });
-  } else {
-    const { request } = await publicClient.simulateContract({
-      account,
-      address: contractAddress,
-      abi: ESCROW_ABI,
-      functionName: 'release',
-      args: [],
-    });
-    const hash = await walletClient.writeContract(request);
-    console.log(`Transaction: https://basescan.org/tx/${hash}`);
-    await publicClient.waitForTransactionReceipt({ hash });
-  }
-
-  console.log('Milestone released.');
+  console.error('\nUnsigned transaction ready. Sign and broadcast with your wallet.\n');
+  console.log(JSON.stringify(tx, null, 2));
 }

@@ -1,7 +1,6 @@
-import { type Address, parseUnits } from 'viem';
+import { type Address, encodeFunctionData, parseUnits } from 'viem';
 
-import { getAccount, getPublicClient, getWalletClient } from '../client.js';
-import { CHAIN, TOKENS } from '../config.js';
+import { TOKENS } from '../config.js';
 import { fetchInvoice } from '../subgraph.js';
 
 const ERC20_ABI = [
@@ -32,24 +31,21 @@ export async function depositFunds(opts: DepositOptions) {
 
   const tokenKey = opts.token.toUpperCase();
   const isNative = tokenKey === 'ETH';
-
-  const account = getAccount();
-  const publicClient = getPublicClient();
-  const walletClient = getWalletClient();
   const contractAddress = opts.contract as Address;
 
   if (isNative) {
     const amount = parseUnits(opts.amount, 18);
-    console.log(`Depositing ${opts.amount} ETH...`);
+    console.error(`Depositing ${opts.amount} ETH into ${contractAddress}`);
 
-    const hash = await walletClient.sendTransaction({
-      account,
-      chain: CHAIN,
+    const tx = {
       to: contractAddress,
-      value: amount,
-    });
-    console.log(`Transaction: https://basescan.org/tx/${hash}`);
-    await publicClient.waitForTransactionReceipt({ hash });
+      data: '0x',
+      value: amount.toString(),
+      chainId: 8453,
+    };
+
+    console.error('\nUnsigned transaction ready. Sign and broadcast with your wallet.\n');
+    console.log(JSON.stringify(tx, null, 2));
   } else {
     const tokenInfo = TOKENS[tokenKey];
     if (!tokenInfo) {
@@ -60,20 +56,22 @@ export async function depositFunds(opts: DepositOptions) {
     }
 
     const amount = parseUnits(opts.amount, tokenInfo.decimals);
-    console.log(`Depositing ${opts.amount} ${tokenKey}...`);
+    console.error(`Depositing ${opts.amount} ${tokenKey} into ${contractAddress}`);
 
-    const { request } = await publicClient.simulateContract({
-      account,
-      address: tokenInfo.address,
+    const calldata = encodeFunctionData({
       abi: ERC20_ABI,
       functionName: 'transfer',
       args: [contractAddress, amount],
     });
 
-    const hash = await walletClient.writeContract(request);
-    console.log(`Transaction: https://basescan.org/tx/${hash}`);
-    await publicClient.waitForTransactionReceipt({ hash });
-  }
+    const tx = {
+      to: tokenInfo.address,
+      data: calldata,
+      value: '0',
+      chainId: 8453,
+    };
 
-  console.log('Deposit confirmed.');
+    console.error('\nUnsigned transaction ready. Sign and broadcast with your wallet.\n');
+    console.log(JSON.stringify(tx, null, 2));
+  }
 }
