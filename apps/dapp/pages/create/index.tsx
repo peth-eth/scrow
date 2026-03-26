@@ -13,10 +13,11 @@ import {
 import { useInvoiceCreate, useInvoiceTemplates } from '@smartinvoicexyz/hooks';
 import { Container, StepInfo, useToast } from '@smartinvoicexyz/ui';
 import { useRouter } from 'next/router';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Address, Hex } from 'viem';
-import { useChainId } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 
 import { SaveTemplateModal } from '../../components/SaveTemplateModal';
 import { Button } from '../../components/ui/button';
@@ -37,6 +38,9 @@ export function CreateInvoiceEscrow() {
   const [invoiceId, setInvoiceId] = useState<Address>();
   const chainId = useChainId();
   const [currentChainId, setCurrentChainId] = useState(chainId);
+  const { address } = useAccount();
+  const isConnected = !!address;
+  const { openConnectModal } = useConnectModal();
   const { templates, saveTemplate } = useInvoiceTemplates();
   const [saveModalOpen, setSaveModalOpen] = useState(false);
 
@@ -184,10 +188,18 @@ export function CreateInvoiceEscrow() {
                 <FormConfirmation
                   invoiceForm={invoiceForm}
                   handleSubmit={handleSubmit}
-                  canSubmit={!!writeAsync}
+                  canSubmit={!!writeAsync && isConnected}
                   isLoading={isLoading}
                   type={INVOICE_TYPES.Escrow}
                 />
+                {!isConnected && (
+                  <div className="mt-4 flex flex-col items-center gap-2">
+                    <p className="text-sm text-muted-foreground">
+                      Connect your wallet to create the contract
+                    </p>
+                    <Button onClick={openConnectModal}>Connect Wallet</Button>
+                  </div>
+                )}
                 <div className="mt-4 flex justify-center">
                   <Button
                     size="sm"

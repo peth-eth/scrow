@@ -29,6 +29,7 @@ export function Layout({ children }: PropsWithChildren) {
   const isOpenPath =
     pathname === '/' ||
     pathname === '/contracts' ||
+    pathname === '/create' ||
     pathname.startsWith('/invoice/');
 
   const isValidConnection = isConnected && isSupportedChainId(chainId);

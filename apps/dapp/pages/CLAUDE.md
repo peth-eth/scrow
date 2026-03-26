@@ -24,4 +24,4 @@ Next.js Pages Router pages. All pages use `getServerSideProps` (SSR).
 ## Gotchas
 
 - `_app.tsx` defers rendering until client-side mount (`mounted` state) to avoid hydration mismatches with wallet/theme state
-- Font (Space Grotesk) loaded via `next/font/google` with CSS variable `--font-space-grotesk`
+- Font (Outfit) loaded via `next/font/google` with CSS variable `--font-outfit`
