@@ -1,0 +1,23 @@
+{
+  "name": "@smartinvoicexyz/cli",
+  "version": "0.1.0",
+  "description": "CLI for creating and managing sCrow escrow contracts on Base",
+  "bin": {
+    "scrow": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.33",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
