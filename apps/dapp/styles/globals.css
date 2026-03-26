@@ -56,3 +56,8 @@
     font-family: var(--font-outfit), 'Outfit', system-ui, -apple-system, sans-serif;
   }
 }
+
+/* Force Outfit font on RainbowKit modals */
+[data-rk] * {
+  font-family: var(--font-outfit), 'Outfit', system-ui, -apple-system, sans-serif !important;
+}

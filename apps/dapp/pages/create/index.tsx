@@ -1,3 +1,4 @@
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import {
   ESCROW_STEPS,
   INVOICE_TYPES,
@@ -13,7 +14,6 @@ import {
 import { useInvoiceCreate, useInvoiceTemplates } from '@smartinvoicexyz/hooks';
 import { Container, StepInfo, useToast } from '@smartinvoicexyz/ui';
 import { useRouter } from 'next/router';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Address, Hex } from 'viem';
