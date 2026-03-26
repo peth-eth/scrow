@@ -30,7 +30,9 @@ export function Layout({ children }: PropsWithChildren) {
     pathname === '/' ||
     pathname === '/contracts' ||
     pathname === '/create' ||
-    pathname.startsWith('/invoice/');
+    pathname === '/developers' ||
+    pathname.startsWith('/invoice/') ||
+    pathname.startsWith('/use-cases/');
 
   const isValidConnection = isConnected && isSupportedChainId(chainId);
 

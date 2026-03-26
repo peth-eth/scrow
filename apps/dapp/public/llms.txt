@@ -1,0 +1,28 @@
+# sCrow
+> Crypto escrow contracts with milestone payments and onchain arbitration on Base.
+
+sCrow is a smart contract escrow platform. Two parties create a contract, deposit funds, and release payments per milestone. If there's a dispute, a third-party arbitrator resolves it onchain. Platform fee is 1% on release. Arbitration fee is 5%, charged only on disputes.
+
+## Create a Contract
+- [Create Contract](https://scrow-pi.vercel.app/create): Start a new escrow contract. Supports query params: ?client=0x...&amount=500&token=USDC
+
+## Use Cases
+- [Freelancer Payments](https://scrow-pi.vercel.app/use-cases/freelancer-payments): Cross-border freelance escrow with milestone releases
+- [OTC Crypto Trades](https://scrow-pi.vercel.app/use-cases/otc-trades): Safe token swaps without trusting a stranger
+- [Bounties & Contests](https://scrow-pi.vercel.app/use-cases/bounties): Guaranteed payouts for bug bounties and design contests
+- [AI Agent Payments](https://scrow-pi.vercel.app/use-cases/agent-payments): Programmable escrow for autonomous software
+- [P2P Sales](https://scrow-pi.vercel.app/use-cases/p2p-sales): Escrow for buying/selling goods between strangers
+- [Art Commissions](https://scrow-pi.vercel.app/use-cases/art-commissions): Milestone payments for creative work
+- [Digital Asset Sales](https://scrow-pi.vercel.app/use-cases/digital-asset-sales): Domains, accounts, and licenses
+- [Wager Settlement](https://scrow-pi.vercel.app/use-cases/wager-settlement): Settle bets with a neutral arbitrator
+
+## For Developers & Agents
+- [Developer Docs](https://scrow-pi.vercel.app/developers): Query param API, GraphQL subgraph, smart contract addresses
+- [Contract Addresses](https://scrow-pi.vercel.app/contracts): Factory and token addresses on Base
+
+## Key Facts
+- Network: Base (Ethereum L2)
+- Tokens: USDC, USDT, DAI, ETH, WETH, and any ERC-20
+- Platform fee: 1% on release
+- Arbitration fee: 5% (only on disputes)
+- No account required. No API key for reads. Contract creation needs a wallet on Base.
