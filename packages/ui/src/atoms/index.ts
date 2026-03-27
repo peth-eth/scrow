@@ -1,5 +1,6 @@
 export * from './AccountAvatar';
 export * from './AccountLink';
+export * from './Button';
 export * from './ChakraNextLink';
 export * from './ConnectWeb3';
 export * from './Container';

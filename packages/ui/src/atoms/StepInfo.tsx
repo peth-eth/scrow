@@ -2,6 +2,7 @@ import { ESCROW_STEPS } from '@smartinvoicexyz/constants';
 import { hashCode } from '@smartinvoicexyz/utils';
 
 import { BackArrowIcon } from '../icons/ArrowIcons';
+import { Button } from './Button';
 
 const TOTAL_STEPS = 5;
 
@@ -102,15 +103,17 @@ export function StepInfo({
       {/* Header with back button and title */}
       <div className="flex justify-between items-center my-2">
         {stepNum !== 1 && stepNum !== 5 && !!goBack ? (
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => goBack()}
-            className="p-2 bg-muted rounded hover:bg-muted/80 transition-colors"
-            aria-label="back"
+            className="p-2 bg-muted hover:bg-muted/80"
+            aria-label="Go to previous step"
           >
             <BackArrowIcon
               style={{ width: '2rem', height: '1.5rem', color: 'white' }}
             />
-          </button>
+          </Button>
         ) : (
           <div className="max-w-[50px]" />
         )}

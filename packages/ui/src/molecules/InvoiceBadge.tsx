@@ -7,45 +7,26 @@ export type InvoiceBadgeProps = {
   invoiceType?: InvoiceType;
 };
 
-const schemes: { [key: InvoiceType]: { bg: string; color: string } } = {
-  escrow: {
-    bg: 'rgba(128, 63, 248, 0.3)',
-    color: 'rgba(128, 63, 248, 1)',
-  },
-  instant: {
-    bg: 'rgba(248, 174, 63, 0.3)',
-    color: 'rgba(248, 174, 63, 1)',
-  },
-  updatable: {
-    bg: 'rgba(248, 174, 63, 0.3)',
-    color: 'rgba(248, 174, 63, 1)',
-  },
-  'updatable-v2': {
-    bg: 'rgba(248, 174, 63, 0.3)',
-    color: 'rgba(248, 174, 63, 1)',
-  },
-  unknown: {
-    bg: 'rgba(150,150,150,0.3)',
-    color: 'rgba(150,150,150,1)',
-  },
+const schemes: { [key: InvoiceType]: string } = {
+  escrow: 'bg-primary/30 text-primary',
+  instant: 'bg-amber-500/30 text-amber-500',
+  updatable: 'bg-amber-500/30 text-amber-500',
+  'updatable-v2': 'bg-amber-500/30 text-amber-500',
+  unknown: 'bg-muted text-muted-foreground',
 };
 
 export const invoiceLabels: { [key in InvoiceType]: string } = {
-  escrow: 'Escrow'.toUpperCase(),
-  instant: 'Instant'.toUpperCase(),
-  updatable: 'Updatable Escrow'.toUpperCase(),
-  'updatable-v2': 'Updatable Escrow v2'.toUpperCase(),
-  unknown: 'Unknown'.toUpperCase(),
+  escrow: 'Escrow',
+  instant: 'Instant',
+  updatable: 'Updatable Escrow',
+  'updatable-v2': 'Updatable Escrow v2',
+  unknown: 'Unknown',
 };
 
 export function InvoiceBadge({ invoiceType = 'unknown' }: InvoiceBadgeProps) {
   return (
     <span
-      className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium max-w-fit h-fit"
-      style={{
-        backgroundColor: schemes[invoiceType].bg,
-        color: schemes[invoiceType].color,
-      }}
+      className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium max-w-fit h-fit ${schemes[invoiceType]}`}
     >
       {invoiceLabels[invoiceType]}
     </span>

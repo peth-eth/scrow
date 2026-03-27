@@ -8,7 +8,7 @@ import {
 } from '@smartinvoicexyz/constants';
 import { useFetchTokens } from '@smartinvoicexyz/hooks';
 import { ValueOf } from '@smartinvoicexyz/types';
-import { AccountLink, ChakraNextLink } from '@smartinvoicexyz/ui';
+import { AccountLink, Button, ChakraNextLink } from '@smartinvoicexyz/ui';
 import {
   getChainName,
   getDateString,
@@ -176,7 +176,7 @@ export function FormConfirmation({
   ]);
 
   return (
-    <div className="flex flex-col gap-4 w-full text-foreground items-center">
+    <div className="flex flex-col gap-6 w-full text-foreground items-center">
       <div className="flex flex-col items-stretch gap-4 w-full max-w-lg">
         <h2 id="project-title" className="text-lg md:text-xl font-semibold">
           {title}
@@ -224,16 +224,14 @@ export function FormConfirmation({
       )}
 
       <div className="grid grid-cols-1 gap-4 w-full mt-5">
-        <button
+        <Button
           onClick={handleSubmit}
           disabled={!canSubmit || isLoading}
-          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-mono font-bold text-sm md:text-base"
+          isLoading={isLoading}
+          className="uppercase font-mono font-bold text-sm md:text-base"
         >
-          {isLoading && (
-            <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
-          )}
           Next: {ESCROW_STEPS[4].next}
-        </button>
+        </Button>
       </div>
     </div>
   );

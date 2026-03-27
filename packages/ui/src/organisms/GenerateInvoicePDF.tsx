@@ -2,6 +2,7 @@ import { PDFViewer } from '@react-pdf/renderer';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
 import { ButtonHTMLAttributes, useEffect, useState } from 'react';
 
+import { Button } from '../atoms/Button';
 import { InvoicePDF } from '../molecules';
 
 interface GenerateInvoicePDFProps {
@@ -33,13 +34,15 @@ export function GenerateInvoicePDF({
 
   return (
     <div className="flex flex-col items-stretch">
-      <button
+      <Button
+        variant="outline"
+        size="sm"
         onClick={onOpen}
-        className="px-2 py-1 text-xs uppercase border border-primary text-primary rounded font-normal font-mono hover:bg-primary/10 transition-colors"
+        className="px-2 py-1 text-xs uppercase border-primary text-primary font-normal font-mono hover:bg-primary/10"
         {...buttonProps}
       >
         {buttonText}
-      </button>
+      </Button>
 
       {isOpen && (
         <div
@@ -52,9 +55,11 @@ export function GenerateInvoicePDF({
           >
             <div className="flex items-center justify-between p-4 text-foreground">
               <h3 className="font-semibold">Smart Invoice {address}</h3>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={onClose}
-                className="p-1 text-foreground hover:bg-muted rounded transition-colors"
+                className="p-1 text-foreground"
                 aria-label="Close"
               >
                 <svg
@@ -65,7 +70,7 @@ export function GenerateInvoicePDF({
                 >
                   <path d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z" />
                 </svg>
-              </button>
+              </Button>
             </div>
 
             <div className="h-[calc(90vh-60px)] px-4 pb-4">
@@ -117,13 +122,14 @@ export function GenerateInvoicePDFMenuItem({
 
   return (
     <div className="flex flex-col items-stretch">
-      <button
+      <Button
+        variant="ghost"
         onClick={onOpen}
-        className="w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors"
+        className="w-full text-left px-4 py-2 text-sm"
         {...props}
       >
         {text}
-      </button>
+      </Button>
 
       {isOpen && (
         <div
@@ -136,9 +142,11 @@ export function GenerateInvoicePDFMenuItem({
           >
             <div className="flex items-center justify-between p-4 text-foreground">
               <h3 className="font-semibold">Smart Invoice {address}</h3>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={onClose}
-                className="p-1 text-foreground hover:bg-muted rounded transition-colors"
+                className="p-1 text-foreground"
                 aria-label="Close"
               >
                 <svg
@@ -149,7 +157,7 @@ export function GenerateInvoicePDFMenuItem({
                 >
                   <path d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z" />
                 </svg>
-              </button>
+              </Button>
             </div>
 
             <div className="h-[calc(90vh-60px)] px-4 pb-4">

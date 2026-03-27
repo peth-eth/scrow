@@ -3,7 +3,7 @@ import {
   ModalTypes,
   OverlayContextType,
 } from '@smartinvoicexyz/types';
-import { Modal } from '@smartinvoicexyz/ui';
+import { Button, Modal } from '@smartinvoicexyz/ui';
 import _ from 'lodash';
 import { useAccount, useChainId } from 'wagmi';
 
@@ -47,34 +47,35 @@ export const InstantButtonManager: React.FC<
             className="grid gap-4 w-full"
             style={{ gridTemplateColumns: isTippable ? '1fr 1fr' : '1fr' }}
           >
-            <button
-              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
+            <Button
+              className="uppercase"
               onClick={() => openModal(ModalTypes.DEPOSIT)}
               disabled={fulfilled}
             >
               {fulfilled ? 'Paid' : 'Make Payment'}
-            </button>
+            </Button>
             {isTippable && (
-              <button
-                className="border border-input px-4 py-2 rounded-md hover:bg-accent uppercase"
+              <Button
+                variant="outline"
+                className="uppercase"
                 onClick={() => openModal(ModalTypes.DEPOSIT)}
               >
                 Add Tip
-              </button>
+              </Button>
             )}
           </div>
         )}
         {isProvider && (
           <div className="grid grid-cols-1 gap-4 w-full">
-            <button
-              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
+            <Button
+              className="uppercase"
               onClick={() => openModal(ModalTypes.WITHDRAW)}
               disabled={!isWithdrawable}
             >
               {tokenBalance?.value === BigInt(0) && fulfilled
                 ? 'Received'
                 : 'Receive'}
-            </button>
+            </Button>
           </div>
         )}
       </div>

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { InputHTMLAttributes, ReactNode } from 'react';
 import { Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
 
-import { InfoOutlineIcon } from '../icons';
+import { FormTooltip } from './FormTooltip';
 
 export interface CustomNumberInputProps {
   label?: string | React.ReactNode;
@@ -17,7 +17,6 @@ export interface CustomNumberInputProps {
   variant?: string;
   min?: number;
   max?: number;
-  spacing?: number | string;
   rightElement?: ReactNode;
 }
 
@@ -37,7 +36,6 @@ export function NumberInput({
   variant = 'outline',
   min = 0,
   max = 100,
-  spacing,
   rightElement,
   placeholder,
   required = false,
@@ -60,25 +58,16 @@ export function NumberInput({
       rules={registerOptions}
       render={({ field: { ref, ...restField } }) => (
         <div className="m-0">
-          <div className="flex flex-col" style={{ gap: spacing ? `${spacing}px` : undefined }}>
+          <div className="flex flex-col gap-1.5">
             {label && (
               <div className="flex items-center gap-2">
-                {label && (
-                  <label className="m-0 text-sm font-medium">
-                    {label}
-                    {(!!registerOptions?.required || required) && (
-                      <span className="text-red-500 ml-0.5">*</span>
-                    )}
-                  </label>
-                )}
-                {tooltip && (
-                  <span title={tooltip}>
-                    <InfoOutlineIcon
-                      boxSize={3}
-                      className="text-primary bg-background rounded-full cursor-help"
-                    />
-                  </span>
-                )}
+                <label className="m-0 text-sm font-medium">
+                  {label}
+                  {(!!registerOptions?.required || required) && (
+                    <span className="text-destructive ml-0.5">*</span>
+                  )}
+                </label>
+                {tooltip && <FormTooltip content={tooltip} />}
               </div>
             )}
 
@@ -91,7 +80,7 @@ export function NumberInput({
                 max={max}
                 placeholder={placeholder}
                 className={`flex h-9 w-full rounded-md border ${
-                  errors[name] ? 'border-red-500' : 'border-input'
+                  errors[name] ? 'border-destructive' : 'border-input'
                 } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent`}
                 {...localProps}
                 {...restField}
@@ -106,7 +95,7 @@ export function NumberInput({
             )}
 
             {typeof error === 'string' && (
-              <p className="text-sm text-red-500">{error}</p>
+              <p className="text-sm text-destructive">{error}</p>
             )}
           </div>
         </div>

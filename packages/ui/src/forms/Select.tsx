@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
 
-import { InfoOutlineIcon } from '../icons';
+import { FormTooltip } from './FormTooltip';
 
 type Required = 'required' | 'optional';
 
@@ -32,7 +32,7 @@ export function Select({
   const { control } = localForm;
 
   return (
-    <div className="flex flex-col w-full gap-2 justify-between">
+    <div className="flex flex-col w-full gap-1.5 justify-between">
       <Controller
         name={name}
         control={control}
@@ -40,19 +40,12 @@ export function Select({
           <>
             {label && (
               <div className="flex flex-col items-start w-full">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                   <label className="m-0 text-sm font-medium">{label}</label>
 
                   <div className="flex items-center gap-1">
                     {infoText && <p className="text-xs">{infoText}</p>}
-                    {tooltip && (
-                      <span title={typeof tooltip === 'string' ? tooltip : ''}>
-                        <InfoOutlineIcon
-                          boxSize={3}
-                          className="text-primary bg-background rounded-full cursor-help"
-                        />
-                      </span>
-                    )}
+                    {tooltip && <FormTooltip content={typeof tooltip === 'string' ? tooltip : tooltip} />}
                   </div>
                 </div>
                 <p className="italic text-xs ml-[5px]">{required}</p>

@@ -24,9 +24,16 @@ function Contracts() {
   if (!tokens) {
     return (
       <Container>
-        <p>Contract Information Loading</p>
-        <br />
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+        <div className="flex flex-col items-center gap-4 py-20">
+          <div
+            className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary"
+            role="status"
+            aria-label="Loading"
+          />
+          <p className="text-muted-foreground text-sm">
+            Loading contract information...
+          </p>
+        </div>
       </Container>
     );
   }

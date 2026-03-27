@@ -7,6 +7,7 @@ import {
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
 import {
+  Button,
   LinkInput,
   NumberInput,
   Textarea,
@@ -112,12 +113,12 @@ export function ResolveFunds({
         <p className="text-center text-sm mb-4">
           Contract is not disputed
         </p>
-        <button
+        <Button
           onClick={onClose}
-          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase w-full"
+          className="uppercase w-full"
         >
           Close
-        </button>
+        </Button>
       </form>
     );
   }
@@ -151,7 +152,7 @@ export function ResolveFunds({
         name="document"
         label="Resolution link"
         tooltip="A URL linking to more details for this resolution. This is optional."
-        placeholder="github.com/AcmeAcademy/buidler"
+        placeholder="https://notion.so/resolution-details"
         localForm={localForm}
       />
 
@@ -196,7 +197,7 @@ export function ResolveFunds({
         rightElement={<TokenDescriptor tokenBalance={tokenBalance} />}
       />
 
-      <button
+      <Button
         type="submit"
         disabled={
           !resolverAward ||
@@ -204,13 +205,11 @@ export function ResolveFunds({
           !description ||
           !resolve
         }
-        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
+        isLoading={isLoading}
+        className="uppercase"
       >
-        {isLoading && (
-          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
-        )}
         Resolve
-      </button>
+      </Button>
     </form>
   );
 }

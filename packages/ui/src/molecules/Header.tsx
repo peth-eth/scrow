@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import { ChakraNextLink } from '../atoms';
+import { Button } from '../atoms/Button';
 import { HamburgerIcon } from '../icons/HamburgerIcon';
 
 type Link = {
@@ -60,18 +61,21 @@ export function Header() {
             showBalance={false}
           />
         </div>
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onToggle}
-          className="flex lg:hidden ml-2 sm:ml-4 z-[7] bg-transparent border-none cursor-pointer"
+          aria-label="Toggle menu"
+          className="flex lg:hidden ml-2 sm:ml-4 z-[7]"
         >
           <HamburgerIcon
-            className="w-8 h-8 sm:w-11 sm:h-11 text-primary transition-all duration-500 ease-out hover:rotate-90"
+            className="w-8 h-8 sm:w-11 sm:h-11 text-primary transition-colors"
           />
-        </button>
+        </Button>
       </div>
 
       <div
-        className="fixed inset-0 z-[6] bg-background flex flex-col items-center justify-center gap-6 transition-all duration-[2s] ease-out"
+        className="fixed inset-0 z-[6] bg-background flex flex-col items-center justify-center gap-6 transition-all duration-300 ease-out"
         style={{
           clipPath: isOpen
             ? 'circle(calc(100vw + 100vh) at 90% -10%)'
@@ -92,9 +96,12 @@ export function Header() {
             isExternal={!href?.startsWith('/')}
             onClick={isInternal ? onToggle : undefined}
           >
-            <button className="relative bg-transparent border-none text-muted-foreground font-normal text-lg cursor-pointer transition-all duration-500 ease-[0.4s] after:content-[''] after:block after:h-0.5 after:w-0 after:bg-primary after:absolute after:bottom-0 after:left-0 after:transition-all after:duration-200 after:ease-in-out hover:after:w-full hover:no-underline">
+            <Button
+              variant="ghost"
+              className="relative text-muted-foreground font-normal text-lg cursor-pointer transition-all duration-500 ease-[0.4s] after:content-[''] after:block after:h-0.5 after:w-0 after:bg-primary after:absolute after:bottom-0 after:left-0 after:transition-all after:duration-200 after:ease-in-out hover:after:w-full hover:no-underline"
+            >
               {label}
-            </button>
+            </Button>
           </ChakraNextLink>
         ))}
       </div>

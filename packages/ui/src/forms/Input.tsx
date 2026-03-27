@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { InputHTMLAttributes, ReactNode } from 'react';
 import { FieldValues, RegisterOptions, UseFormReturn } from 'react-hook-form';
 
-import { InfoOutlineIcon } from '../icons';
+import { FormTooltip } from './FormTooltip';
 
 type CustomInputProps = {
   label?: string | ReactNode;
@@ -11,7 +11,6 @@ type CustomInputProps = {
   localForm: UseFormReturn<any>;
   tooltip?: string;
   helperText?: string;
-  spacing?: number | string;
   registerOptions?: RegisterOptions<FieldValues, string> | undefined;
 };
 
@@ -35,7 +34,6 @@ export function Input({
   registerOptions,
   tooltip,
   helperText,
-  spacing,
   ...props
 }: InputProps) {
   if (!localForm) return null;
@@ -49,28 +47,21 @@ export function Input({
 
   return (
     <div>
-      <div className="flex flex-col" style={{ gap: spacing ? `${spacing}px` : undefined }}>
+      <div className="flex flex-col gap-1.5">
         {label && (
           <div className="flex items-center gap-2">
             <label className="m-0 text-sm font-medium">
               {label}
-              {isRequired && <span className="text-red-500 ml-0.5">*</span>}
+              {isRequired && <span className="text-destructive ml-0.5">*</span>}
             </label>
-            {tooltip && (
-              <span title={tooltip}>
-                <InfoOutlineIcon
-                  boxSize={3}
-                  className="text-primary bg-background rounded-full cursor-help"
-                />
-              </span>
-            )}
+            {tooltip && <FormTooltip content={tooltip} />}
           </div>
         )}
 
         <input
           type={type}
           className={`flex h-9 w-full rounded-md border ${
-            error ? 'border-red-500' : 'border-input'
+            error ? 'border-destructive' : 'border-input'
           } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent`}
           {...props}
           {...register(name, registerOptions)}
@@ -79,7 +70,7 @@ export function Input({
           <p className="text-sm text-muted-foreground">{helperText}</p>
         )}
         {typeof error === 'string' && (
-          <p className="text-sm text-red-500">{error}</p>
+          <p className="text-sm text-destructive">{error}</p>
         )}
       </div>
     </div>

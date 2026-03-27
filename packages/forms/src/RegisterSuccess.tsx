@@ -1,5 +1,5 @@
 import { BASE_URL } from '@smartinvoicexyz/constants';
-import { ChakraNextLink, CheckCircleIcon, CopyIcon } from '@smartinvoicexyz/ui';
+import { Button, ChakraNextLink, CheckCircleIcon, CopyIcon } from '@smartinvoicexyz/ui';
 import { chainLabelFromId, getTxLink } from '@smartinvoicexyz/utils';
 import _ from 'lodash';
 import { useState } from 'react';
@@ -61,13 +61,15 @@ export function RegisterSuccess({
             >
               {invoiceId}
             </a>
-            <button
+            <Button
+              variant="outline"
+              size="icon"
               onClick={copyId}
-              className="hover:bg-accent p-2 rounded-md text-primary"
               title={idCopied ? 'Copied!' : 'Copy'}
+              className="text-primary"
             >
               <CopyIcon className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -85,13 +87,15 @@ export function RegisterSuccess({
                 omission: '...',
               })}
             </a>
-            <button
+            <Button
+              variant="outline"
+              size="icon"
               onClick={copyLink}
-              className="hover:bg-accent p-2 rounded-md ml-4 text-primary"
               title={linkCopied ? 'Copied!' : 'Copy'}
+              className="ml-4 text-primary"
             >
               <CopyIcon className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -109,14 +113,14 @@ export function RegisterSuccess({
 
       <div className="flex items-center gap-2">
         <ChakraNextLink href="/invoices">
-          <button className="hover:bg-accent px-4 py-2 rounded-md text-lg font-medium">
+          <Button variant="outline" className="text-lg font-medium">
             Return Home
-          </button>
+          </Button>
         </ChakraNextLink>
         <ChakraNextLink href={url}>
-          <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 text-lg font-medium">
+          <Button className="text-lg font-medium">
             View Contract
-          </button>
+          </Button>
         </ChakraNextLink>
       </div>
     </div>

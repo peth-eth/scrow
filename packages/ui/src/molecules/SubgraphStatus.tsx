@@ -14,6 +14,7 @@ import {
   ShareButton,
   VerifyInvoice,
 } from '..';
+import { Button } from '../atoms/Button';
 import { ExternalLinkIcon } from '../icons';
 import { INVOICE_TYPES } from '@smartinvoicexyz/constants';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
@@ -198,13 +199,16 @@ export function InvoiceMetaDetails({
             address={invoiceId as Address}
             chainId={invoiceChainId}
           />
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onCopy}
-            className="p-1 bg-transparent text-primary hover:text-primary/80 transition-colors"
+            className="p-1 text-primary hover:text-primary/80"
             title={copied ? 'Copied!' : 'Copy'}
+            aria-label="Copy address"
           >
             <CopyIcon boxSize={3.5} />
-          </button>
+          </Button>
         </div>
         {description && <p>{description}</p>}
 
@@ -214,10 +218,14 @@ export function InvoiceMetaDetails({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button className="flex items-center gap-1 px-2 py-1 text-xs uppercase border border-primary text-primary rounded hover:bg-primary/10 transition-colors">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1 px-2 py-1 text-xs uppercase border-primary text-primary hover:bg-primary/10"
+            >
               View Details of Agreement
               <ExternalLinkIcon boxSize={3} />
-            </button>
+            </Button>
           </a>
         )}
       </div>

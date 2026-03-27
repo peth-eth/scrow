@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { useAccount } from 'wagmi';
 
 import { WalletFilledIcon } from '../icons/WalletFilledIcon';
+import { Button } from './Button';
 import { Container } from './Container';
 import { Loader } from './Loader';
 
@@ -46,13 +47,13 @@ export function ConnectWeb3() {
         )}
 
         {isClient && !isConnected && (
-          <button
+          <Button
             onClick={openConnectModal}
-            className="px-12 py-2 bg-primary text-white rounded-md font-medium hover:bg-primary/80 transition-colors disabled:opacity-50"
+            className="px-12 py-2"
             disabled={isConnecting}
           >
             {isConnecting ? 'Connecting...' : 'Connect Wallet'}
-          </button>
+          </Button>
         )}
       </div>
     </Container>

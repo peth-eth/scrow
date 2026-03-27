@@ -4,7 +4,7 @@ import {
   useWithdraw,
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
-import { useToast } from '@smartinvoicexyz/ui';
+import { Button, useToast } from '@smartinvoicexyz/ui';
 import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { formatUnits } from 'viem';
@@ -57,11 +57,11 @@ export function WithdrawFunds({
         The withdrawal deadline has passed and these funds are available for you
         to reclaim.
       </p>
-      <div className="my-8 px-20 py-4 bg-black rounded-lg">
-        <p className="text-primary-300 text-sm text-center">
+      <div className="my-8 px-4 md:px-20 py-4 bg-muted rounded-lg">
+        <p className="text-muted-foreground text-sm text-center">
           Amount To Be Withdrawn
         </p>
-        <p className="text-yellow-400 text-base font-bold text-center">
+        <p className="text-primary text-base font-bold text-center">
           {`${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
         </p>
       </div>
@@ -70,13 +70,14 @@ export function WithdrawFunds({
           <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full" />
         </div>
       )}
-      <button
+      <Button
         onClick={withdrawFunds}
         disabled={!withdrawFunds}
-        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
+        isLoading={isLoading}
+        className="uppercase"
       >
         Withdraw
-      </button>
+      </Button>
     </div>
   );
 }

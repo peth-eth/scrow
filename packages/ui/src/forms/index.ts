@@ -1,5 +1,6 @@
 export * from './Checkbox';
 export * from './DatePicker';
+export * from './FormTooltip';
 export * from './Input';
 export * from './LinkInput';
 export * from './NumberInput';

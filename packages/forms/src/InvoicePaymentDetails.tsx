@@ -229,7 +229,7 @@ export function InvoicePaymentDetails({
                       <div className="flex items-center justify-end gap-2">
                         {release && (
                           <a
-                            className="inline-flex items-center gap-1 text-xs text-green-600 italic hover:text-green-700 transition-colors"
+                            className="inline-flex items-center gap-1 text-xs text-emerald-400 italic hover:text-emerald-300 transition-colors"
                             href={getTxLink(invoice?.chainId, release.txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -257,7 +257,7 @@ export function InvoicePaymentDetails({
                         )}
                         {deposit && !release && (
                           <a
-                            className="inline-flex items-center gap-1 text-xs text-amber-600 italic hover:text-amber-700 transition-colors"
+                            className="inline-flex items-center gap-1 text-xs text-amber-400 italic hover:text-amber-300 transition-colors"
                             href={getTxLink(invoice?.chainId, deposit?.txHash)}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -408,7 +408,7 @@ export function InvoicePaymentDetails({
                   )}
 
                   {resolution && (
-                    <div className="flex flex-col items-stretch gap-4 text-primary-300 px-6">
+                    <div className="flex flex-col items-stretch gap-4 text-muted-foreground px-6">
                       <div className="flex justify-between items-center font-bold text-lg">
                         <p>
                           Dispute Resolved on{' '}
@@ -423,7 +423,7 @@ export function InvoicePaymentDetails({
                       </div>
                       <div className="flex justify-between flex-col sm:flex-row">
                         <div className="flex flex-1">
-                          <p className="max-w-[300px] text-purple-600">
+                          <p className="max-w-[300px] text-primary">
                             <AccountLink
                               address={resolver as Hex}
                               chainId={invoice?.chainId}
@@ -475,7 +475,7 @@ export function InvoicePaymentDetails({
                             _.compact(resolutionDetails),
                             (detail, index) => (
                               <p
-                                className="text-right text-purple-400"
+                                className="text-right text-primary/70"
                                 key={
                                   (detail.distributee ?? 'distributee') + index
                                 }

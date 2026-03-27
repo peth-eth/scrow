@@ -5,7 +5,7 @@ import _ from 'lodash';
 import ReactDatePicker from 'react-datepicker';
 import { Controller, RegisterOptions, UseFormReturn } from 'react-hook-form';
 
-import { InfoOutlineIcon } from '../icons';
+import { FormTooltip } from './FormTooltip';
 
 export type DatePickerProps = {
   name: string;
@@ -17,7 +17,6 @@ export type DatePickerProps = {
   tooltip?: string;
   placeholder?: string;
   variant?: string;
-  spacing?: number | string;
   onChange?: (date: Date) => void;
 };
 
@@ -29,7 +28,6 @@ export function DatePicker({
   tooltip,
   placeholder,
   variant = 'outline',
-  spacing,
   onChange,
   ...props
 }: DatePickerProps) {
@@ -50,20 +48,13 @@ export function DatePicker({
       rules={registerOptions}
       shouldUnregister={false}
       render={({ field: { value, ...field } }) => (
-        <div className={errors[name] ? '' : ''}>
-          <div className="flex flex-col h-[75px]" style={{ gap: spacing ? `${spacing}px` : undefined }}>
+        <div>
+          <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-2">
               {label && (
                 <label className="m-0 text-sm font-medium">{label}</label>
               )}
-              {tooltip && (
-                <span title={tooltip}>
-                  <InfoOutlineIcon
-                    boxSize={3}
-                    className="text-primary bg-background rounded-full cursor-help"
-                  />
-                </span>
-              )}
+              {tooltip && <FormTooltip content={tooltip} />}
             </div>
             <div>
               <ReactDatePicker
@@ -96,7 +87,7 @@ export function DatePicker({
                 }}
               />
               {errors[name]?.message && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="text-sm text-destructive mt-1">
                   {errors[name]?.message as string}
                 </p>
               )}

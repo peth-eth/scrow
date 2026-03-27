@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { CSSProperties, useCallback, useEffect } from 'react';
 import { RegisterOptions, UseFormReturn } from 'react-hook-form';
 
-import { InfoOutlineIcon } from '../icons';
+import { FormTooltip } from './FormTooltip';
 
 interface LinkInputProps {
   name: string;
@@ -101,22 +101,15 @@ export function LinkInput({
 
   return (
     <div>
-      <div className="flex flex-col w-full gap-2 justify-between" {...props}>
+      <div className="flex flex-col w-full gap-1.5 justify-between" {...props}>
         <div className="flex flex-col items-start w-full">
           <div className="flex w-full">
             <div className="flex items-center gap-2">
               <label className="m-0 text-sm font-medium">
                 {label}
-                {isRequired && <span className="text-red-500 ml-0.5">*</span>}
+                {isRequired && <span className="text-destructive ml-0.5">*</span>}
               </label>
-              {tooltip && (
-                <span title={tooltip}>
-                  <InfoOutlineIcon
-                    boxSize={3}
-                    className="text-primary bg-background rounded-full cursor-help"
-                  />
-                </span>
-              )}
+              {tooltip && <FormTooltip content={tooltip} />}
             </div>
 
             <div className="ml-auto">
@@ -148,12 +141,12 @@ export function LinkInput({
               type="text"
               defaultValue={getPath(finalValue)}
               className={`flex-1 h-9 rounded-r-md border ${
-                error ? 'border-red-500' : 'border-input'
+                error ? 'border-destructive' : 'border-input'
               } bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent`}
             />
           </div>
           {error && (
-            <p className="text-sm text-red-500 mt-1">Invalid URL</p>
+            <p className="text-sm text-destructive mt-1">Invalid URL</p>
           )}
         </div>
       </div>

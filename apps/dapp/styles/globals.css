@@ -61,3 +61,40 @@
 [data-rk] * {
   font-family: var(--font-outfit), 'Outfit', system-ui, -apple-system, sans-serif !important;
 }
+
+/* Dark theme for react-datepicker */
+.react-datepicker {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-outfit), 'Outfit', system-ui, sans-serif !important;
+}
+.react-datepicker__header {
+  background-color: var(--muted) !important;
+  border-bottom-color: var(--border) !important;
+}
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: var(--foreground) !important;
+}
+.react-datepicker__day {
+  color: var(--foreground) !important;
+}
+.react-datepicker__day:hover {
+  background-color: var(--primary) !important;
+  color: #ffffff !important;
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: var(--primary) !important;
+  color: #ffffff !important;
+}
+.react-datepicker__day--outside-month {
+  color: var(--muted-foreground) !important;
+}
+.react-datepicker__navigation-icon::before {
+  border-color: var(--muted-foreground) !important;
+}
+.react-datepicker__triangle {
+  display: none;
+}

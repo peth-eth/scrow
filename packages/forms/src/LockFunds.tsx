@@ -12,6 +12,7 @@ import {
 import { InvoiceDetails } from '@smartinvoicexyz/types';
 import {
   AccountLink,
+  Button,
   LinkInput,
   Textarea,
   useToast,
@@ -123,7 +124,7 @@ export function LockFunds({
         name="document"
         label="Dispute Attachment"
         tooltip="A URL linking to more details for this dispute. This is optional."
-        placeholder="github.com/AcmeAcademy/buidler"
+        placeholder="https://notion.so/dispute-evidence"
         localForm={localForm}
       />
 
@@ -136,20 +137,18 @@ export function LockFunds({
         />{' '}
         for helping resolve this dispute.
       </p>
-      <button
+      <Button
         type="submit"
         disabled={
           !description || !lockFunds || tokenBalance?.value === BigInt(0)
         }
-        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
+        isLoading={isLoading}
+        className="uppercase"
       >
-        {isLoading && (
-          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
-        )}
         {`Raise Dispute ${formatUnits(tokenBalance?.value ?? BigInt(0), tokenBalance?.decimals ?? 18)} ${tokenBalance?.symbol}`}
-      </button>
+      </Button>
       {resolverInfo?.id === 'kleros' && (
-        <div className="rounded-lg bg-red-300 text-red-600 p-4 flex gap-2" role="alert">
+        <div className="rounded-lg bg-destructive/10 border border-destructive/20 text-red-400 p-4 flex gap-2" role="alert">
           Note: For Kleros Arbitration you also need to fill out
           <a
             href={KLEROS_GOOGLE_FORM}

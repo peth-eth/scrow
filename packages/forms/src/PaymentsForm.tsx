@@ -8,6 +8,7 @@ import { useFetchTokens } from '@smartinvoicexyz/hooks';
 import { FormInvoice, IToken } from '@smartinvoicexyz/types';
 import {
   AddIcon,
+  Button,
   DeleteIcon,
   Input,
   NumberInput,
@@ -57,8 +58,8 @@ export function PaymentsForm({
     defaultValues: {
       token: nativeWrappedToken.toLowerCase(),
       milestones: milestones || [
-        { value: '1', title: 'Milestone 1', description: '' },
-        { value: '1', title: 'Milestone 2', description: '' },
+        { value: '500', title: 'Design & Wireframes', description: '' },
+        { value: '500', title: 'Development & Launch', description: '' },
       ],
     },
     resolver: yupResolver(escrowPaymentsSchema),
@@ -105,7 +106,7 @@ export function PaymentsForm({
     : [0, 0];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div className="flex w-full">
         <div className="w-full">
           <ReactSelect
@@ -127,7 +128,7 @@ export function PaymentsForm({
           />
         </div>
       </div>
-      <div className={`w-full ${errors?.milestones ? 'text-red-500' : ''}`}>
+      <div className={`w-full ${errors?.milestones ? 'text-destructive' : ''}`}>
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-4">
             <label className="font-medium m-0">Milestones</label>
@@ -183,28 +184,28 @@ export function PaymentsForm({
                     />
                   </div>
                 </details>
-                <button
-                  type="button"
-                  className="border border-input p-2 rounded-md hover:bg-accent"
+                <Button
+                  variant="outline"
+                  size="icon"
                   aria-label="remove milestone"
                   onClick={() => removeMilestone(index)}
                 >
                   <DeleteIcon className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             ))}
           </div>
           <div className="flex">
             {errors?.milestones?.message && (
-              <p className="text-red-500 text-sm mb-4">
+              <p className="text-destructive text-sm mb-4">
                 {errors?.milestones?.message?.toString()}
               </p>
             )}
           </div>
 
-          <button
-            type="button"
-            className="border border-input px-4 py-2 rounded-md hover:bg-accent w-full flex items-center justify-center gap-2"
+          <Button
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2"
             onClick={() => {
               appendMilestone({
                 value: '1',
@@ -215,7 +216,7 @@ export function PaymentsForm({
           >
             Add a new milestone
             <AddIcon className="w-3 h-3" />
-          </button>
+          </Button>
         </div>
       </div>
       <hr className="border-border" />
@@ -239,13 +240,13 @@ export function PaymentsForm({
       </div>
 
       <div className="grid grid-cols-1 gap-4 w-full">
-        <button
+        <Button
           type="submit"
           disabled={!isValid}
-          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-mono font-bold text-sm md:text-base"
+          className="uppercase font-mono font-bold text-sm md:text-base"
         >
           Next: {ESCROW_STEPS[3].next}
-        </button>
+        </Button>
       </div>
     </form>
   );

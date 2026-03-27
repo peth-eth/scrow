@@ -60,11 +60,11 @@ export const SubgraphHealthAlert: React.FC<{ chainId?: number }> = ({
     >
       <div
         role="alert"
-        className="flex flex-col items-center text-center gap-2 w-full p-4 bg-red-50 border border-red-200"
+        className="flex flex-col items-center text-center gap-2 w-full p-4 bg-destructive/10 border border-destructive/20"
       >
         <div className="flex items-center gap-1">
           <svg
-            className="w-5 h-5 text-red-500"
+            className="w-5 h-5 text-destructive"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -74,11 +74,11 @@ export const SubgraphHealthAlert: React.FC<{ chainId?: number }> = ({
               clipRule="evenodd"
             />
           </svg>
-          <p className="font-semibold text-red-700">
+          <p className="font-semibold text-red-400">
             Data Sync Issue Detected!
           </p>
         </div>
-        <p className="text-red-600 text-sm">
+        <p className="text-red-400 text-sm">
           The subgraph is behind on: {chainName}. Some data may be outdated or
           incomplete. Please try again later.
         </p>

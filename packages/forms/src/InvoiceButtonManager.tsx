@@ -3,7 +3,7 @@ import {
   ModalTypes,
   OverlayContextType,
 } from '@smartinvoicexyz/types';
-import { Modal } from '@smartinvoicexyz/ui';
+import { Button, Modal } from '@smartinvoicexyz/ui';
 import _ from 'lodash';
 import { useMemo } from 'react';
 import { useAccount, useChainId } from 'wagmi';
@@ -102,53 +102,54 @@ export function InvoiceButtonManager({
         style={{ gridTemplateColumns: `repeat(${numColumns}, minmax(0, 1fr))` }}
       >
         {buttonEnabled.resolve && (
-          <button
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
+          <Button
+            className="uppercase"
             onClick={() => openModal(ModalTypes.RESOLVE)}
           >
             Resolve
-          </button>
+          </Button>
         )}
         {buttonEnabled.lock && (
-          <button
-            className="bg-red-500 hover:bg-red-400 text-white px-4 py-2 rounded-md uppercase"
+          <Button
+            variant="destructive"
+            className="uppercase"
             onClick={() => openModal(ModalTypes.LOCK)}
           >
             Raise Dispute
-          </button>
+          </Button>
         )}
         {buttonEnabled.deposit && (
-          <button
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
+          <Button
+            className="uppercase"
             onClick={() => openModal(ModalTypes.DEPOSIT)}
           >
             Deposit
-          </button>
+          </Button>
         )}
         {buttonEnabled.tip && (
-          <button
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
+          <Button
+            className="uppercase"
             onClick={() => openModal(ModalTypes.TIP)}
           >
             Tip
-          </button>
+          </Button>
         )}
         {buttonEnabled.release && (
-          <button
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
+          <Button
+            className="uppercase"
             onClick={() => openModal(ModalTypes.RELEASE)}
           >
             Release
-          </button>
+          </Button>
         )}
 
         {buttonEnabled.withdraw && (
-          <button
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 uppercase"
+          <Button
+            className="uppercase"
             onClick={() => openModal(ModalTypes.WITHDRAW)}
           >
             Withdraw
-          </button>
+          </Button>
         )}
       </div>
 

@@ -60,15 +60,15 @@ function App({ Component, pageProps }: AppProps) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#101010',
-          color: '#f5f5f5',
+          background: 'var(--background, #101010)',
+          color: 'var(--foreground, #f5f5f5)',
         }}
       >
         <div
           style={{
             width: 32,
             height: 32,
-            border: '3px solid #8A63D2',
+            border: '3px solid var(--primary, #8A63D2)',
             borderTopColor: 'transparent',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',

@@ -6,6 +6,7 @@ import {
 import { useFetchTokens } from '@smartinvoicexyz/hooks';
 import { IToken } from '@smartinvoicexyz/types';
 import {
+  Button,
   Input,
   NumberInput,
   Select,
@@ -143,13 +144,13 @@ export function InstantPaymentForm({
       </div>
 
       <div className="grid grid-cols-1 gap-4 w-full mt-5">
-        <button
+        <Button
           type="submit"
           disabled={!isValid}
-          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-bold text-sm md:text-base"
+          className="uppercase font-bold text-sm md:text-base"
         >
           Next: {INSTANT_STEPS[2].next}
-        </button>
+        </Button>
       </div>
     </form>
   );

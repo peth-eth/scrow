@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { Button } from '../atoms/Button';
+
 type WhatIsThisModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -25,12 +27,14 @@ export function WhatIsThisModal({ isOpen, onClose }: WhatIsThisModalProps) {
       onClick={onClose}
     >
       <div
-        className="relative p-8 max-w-[40rem] w-full bg-black border-2 border-red-500 text-white mx-4"
+        className="relative p-8 max-w-[40rem] w-full bg-card border border-border text-foreground mx-4"
         onClick={e => e.stopPropagation()}
       >
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onClose}
-          className="absolute top-0 right-0 p-2 text-red-500 hover:bg-white/10 rounded transition-colors text-lg"
+          className="absolute top-0 right-0 p-2 text-muted-foreground"
           aria-label="Close"
         >
           <svg
@@ -41,7 +45,7 @@ export function WhatIsThisModal({ isOpen, onClose }: WhatIsThisModalProps) {
           >
             <path d="M.439,21.44a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,1,0,2.122-2.121L14.3,12.177a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.44L12.177,9.7a.25.25,0,0,1-.354,0L2.561.44A1.5,1.5,0,0,0,.439,2.561L9.7,11.823a.25.25,0,0,1,0,.354Z" />
           </svg>
-        </button>
+        </Button>
 
         <div className="flex flex-col gap-4 w-full">
           <h2 className="font-normal mb-4 uppercase text-center text-2xl">
@@ -82,12 +86,12 @@ export function WhatIsThisModal({ isOpen, onClose }: WhatIsThisModalProps) {
             .
           </p>
 
-          <button
-            className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded font-mono font-normal text-sm sm:text-base md:text-lg transition-colors"
+          <Button
             onClick={onClose}
+            className="py-2 px-4 rounded font-mono font-normal text-sm sm:text-base md:text-lg"
           >
             Got it. Thanks
-          </button>
+          </Button>
         </div>
       </div>
     </div>

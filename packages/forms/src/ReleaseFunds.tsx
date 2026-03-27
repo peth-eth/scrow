@@ -5,7 +5,7 @@ import {
   useRelease,
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
-import { useToast } from '@smartinvoicexyz/ui';
+import { Button, useToast } from '@smartinvoicexyz/ui';
 import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { formatUnits } from 'viem';
@@ -84,7 +84,7 @@ export function ReleaseFunds({
       <p className="text-center text-sm text-muted-foreground">
         Funds will be sent to the provider.
       </p>
-      <div className="my-8 px-20 py-4 bg-muted rounded-lg">
+      <div className="my-8 px-4 md:px-20 py-4 bg-muted rounded-lg">
         <p className="text-muted-foreground text-sm text-center">
           Amount To Be Released
         </p>
@@ -103,16 +103,14 @@ export function ReleaseFunds({
           tokenBalance?.decimals || 18,
         )} ${tokenBalance?.symbol}) will be deducted from this release.`}
       </p>
-      <button
+      <Button
         onClick={releaseFunds}
         disabled={!releaseFunds || isLoading}
-        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
+        isLoading={isLoading}
+        className="uppercase"
       >
-        {isLoading && (
-          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
-        )}
         Release
-      </button>
+      </Button>
     </div>
   );
 }

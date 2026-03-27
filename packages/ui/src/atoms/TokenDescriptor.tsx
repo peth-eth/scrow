@@ -8,7 +8,7 @@ export function TokenDescriptor({
   if (!tokenBalance) return null;
 
   return (
-    <div className="absolute right-0 top-0 flex items-center justify-center h-full w-14 text-yellow-400 pointer-events-none">
+    <div className="absolute right-0 top-0 flex items-center justify-center h-full w-14 text-primary pointer-events-none">
       {tokenBalance?.symbol}
     </div>
   );

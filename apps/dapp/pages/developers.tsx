@@ -1,7 +1,7 @@
 import { Container } from '@smartinvoicexyz/ui';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 const CREATE_SNIPPET = `scrow create \\
   --client 0xCLIENT_ADDRESS \\
@@ -16,8 +16,11 @@ const SUBGRAPH_SNIPPET = `curl -s -X POST \\
   -d '{"query": "{ invoice(id: \\"0xCONTRACT\\") { amounts released isLocked currentMilestone } }"}'`;
 
 function CopyBlock({ code, label }: { code: string; label: string }) {
+  const [copied, setCopied] = useState(false);
   const copy = useCallback(() => {
     navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }, [code]);
 
   return (
@@ -25,15 +28,15 @@ function CopyBlock({ code, label }: { code: string; label: string }) {
       <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         {label}
       </p>
-      <pre className="overflow-x-auto rounded-lg border border-border bg-[#0a0a0a] p-4 font-mono text-xs leading-relaxed text-muted-foreground">
+      <pre className="overflow-x-auto rounded-lg border border-border bg-muted p-4 font-mono text-xs leading-relaxed text-muted-foreground">
         {code}
       </pre>
       <button
         type="button"
         onClick={copy}
-        className="absolute right-2 top-8 rounded bg-muted px-2 py-1 text-xs text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100"
+        className="absolute right-2 top-8 rounded bg-card px-2 py-1 text-xs text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100"
       >
-        Copy
+        {copied ? 'Copied!' : 'Copy'}
       </button>
     </div>
   );

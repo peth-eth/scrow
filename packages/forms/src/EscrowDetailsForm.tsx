@@ -7,7 +7,7 @@ import {
   KnownResolverType,
 } from '@smartinvoicexyz/constants';
 import { FormInvoice } from '@smartinvoicexyz/types';
-import { Checkbox, Input, Select } from '@smartinvoicexyz/ui';
+import { Button, Checkbox, Input, Select } from '@smartinvoicexyz/ui';
 import {
   escrowDetailsSchema,
   getResolverInfo,
@@ -90,11 +90,11 @@ export function EscrowDetailsForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-6 w-full">
         <div className="flex flex-col gap-4">
           <Input
             label="Client Address"
-            tooltip="This is the wallet address your client uses to access the contract, pay with, & release escrow funds. Ensure your client has full control of this address."
+            tooltip="The wallet address your client uses to pay and release escrow funds. They must have full control of this address."
             placeholder="0x..."
             name="client"
             localForm={localForm}
@@ -105,7 +105,7 @@ export function EscrowDetailsForm({
         <div className="flex flex-col gap-4">
           <Input
             label="Service Provider Address"
-            tooltip="This is your controlling address. You use it to access this contract, manage transactions, and receive funds released from escrow. Ensure you have full control over this address."
+            tooltip="Your wallet address. You'll use it to access this contract and receive released funds. Must be an address you fully control."
             placeholder="0x..."
             name="provider"
             localForm={localForm}
@@ -119,39 +119,27 @@ export function EscrowDetailsForm({
           </p>
 
           <div className="flex gap-2">
-            <button
-              type="button"
-              className={
-                arbitratorMode === 'farcaster'
-                  ? 'bg-primary text-white px-3 py-1 rounded-md text-sm hover:bg-primary/90'
-                  : 'border border-input px-3 py-1 rounded-md text-sm hover:bg-accent'
-              }
+            <Button
+              variant={arbitratorMode === 'farcaster' ? 'default' : 'outline'}
+              size="sm"
               onClick={() => handleArbitratorModeChange('farcaster')}
             >
               Community
-            </button>
-            <button
-              type="button"
-              className={
-                arbitratorMode === 'kleros'
-                  ? 'bg-primary text-white px-3 py-1 rounded-md text-sm hover:bg-primary/90'
-                  : 'border border-input px-3 py-1 rounded-md text-sm hover:bg-accent'
-              }
+            </Button>
+            <Button
+              variant={arbitratorMode === 'kleros' ? 'default' : 'outline'}
+              size="sm"
               onClick={() => handleArbitratorModeChange('kleros')}
             >
               Kleros
-            </button>
-            <button
-              type="button"
-              className={
-                arbitratorMode === 'custom'
-                  ? 'bg-primary text-white px-3 py-1 rounded-md text-sm hover:bg-primary/90'
-                  : 'border border-input px-3 py-1 rounded-md text-sm hover:bg-accent'
-              }
+            </Button>
+            <Button
+              variant={arbitratorMode === 'custom' ? 'default' : 'outline'}
+              size="sm"
               onClick={() => handleArbitratorModeChange('custom')}
             >
               Custom Address
-            </button>
+            </Button>
           </div>
 
           {arbitratorMode === 'farcaster' && (
@@ -163,14 +151,14 @@ export function EscrowDetailsForm({
 
           {arbitratorMode === 'kleros' && (
             <>
-              <div className="flex items-start gap-3 rounded-md bg-yellow-500 p-4 text-white" role="alert">
-                <AlertCircle className="h-5 w-5 mt-0.5 text-white/80 shrink-0" />
+              <div className="flex items-start gap-3 rounded-md bg-amber-500/10 border border-amber-500/20 p-4 text-amber-400" role="alert">
+                <AlertCircle className="h-5 w-5 mt-0.5 text-amber-400/80 shrink-0" />
                 <div>
-                  <h5 className="font-medium text-sm">
+                  <h5 className="font-medium text-sm text-amber-400">
                     Only choose Kleros if total contract value is greater than
                     1000 USD
                   </h5>
-                  <p className="text-sm">
+                  <p className="text-sm text-amber-400/80">
                     sCrow will only escalate claims to Kleros that are
                     linked to smart escrows holding tokens with a minimum value
                     of 1000 USD at the time of locking the funds.
@@ -234,13 +222,13 @@ export function EscrowDetailsForm({
         </div>
 
         <div className="grid grid-cols-1 gap-4 w-full mt-5">
-          <button
+          <Button
             type="submit"
             disabled={!isValid}
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-bold text-sm md:text-base"
+            className="uppercase font-bold text-sm md:text-base"
           >
             Next: {ESCROW_STEPS[2].next}
-          </button>
+          </Button>
         </div>
       </div>
     </form>

@@ -15,22 +15,23 @@ import { formatUnits } from 'viem';
 import { useAccount, useChainId } from 'wagmi';
 
 import { ChakraNextLink, Loader } from '../atoms';
+import { Button } from '../atoms/Button';
 import { Styles } from '../molecules/InvoicesStyles';
 
 const getStatusColor = (status?: string) => {
   switch (status) {
     case 'In Progress':
-      return 'bg-green-400';
+      return 'bg-emerald-500/20 text-emerald-400';
     case 'Completed':
-      return 'bg-blue-400';
+      return 'bg-primary/20 text-primary';
     case 'Disputed':
-      return 'bg-red-400';
+      return 'bg-destructive/20 text-red-400';
     case 'Expired':
-      return 'bg-gray-400';
+      return 'bg-muted text-muted-foreground';
     case 'Awaiting Funds':
-      return 'bg-yellow-400';
+      return 'bg-amber-500/20 text-amber-400';
     default:
-      return 'bg-green-400';
+      return 'bg-emerald-500/20 text-emerald-400';
   }
 };
 
@@ -42,7 +43,7 @@ function StatusCell({
   const colorClass = getStatusColor(cell.getValue());
   return (
     <div
-      className={`${colorClass} px-2 py-1 w-fit rounded text-center text-white`}
+      className={`${colorClass} px-2 py-1 w-fit rounded text-center`}
     >
       {cell.getValue()}
     </div>
@@ -162,9 +163,12 @@ export function InvoiceDashboardTable() {
           )}
 
           <ChakraNextLink href="/create">
-            <button className="min-w-[250px] py-3 px-6 bg-primary text-white rounded-md font-medium hover:bg-primary/80 transition-colors text-sm sm:text-base md:text-lg">
+            <Button
+              size="lg"
+              className="min-w-[250px] py-3 px-6 text-sm sm:text-base md:text-lg"
+            >
               Create Contract
-            </button>
+            </Button>
           </ChakraNextLink>
         </div>
       </div>
@@ -179,12 +183,12 @@ export function InvoiceDashboardTable() {
             My Contracts
           </h1>
 
-          <button
-            className="bg-primary hover:bg-primary/70 active:bg-primary/70 text-white px-4 py-2 rounded-md transition-colors"
+          <Button
             onClick={() => router.push('/create')}
+            className="px-4 py-2"
           >
             Create Contract
-          </button>
+          </Button>
         </div>
 
         <div className="flex items-center gap-3 mb-6">

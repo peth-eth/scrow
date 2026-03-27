@@ -19,25 +19,22 @@ export function InvoiceStatusLabel({
   const terminated = terminationTime && Number(terminationTime) > Date.now();
   const disputeResolved = label === 'Dispute Resolved';
 
-  let bgColor = '#FFB946';
-  if (isLoading) bgColor = '#FFFFFF';
+  let colorClass = 'bg-amber-500/20 text-amber-400';
+  if (isLoading) colorClass = 'bg-muted text-muted-foreground';
   if (terminated || disputeResolved || label === 'Expired') {
-    bgColor = '#C2CFE0';
+    colorClass = 'bg-muted text-muted-foreground';
   }
-  if (isLocked) bgColor = '#F7685B';
-  if (label === 'Overdue') bgColor = '#F7685B';
-  if (funded) bgColor = '#2ED47A';
+  if (isLocked) colorClass = 'bg-destructive/20 text-red-400';
+  if (label === 'Overdue') colorClass = 'bg-destructive/20 text-red-400';
+  if (funded) colorClass = 'bg-emerald-500/20 text-emerald-400';
 
   return (
     <div
-      className="flex justify-center rounded-[10px] p-1.5 min-w-[165px]"
-      style={{
-        backgroundColor: bgColor,
-        cursor: onClick ? 'pointer' : 'default',
-      }}
+      className={`flex justify-center rounded-[10px] p-1.5 min-w-[165px] ${colorClass}`}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
       onClick={onClick}
     >
-      <p className="text-white font-bold text-center text-[15px]">
+      <p className="font-bold text-center text-[15px]">
         {isLoading ? <Loader size="20" /> : label}
       </p>
     </div>

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { InputHTMLAttributes, ReactElement, ReactNode } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
 
-import { InfoOutlineIcon } from '../icons';
+import { FormTooltip } from './FormTooltip';
 
 export interface CustomCheckboxProps {
   name: string;
@@ -45,19 +45,12 @@ export function Checkbox({
         defaultValue={false}
         render={({ field: { onChange, value, ref } }) => (
           <div className="m-0">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
               <div className="flex items-center gap-2">
                 {label && (
                   <label className="m-0 text-sm font-medium">{label}</label>
                 )}
-                {tooltip && (
-                  <span title={tooltip}>
-                    <InfoOutlineIcon
-                      boxSize={3}
-                      className="text-primary bg-background rounded-full cursor-help"
-                    />
-                  </span>
-                )}
+                {tooltip && <FormTooltip content={tooltip} />}
               </div>
               <label className="inline-flex items-center gap-2 capitalize cursor-pointer">
                 <input
@@ -74,7 +67,7 @@ export function Checkbox({
                 <p className="text-sm text-muted-foreground">{helperText}</p>
               )}
               {typeof error === 'string' && (
-                <p className="text-sm text-red-500">{error}</p>
+                <p className="text-sm text-destructive">{error}</p>
               )}
             </div>
           </div>
@@ -85,19 +78,12 @@ export function Checkbox({
 
   return (
     <div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1.5">
         <div className="flex items-center gap-2">
           {label && (
             <label className="m-0 text-sm font-medium">{label}</label>
           )}
-          {tooltip && (
-            <span title={tooltip}>
-              <InfoOutlineIcon
-                boxSize={3}
-                className="text-red-500 bg-background rounded-full cursor-help"
-              />
-            </span>
-          )}
+          {tooltip && <FormTooltip content={tooltip} />}
         </div>
         <div
           className={`flex gap-3 ${direction === 'column' ? 'flex-col' : 'flex-row'}`}
@@ -130,7 +116,7 @@ export function Checkbox({
           <p className="text-sm text-muted-foreground">{helperText}</p>
         )}
         {typeof error === 'string' && (
-          <p className="text-sm text-red-500">{error}</p>
+          <p className="text-sm text-destructive">{error}</p>
         )}
       </div>
     </div>

@@ -90,11 +90,6 @@ function Home() {
 
         {/* CTA Buttons */}
         <div className="flex w-full flex-col items-center justify-center gap-4 md:flex-row">
-          <Link href="/create">
-            <Button size="lg" className="min-w-[250px] py-6">
-              Create a Contract
-            </Button>
-          </Link>
           <Link href="/invoices">
             <Button size="lg" variant="outline" className="min-w-[250px] py-6">
               View Your Contracts
@@ -103,6 +98,11 @@ function Home() {
           <Link href="/developers">
             <Button size="lg" variant="outline" className="min-w-[250px] py-6">
               For Agents
+            </Button>
+          </Link>
+          <Link href="/create">
+            <Button size="lg" className="min-w-[250px] py-6">
+              Create a Contract
             </Button>
           </Link>
         </div>

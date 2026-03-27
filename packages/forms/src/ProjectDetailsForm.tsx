@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ESCROW_STEPS, INVOICE_TYPES } from '@smartinvoicexyz/constants';
 import { ValueOf } from '@smartinvoicexyz/types';
 import {
+  Button,
   DatePicker,
   Input,
   LinkInput,
@@ -87,28 +88,26 @@ export function ProjectDetailsForm({
         <Input
           label="Title"
           name="title"
-          tooltip="The name of the project"
-          placeholder="An adventure slaying Moloch"
+          placeholder="Website Redesign for Acme Corp"
           registerOptions={{ required: true }}
           localForm={localForm}
         />
         <Textarea
           label="Description"
           name="description"
-          tooltip="A detailed description of the project"
-          placeholder="Describe the project in detail. What is the scope? What are the deliverables? What are the milestones? What are the expectations?"
+          placeholder="Build a responsive 5-page marketing site. Deliverables: wireframes, coded pages, CMS setup. Two revision rounds included."
           registerOptions={{ required: true }}
           localForm={localForm}
         />
         <LinkInput
           name="document"
           label="Project Proposal, Agreement or Specification"
-          tooltip="A URL to a project proposal, agreement or specification. This is optional."
-          placeholder="github.com/AcmeAcademy/buidler"
+          tooltip="Link to a shared document both parties can reference. Optional."
+          placeholder="notion.so/project-brief"
           localForm={localForm}
         />
 
-        <div className="grid grid-cols-3 pb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-4">
           <DatePicker
             label="Start Date"
             name="startDate"
@@ -153,13 +152,13 @@ export function ProjectDetailsForm({
         </div>
 
         <div className="grid grid-cols-1 gap-4 w-full mt-5">
-          <button
+          <Button
             type="submit"
             disabled={!isValid}
-            className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-mono font-bold text-sm md:text-base"
+            className="uppercase font-mono font-bold text-sm md:text-base"
           >
             Next: {ESCROW_STEPS[1].next}
-          </button>
+          </Button>
         </div>
       </div>
     </form>

@@ -6,6 +6,7 @@ import {
 import { FormInvoice, InvoiceDetails } from '@smartinvoicexyz/types';
 import {
   AddIcon,
+  Button,
   DeleteIcon,
   Input,
   LinkInput,
@@ -206,14 +207,14 @@ export function AddMilestones({
                     />
                   </div>
                 </details>
-                <button
-                  type="button"
-                  className="border border-input p-2 rounded-md hover:bg-accent"
+                <Button
+                  variant="outline"
+                  size="icon"
                   aria-label="remove milestone"
                   onClick={() => removeMilestone(index)}
                 >
                   <DeleteIcon className="w-4 h-4" />
-                </button>
+                </Button>
               </div>
             ))}
           </div>
@@ -225,9 +226,9 @@ export function AddMilestones({
             )}
           </div>
 
-          <button
-            type="button"
-            className="border border-input px-4 py-2 rounded-md hover:bg-accent w-full flex items-center justify-center gap-2"
+          <Button
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2"
             onClick={() => {
               appendMilestone({
                 value: '1',
@@ -238,7 +239,7 @@ export function AddMilestones({
           >
             Add a new milestone
             <AddIcon className="w-3 h-3" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -277,18 +278,16 @@ export function AddMilestones({
         Note: new milestones may take a few minutes to appear in the list
       </p>
 
-      <button
+      <Button
         onClick={() => {
           writeAsync?.();
         }}
         disabled={isDisabled}
-        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase font-bold w-full text-sm md:text-base"
+        isLoading={isLoading}
+        className="uppercase font-bold w-full text-sm md:text-base"
       >
-        {isLoading && (
-          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
-        )}
         Add
-      </button>
+      </Button>
     </div>
   );
 }

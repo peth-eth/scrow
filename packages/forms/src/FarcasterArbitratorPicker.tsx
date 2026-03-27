@@ -1,4 +1,5 @@
 import { useFarcasterSearch } from '@smartinvoicexyz/hooks';
+import { Button } from '@smartinvoicexyz/ui';
 import type { FarcasterUser } from '@smartinvoicexyz/hooks';
 import { AlertCircle } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -112,21 +113,21 @@ export function FarcasterArbitratorPicker({
               @{selectedUser.username}
             </p>
           </div>
-          <button
-            type="button"
-            className="text-xs text-primary cursor-pointer hover:underline"
+          <Button
+            variant="link"
+            className="text-xs text-primary"
             onClick={() => {
               setSelectedUser(null);
               setQuery('');
             }}
           >
             Change
-          </button>
+          </Button>
         </div>
       )}
 
       {noWallet && (
-        <div className="flex items-start gap-3 rounded-md border border-yellow-300 bg-yellow-50 p-4" role="alert">
+        <div className="flex items-start gap-3 rounded-md border border-amber-500/20 bg-amber-500/10 p-4" role="alert">
           <AlertCircle className="h-5 w-5 mt-0.5 text-yellow-600 shrink-0" />
           <p className="text-sm">
             This user has no connected Ethereum wallet and cannot act as

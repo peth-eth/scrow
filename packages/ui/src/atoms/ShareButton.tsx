@@ -4,6 +4,7 @@ import { chainLabelFromId, getChainName } from '@smartinvoicexyz/utils';
 import { RWebShare } from 'react-web-share';
 
 import { ShareIcon } from '../icons';
+import { Button } from './Button';
 
 export function ShareButton({ invoice }: { invoice: Partial<InvoiceDetails> }) {
   const { chainId, id: invoiceId, metadata } = invoice;
@@ -25,9 +26,14 @@ export function ShareButton({ invoice }: { invoice: Partial<InvoiceDetails> }) {
         url,
       }}
     >
-      <button className="p-1 bg-transparent text-primary hover:text-primary/80 transition-colors">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="p-1 text-primary hover:text-primary/80"
+        aria-label="Share this contract"
+      >
         <ShareIcon boxSize={5} />
-      </button>
+      </Button>
     </RWebShare>
   );
 }

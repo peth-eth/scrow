@@ -7,7 +7,7 @@ import {
   useTokenBalance,
 } from '@smartinvoicexyz/hooks';
 import { InvoiceDetails } from '@smartinvoicexyz/types';
-import { NumberInput, QuestionIcon, useToast } from '@smartinvoicexyz/ui';
+import { Button, NumberInput, QuestionIcon, useToast } from '@smartinvoicexyz/ui';
 import {
   commify,
   getNativeTokenSymbol,
@@ -222,7 +222,7 @@ export function DepositFunds({
             type="number"
             placeholder="0"
             defaultValue="0"
-            className="min-w-[300px]"
+            className="w-full"
             min={0}
             max={amountsSum}
             localForm={localForm}
@@ -257,7 +257,7 @@ export function DepositFunds({
         </div>
         <div className="flex flex-col gap-4 mt-4">
           {!!currentMilestoneAmount && amount > currentMilestoneAmount && (
-            <div className="flex items-start gap-3 rounded-md border border-yellow-300 bg-yellow-50 p-4" role="alert">
+            <div className="flex items-start gap-3 rounded-md border border-amber-500/20 bg-amber-500/10 p-4" role="alert">
               <AlertCircle className="h-5 w-5 mt-0.5 text-yellow-600 shrink-0" />
               <h5 className="font-medium text-sm">
                 Your deposit is greater than the total amount due!
@@ -266,7 +266,7 @@ export function DepositFunds({
           )}
 
           {!hasAmount && (
-            <div className="flex items-start gap-3 rounded-md border border-red-300 bg-red-50 p-4" role="alert">
+            <div className="flex items-start gap-3 rounded-md border border-destructive/20 bg-destructive/10 p-4" role="alert">
               <AlertCircle className="h-5 w-5 mt-0.5 text-red-600 shrink-0" />
               <h5 className="font-medium text-sm">
                 Your balance is less than the amount you are trying to deposit!
@@ -316,16 +316,14 @@ export function DepositFunds({
         )}
       </div>
 
-      <button
+      <Button
         onClick={depositHandler}
         disabled={amount <= 0 || !!prepareError || !hasAmount}
-        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50 uppercase"
+        isLoading={isLoading}
+        className="uppercase"
       >
-        {isLoading && (
-          <span className="inline-block animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 align-middle" />
-        )}
         Deposit
-      </button>
+      </Button>
       {transaction && (
         <p className="text-center text-sm">
           Follow your transaction{' '}
@@ -333,7 +331,7 @@ export function DepositFunds({
             href={getTxLink(chainId, transaction)}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary-300 underline"
+            className="text-primary underline"
           >
             here
           </a>
